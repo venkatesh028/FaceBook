@@ -39,9 +39,9 @@ public class PostService {
     /**
      * Add the post 
      * 
-     * @param  postedBy name of the user who posted the post
-     * @parma  quotes   post of the user 
-     * @return post     null after adding the post
+     * @param  postedBy - name of the user who posted the post
+     * @parma  quotes   - post of the user 
+     * @return boolean  - true after adding the post
      */
     public boolean addPost(String postedBy, String quotes) {
         Post post; 
@@ -54,9 +54,9 @@ public class PostService {
     /**
      * Add like to the post based on id of the post
      * 
-     * @param  likedUserName userName of the user who like 
-     * @param  postId        Id of the post
-     * @return boolean       true after adding the like 
+     * @param  likedUserName - userName of the user who like 
+     * @param  postId        - Id of the post
+     * @return boolean       - true after adding the like 
      */ 
     public boolean addLike(String likedUserName, String postId) {
         List<Post> userPost = postDao.getUserPost();          
@@ -68,8 +68,7 @@ public class PostService {
                         if (post.getLikedUsers().get(i).getLikedUserName().equals(likedUserName)) {
                             post.getLikedUsers().remove(i);
                         }
-                    }    
-
+                    }   
                 } else {
                     Like newLike = new Like(likedUserName);
                     post.setLike(newLike);                
@@ -82,8 +81,8 @@ public class PostService {
     /**
      * gets the userName who liked the post
      *
-     * @param  postId - id of the post
-     * @return likedUserName userName of the people who liked for the post
+     * @param  postId        - id of the post
+     * @return likedUserName - userName of the people who liked for the post
      */
     public String getLikedUsers(String postId) {
         StringBuffer likedUserName = new StringBuffer();
@@ -112,9 +111,10 @@ public class PostService {
     /**
      * Add comment to the particular post based on the postId
      * 
-     * @param  postId  id of the post
-     * @param  comment comment entered by the user
-     * @return boolean true or false based on the result
+     * @param  postId    - id of the post
+     * @param  commentBy - userName who entered the comment
+     * @param  comment   - comment entered by the user
+     * @return boolean   - true or false based on the result
      */
     public boolean addComment(String postId, String commentBy, String userComment) {
         List<Post> userPost;
@@ -179,8 +179,8 @@ public class PostService {
     /**
      * Gets the post based on there userName 
      * 
-     * @param  userName       userName of the user
-     * @return postByUserName post of the particular user based on username
+     * @param  userName       - userName of the user
+     * @return postByUserName - post of the particular user based on username
      */
     public String getPostByUserName(String userName) {
         List<Post> userPost;
@@ -201,8 +201,8 @@ public class PostService {
      * Delete the particular post of the user
      * Based on the postId
      * 
-     * @param  postId  Id of the post
-     * @return result  true or false 
+     * @param  postId - Id of the post
+     * @return result - true or false 
      */
     public boolean deletePost(String postId) { 
         List<Post> userPost;
