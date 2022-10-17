@@ -15,9 +15,9 @@ public interface PostDao {
     /**
      * Add the post 
      * 
-     * @param  postedBy name of the user who posted the post
-     * @param  quote  post of the user 
-     * @return boolean  true after adding the post
+     * @param  postedBy - name of the user who posted the post
+     * @param  quote    - post of the user 
+     * @return Post     - null if the post is added
      */
     public boolean addPost(Post post);    
 

@@ -20,3 +20,4 @@
 2022-10-17 11:55:19,284 INFO com.ideas2it.view.UserView [main] Invalid password try again
 2022-10-17 11:55:36,191 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
 2022-10-17 12:12:50,619 INFO com.ideas2it.view.UserView [main] Invalid password try again
+2022-10-17 18:01:29,303 INFO com.ideas2it.view.PostView [main] Post added Successfully

@@ -41,7 +41,7 @@ public class PostService {
      * 
      * @param  postedBy name of the user who posted the post
      * @parma  quotes   post of the user 
-     * @return boolean  true after adding the post
+     * @return post     null after adding the post
      */
     public boolean addPost(String postedBy, String quotes) {
         Post post; 
@@ -63,13 +63,7 @@ public class PostService {
       
         for (Post post : userPost) {
             if (post.getPostId().equals(postId)) {   
-                if (isUserLikedAlready(likedUserName, post)) {
-                    /*for (Like like : post.getLikedUsers()) {
-                        if (like.getLikedUserName().equals(likedUserName)){
-                            post.getLikedUsers().remove(like);       
-                         }  
-                    } */   
-                    
+                if (isUserLikedAlready(likedUserName, post)) {                     
                     for (int i = 0; i <= post.getLikedUsers().size(); i++) {
                         if (post.getLikedUsers().get(i).getLikedUserName().equals(likedUserName)) {
                             post.getLikedUsers().remove(i);
@@ -215,8 +209,10 @@ public class PostService {
         Post post; 
         userPost = postDao.getUserPost();
         boolean result = false;
+
         for (int index = 0; index < userPost.size(); index++) {
             post = userPost.get(0);
+
             if (post.getPostId().equals(postId)) {
                 result = postDao.deletePost(index);
                 break;
@@ -225,14 +221,21 @@ public class PostService {
         return result;
     }
     
+    /**
+     * Checks the user is already liked or not 
+     * 
+     * @param likedUserName - userName of the profile who liked 
+     * @param post          - post for the check need to done 
+     */
     private boolean isUserLikedAlready(String likedUserName, Post post) {
         boolean isAlreadyLiked = false;
+
         if (null != post.getLikedUsers()) {
-        for (Like like : post.getLikedUsers()) {
-            if (like.getLikedUserName().equals(likedUserName)){                
-                isAlreadyLiked = true;          
-            }  
-        }
+            for (Like like : post.getLikedUsers()) {
+                if (like.getLikedUserName().equals(likedUserName)){                
+                    isAlreadyLiked = true;          
+                }  
+            }
         }
         return isAlreadyLiked; 
     } 

@@ -61,8 +61,8 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override
-    public boolean deletePost(int index) {
-        userPost.remove(index);
+    public boolean deletePost(int index) { 
+        userPost.remove(index);       
         return true;
     } 
     

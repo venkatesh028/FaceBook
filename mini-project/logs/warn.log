@@ -36,3 +36,5 @@
 
 2022-10-17 11:50:23,859 WARN com.ideas2it.view.SearchPage [main] Entered wrong option
 
+2022-10-17 18:00:22,245 WARN com.ideas2it.view.UserView [main] Invalid email format
+
