@@ -16,19 +16,43 @@ public class ProfileController {
         this.profileService = new ProfileService();
     }
     
-
+    /**
+     * Create the profileId for the profile and set that
+     * and add profile to the database 
+     * 
+     * @param  profile - profile contain the details of the profile 
+     * @return profileId - profileId of the profile
+     */
     public Profile create(Profile profile) {
         return profileService.create(profile);
     }
     
+    /**
+     * Gets the profile id based on the userId
+     * 
+     * @param  userId - userid of the user 
+     * @return profileId - profile id of the user based on the userId
+     */
     public String getProfileId(String userId) {
         return profileService.getProfileId(userId);
-    }
-    
+    }    
+
+    /**
+     * Gets the profileId based on the username 
+     * 
+     * @param  userName  - userName of the profile 
+     * @return profileId - profileId of the profile
+     */
     public String getProfileIdByUserName(String userName) {
         return profileService.getProfileIdByUserName(userName);
     }
-     
+
+    /**
+     * Gets the userId of the profile based on the profile id
+     * 
+     * @param  profileId - profileId of the user
+     * @return userId    - userId of the profile based on the profileId 
+     */    
     public String getUserId(String profileId) {
         return profileService.getUserId(profileId);
     }
@@ -115,6 +139,12 @@ public class ProfileController {
         return profileService.addFriend(userId, friendName);     
     }
 
+    /**
+     * Deletes the profile based on the profileId
+     *
+     * @param  profileId - id of the profile which need to be deleted 
+     * @return profile   - profile which got deleted 
+     */
     public Profile delete(String profileId) {
         return profileService.delete(profileId);
     }

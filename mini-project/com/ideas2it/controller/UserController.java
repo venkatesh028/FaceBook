@@ -21,9 +21,7 @@ public class UserController {
     public UserController() {
         this.userService = new UserService();
         this.validationUtil = new ValidationUtil();
-    }
-    
-
+    } 
 
     /**
      * Check is that email is exist 
