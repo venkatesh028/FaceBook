@@ -91,8 +91,8 @@ public class PostController {
     /**
      * Get post by the username 
      * 
-     * @param  userName username of the user
-     * @return String   post uploaded on the userName
+     * @param  userName - username of the user
+     * @return String   - post uploaded on the userName
      */ 
     public String getPostByUserName(String userName) {
         return postService.getPostByUserName(userName);
@@ -101,8 +101,8 @@ public class PostController {
     /**
      * Delete the post based on the postId 
      * 
-     * @param  postId id of the post
-     * @return bolean true or false based 
+     * @param  postId - id of the post
+     * @return bolean - true or false based 
      */
     public boolean deletePost(String postId) {
         return postService.deletePost(postId);
