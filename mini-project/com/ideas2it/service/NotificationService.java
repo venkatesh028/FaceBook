@@ -40,11 +40,16 @@ public class NotificationService {
         return notificationDao.getNotifications(userName);
     }
     
+    /**
+     * Clears the request notification based on the responce
+     * 
+     * @param userName          - username to who the request is given
+     * @param requestedUserName - name of the person who gave the request
+     */
     public boolean clearNotification(String userName, String requestedUserName) {
         Set<Notification> notifications = getNotifications(userName);
         
         for (Notification notification : notifications) {
-
             if (notification.getUserName().equals(requestedUserName)) {
                 notifications.remove(notification);
                 break;

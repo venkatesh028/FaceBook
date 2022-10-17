@@ -78,6 +78,12 @@ public class PostController {
         return postService.addComment(postId, commentedBy, comment);
     }
     
+    /**
+     * Gets the comments for the particular post
+     * 
+     * @param  postId         - id of the post 
+     * @return listOfComments - comments for the post
+     */
     public List<String> getComments(String postId) {
         return postService.getComments(postId);
     }

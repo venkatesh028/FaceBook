@@ -24,12 +24,19 @@ public class ProfileService {
         this.profileDao = ProfileDaoImpl.getInstance();
     }
     
+    /**
+     * Create the profileId for the profile and set that
+     * and add profile to the database 
+     * 
+     * @param  profile - profile contain the details of the profile 
+     * @return profileId - profileId of the profile
+     */
     public Profile create(Profile profile) {
         String profileId;
         
         profileId = UUID.randomUUID().toString();
         profile.setProfileId(profileId);
-        return profileDao.create(profile);    
+        return profileDao.add(profile);    
     }
 
     /**
@@ -160,7 +167,13 @@ public class ProfileService {
         } 
         return profileId; 
     } 
-
+    
+    /**
+     * Gets the profileId based on the username 
+     * 
+     * @param  userName  - userName of the profile 
+     * @return profileId - profileId of the profile
+     */
     public String getProfileIdByUserName(String userName) {
         List<Profile> profiles = new ArrayList<>(profileDao.getProfiles());
         String profileId = null;
@@ -173,7 +186,12 @@ public class ProfileService {
         return profileId; 
     } 
       
-    
+    /**
+     * Gets the userId of the profile based on the profile id
+     * 
+     * @param  profileId - profileId of the user
+     * @return userId    - userId of the profile based on the profileId 
+     */
     public String getUserId(String profileId) {
         List<Profile> profiles = new ArrayList<>(profileDao.getProfiles());
         String userId = null;
@@ -185,7 +203,13 @@ public class ProfileService {
         } 
         return userId;    
     }
-
+    
+    /**
+     * Deletes the profile based on the profileId
+     *
+     * @param  profileId - id of the profile which need to be deleted 
+     * @return profile   - profile which got deleted 
+     */
     public Profile delete(String profileId) {
         return profileDao.delete(profileId) ;
     }   

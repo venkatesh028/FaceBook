@@ -29,22 +29,42 @@ public class ProfileDaoImpl implements ProfileDao {
         return profileDaoImpl; 
     } 
     
-    public Profile create(Profile profile) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Profile add(Profile profile) {
         return profiles.put(profile.getProfileId(), profile);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Profile getProfile(String profileId) {
         return profiles.get(profileId);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Profile> getProfiles() {
         return new ArrayList<>(profiles.values());
     }
-     
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Profile update(Profile profile) {
         return profiles.replace(profile.getProfileId(), profile);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Profile delete(String profileId) {
         return profiles.remove(profileId);   
     }      
