@@ -1,0 +1,22 @@
+2022-10-17 10:15:34,192 INFO com.ideas2it.view.SearchPage [main] There is no account with this username 
+2022-10-17 10:15:42,634 INFO com.ideas2it.view.SearchPage [main] There is no account with this username 
+2022-10-17 10:23:00,137 INFO com.ideas2it.view.UserView [main] Invalid password try again
+2022-10-17 10:23:05,972 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
+2022-10-17 10:42:26,663 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
+2022-10-17 10:53:34,470 INFO com.ideas2it.view.NotificationView [main] There is no notofication
+
+2022-10-17 11:08:13,596 INFO com.ideas2it.view.NotificationView [main] There is no notofication
+
+2022-10-17 11:15:23,246 INFO com.ideas2it.view.UserView [main] You are not elibile to create a account
+2022-10-17 11:38:31,426 INFO com.ideas2it.view.PostView [main] Post added Successfully
+2022-10-17 11:39:11,459 INFO com.ideas2it.view.ProfileView [main] You entered wrong option
+2022-10-17 11:43:34,556 INFO com.ideas2it.view.PostView [main] Comment added successfully 
+2022-10-17 11:45:50,997 INFO com.ideas2it.view.NotificationView [main] There is no notofication
+
+2022-10-17 11:50:14,658 INFO com.ideas2it.view.SearchPage [main] There is no account with this username 
+2022-10-17 11:54:29,370 INFO com.ideas2it.view.SettingView [main] Invalid your password must contain (a-ZA-Z0-9) and Any Special Character within 8-20
+
+2022-10-17 11:55:09,529 INFO com.ideas2it.view.UserView [main] Invalid password try again
+2022-10-17 11:55:19,284 INFO com.ideas2it.view.UserView [main] Invalid password try again
+2022-10-17 11:55:36,191 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
+2022-10-17 12:12:50,619 INFO com.ideas2it.view.UserView [main] Invalid password try again

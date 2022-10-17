@@ -1,0 +1,38 @@
+2022-10-17 10:15:46,087 WARN com.ideas2it.view.SearchPage [main] Entered wrong option
+
+2022-10-17 10:42:28,180 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 10:42:32,615 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 10:42:35,187 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 10:42:53,479 WARN com.ideas2it.view.UserView [main] Invalid date format
+
+2022-10-17 10:44:17,264 WARN com.ideas2it.view.UserView [main] Email Already exist
+
+2022-10-17 10:44:18,096 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 10:44:30,999 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 10:44:35,276 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 10:45:10,706 WARN com.ideas2it.view.UserView [main] Invalid username
+
+2022-10-17 10:45:13,440 WARN com.ideas2it.view.UserView [main] Invalid username
+
+2022-10-17 11:04:35,184 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 11:05:22,626 WARN com.ideas2it.view.SearchPage [main] Entered wrong option
+
+2022-10-17 11:11:10,235 WARN com.ideas2it.view.SearchPage [main] Entered wrong option
+
+2022-10-17 11:12:18,671 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 11:15:26,597 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 11:17:39,295 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-10-17 11:34:53,592 WARN com.ideas2it.view.UserView [main] Invalid date format
+
+2022-10-17 11:50:23,859 WARN com.ideas2it.view.SearchPage [main] Entered wrong option
+
