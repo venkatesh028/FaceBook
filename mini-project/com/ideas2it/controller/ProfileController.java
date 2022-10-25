@@ -70,11 +70,11 @@ public class ProfileController {
     /**
      * Shows the profile of the user
      * 
-     * @param  userId  userId of the user
-     * @return Profile profile of the user
+     * @param  profileId -  profileId of the user
+     * @return Profile   -  profile of the user
      */
-    public Profile getProfile(String userId) {
-        return profileService.getProfile(userId);
+    public Profile getProfile(String profileId) {
+        return profileService.getProfile(profileId);
     } 
 
     /**
@@ -102,11 +102,11 @@ public class ProfileController {
     /**
      * Gets the userName of the user
      *
-     * @param  userId   userId of the user
+     * @param  profileId   userId of the user
      * @return userName userName of the user
      */
-    public String getUserName(String userId) {
-        return profileService.getUserName(userId);
+    public String getUserName(String profileId) {
+        return profileService.getUserName(profileId);
     }
     
     /**
