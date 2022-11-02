@@ -12,31 +12,31 @@ import java.time.LocalDate;
  * @author Venkatesh TM
  */
 public class Notification {
-    private String    userName;
+    private String    id;
+    private String    userId;
     private LocalDate requestGivenAt;
     
-    public Notification(String userName, LocalDate requestGivenAt) {
-        this.userName = userName;
+    public Notification(String userId, LocalDate requestGivenAt) {
+        this.userId = userId;
         this.requestGivenAt = requestGivenAt;
     }
     
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
     
     public void setLocalDate(LocalDate requestGivenAt) {
         this.requestGivenAt = requestGivenAt;
     }
     
-    public String toString() {
+   /* public String toString() {
         StringBuilder notification = new StringBuilder();
         notification.append("\nFriend Request given By ").append(userName)
                     .append("\nAt ").append(requestGivenAt);
         return notification.toString();
-    }
- 
+    } */ 
 }

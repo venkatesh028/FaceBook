@@ -3,11 +3,12 @@ package com.ideas2it.view;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
+import com.ideas2it.constant.Constants;
+import com.ideas2it.logger.CustomLogger;
+import com.ideas2it.model.Profile;
 import com.ideas2it.controller.ProfileController;
 import com.ideas2it.controller.PostController;
 import com.ideas2it.controller.UserController;
-import com.ideas2it.constant.Constants;
-import com.ideas2it.logger.CustomLogger;
 
 /**
  * Shows the profile page to the user based on the user action
@@ -36,7 +37,8 @@ public class ProfileView {
      *
      * @param userId
      */
-    private void updateProfile(String profileId) {
+    private void updateProfile(String userId) {
+        Profile profile = profileController.getProfile(userId);
         int selectedUpdate;
         boolean updatePage = true;
         String updateMenu = generateProfileUpdateMenu();
@@ -55,7 +57,8 @@ public class ProfileView {
                     newUserName = scanner.nextLine();
                     
                     if (!profileController.isUserNameExist(newUserName)) {
-                        profileController.updateUserName(profileId, newUserName);
+                        profile.setUserName(newUserName);
+                        profileController.update(profile);
                         userNameValid = true;
                     } else {  
                         logger.info("UserName is already exist Enter a new one");
@@ -66,7 +69,8 @@ public class ProfileView {
             case Constants.UPDATE_BIO:
                 System.out.print("Enter your Bio :");
                 String bio = scanner.nextLine();
-                profileController.updateBio(profileId, bio);            
+                profile.setBio(bio);
+                profileController.update(profile);            
                 break;
 
             case Constants.EXIT_UPDATEPAGE:
@@ -77,9 +81,7 @@ public class ProfileView {
                 updatePage = false;
                 break;
             }
-        }
-
-        
+        }         
     }
 
     /**
@@ -87,8 +89,8 @@ public class ProfileView {
      * 
      * @param userId userId of the user
      */
-    private void showProfile(String profileId) {
-        System.out.println(profileController.getProfile(profileId));
+    private void showProfile(String userId) {
+       System.out.println(profileController.getProfile(userId));
     }
 
     /**
@@ -96,9 +98,9 @@ public class ProfileView {
      * 
      * @param userId userId of the user
      */    
-    private void showPostByUserName(String profileId) {
-        String userName = profileController.getUserName(profileId);
-        System.out.println(postController.getPostByUserName(userName)); 
+    private void showPostByUserName(String userId) {
+       // String userName = profileController.getUserName(userId);
+      //  System.out.println(postController.getPostByUserName(userName)); 
     }
     
     /**
@@ -106,7 +108,7 @@ public class ProfileView {
      *
      */
     private void deletePost() {
-        String postId;
+       /* String postId;
         System.out.print("Enter the PostId : ");
         postId = scanner.nextLine();
 
@@ -114,7 +116,7 @@ public class ProfileView {
             System.out.println("Post Deleted ..");
         } else {
             logger.info("Something went wrong..");
-        }
+        }*/
     }
 
     /**
@@ -122,24 +124,24 @@ public class ProfileView {
      * 
      * @param userId userId of the user
      */
-    public void displayProfilePage(String profileId) {
+    public void displayProfilePage(String userId) {
         int selectedOption; 
         boolean profilePage = true;
         String profileMenu = generateProfileMenu();               
 
         while (profilePage) {   
-            showProfile(profileId); 
-            showPostByUserName(profileId);
+            showProfile(userId); 
+            //showPostByUserName(userId);
             System.out.println(profileMenu);
             selectedOption = getOption();
 
             switch (selectedOption) { 
             case Constants.UPDATE_PROFILE:
-                updateProfile(profileId);
+                updateProfile(userId);
                 break;
 
             case Constants.DELETE_POST:
-                deletePost();
+               // deletePost();
                 break;
             
             case Constants.EXIT_PROFILEPAGE:

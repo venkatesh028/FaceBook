@@ -1,29 +1,57 @@
 package com.ideas2it.model;
 
 public class Comment {
-    private String commentId;
-    private String commentedBy;
-    private String comment;
+    private String id;
+    private String postId;
+    private String commentedUserId;
+    private String commentedUserName;
+    private String content;
     
-    public Comment(String commentId, String commentedBy, String comment) {
-        this.commentId = commentId;
-        this.commentedBy = commentedBy;
-        this.comment = comment;
+    public Comment() {}
+ 
+    public Comment(String id, String commentedUserId, String content) {
+        this.id = id;
+        this.commentedUserId = commentedUserId;
+        this.content = content;
     }
     
-    public void setCommentedBy(String commentedBy) {
-        this.commentedBy = commentedBy;
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getComment() {
-        return comment;
+    public void setCommentedUserId(String commentedUserId) {
+        this.commentedUserId = commentedUserId;
     }
     
-    public String getCommentedBy() {
-        return commentedBy;
-    }       
+    public void setCommentedUserName(String commentedUserName) {
+        this.commentedUserName = commentedUserName;
+    }
+    
+    public void setContent(String content) {
+        this.content = content;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getPostId() { 
+        return postId;
+    }
+
+    public String getCommentedUserId() {
+        return commentedUserId;
+    }   
+
+    public String getCommentedUserName() {
+        return commentedUserName;
+    }
+
+    public String getContent() {
+        return content;
+    }    
 }

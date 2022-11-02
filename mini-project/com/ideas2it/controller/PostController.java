@@ -17,87 +17,48 @@ public class PostController {
     public PostController() { 
         this.postService = new PostService();
     }
-    
-    /**
-     * Check the post is empty
-     * 
-     * @return boolean true or false based on the result
-     */
-    public boolean isPostEmpty() {
-        return postService.isPostEmpty();
-    }
 
     /**
      * Add the post 
      * 
      * @param  postedBy name of the user who posted the post
-     * @parma  quotes   post of the user 
+     * @parma  content   post of the user 
      * @return boolean  true after adding the post
      */
-    public boolean addPost(String userId, String quotes) {
-        return postService.addPost(userId, quotes);
+    public boolean addPost(String userId, String content) {
+        return postService.create(userId, content);
+    } 
+    
+    /**
+     * Updates the post 
+     * 
+     * @param postId - id of the post
+     * @param content - content updated by the user
+     * @return boolean - true or false based on the response
+     */
+    public boolean update(String postId, String content) { 
+        return postService.update(postId, content);
+    }
+
+    /**
+     * Gets the post uploaded by the user
+     *
+     * @return allPosts - all the post 
+     */
+    public List<Post> getUserPosts() {
+        return postService.getUserPosts();
+    }
+    
+    /**
+     * Gets the post based on there userName 
+     * 
+     * @param  userId   - id of the user
+     * @return userPosts - posts of the particular user
+     */
+    public List<Post> getPostOfParticularUser(String userId) {
+        return postService.getPostOfParticularUser(userId);
     } 
 
-    /**
-     * Get the post uploaded by the user
-     *
-     * @return post list of post
-     */
-    public String getUserPost() {
-        return postService.getUserPost();
-    }   
-    
-    /**
-     * Add like to the post 
-     * 
-     * @param likedUserName username of the person who liked 
-     * @parm postId         id of the post
-     */
-    public boolean addLike(String likedUserName, String postId) {
-        return postService.addLike(likedUserName, postId);
-    }
-    
-    /**
-     * gets the userName who liked the post
-     *
-     * @param  postId - id of the post
-     * @return likedUserName userName of the people who liked for the post
-     */
-    public String getLikedUsers(String postId) {
-        return postService.getLikedUsers(postId);
-    }
-
-    /** 
-     * Add comment to particular post 
-     * 
-     * @param  postId  id of the post
-     * @param  comment comment entered by the user
-     * @return boolean true or false after adding the comment
-     */
-    public boolean addComment(String postId, String commentedBy, String comment) {
-        return postService.addComment(postId, commentedBy, comment);
-    }
-    
-    /**
-     * Gets the comments for the particular post
-     * 
-     * @param  postId         - id of the post 
-     * @return listOfComments - comments for the post
-     */
-    public List<String> getComments(String postId) {
-        return postService.getComments(postId);
-    }
-   
-    /**
-     * Get post by the username 
-     * 
-     * @param  userName - username of the user
-     * @return String   - post uploaded on the userName
-     */ 
-    public String getPostByUserName(String userName) {
-        return postService.getPostByUserName(userName);
-    }  
-    
     /**
      * Delete the post based on the postId 
      * 
@@ -105,8 +66,7 @@ public class PostController {
      * @return bolean - true or false based 
      */
     public boolean deletePost(String postId) {
-        return postService.deletePost(postId);
-    }   
-    
+        return postService.delete(postId);
+    }       
 }
  

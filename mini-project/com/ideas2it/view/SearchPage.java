@@ -24,7 +24,8 @@ public class SearchPage {
     private ProfileView profileView;
     private NotificationController notificationController;
     private CustomLogger logger;
-
+    
+   
     public SearchPage() {
         this.scanner  = new Scanner(System.in);
         this.profileController = new ProfileController();
@@ -39,7 +40,7 @@ public class SearchPage {
      * @param userId  userid of the person 
      */ 
     public void showSearchPage(String userId){
-        boolean isGoBack = false;  
+     /*   boolean isGoBack = false;  
         int selectedOption;
         String searchMenu = generateSearchMenu();
 
@@ -70,7 +71,7 @@ public class SearchPage {
                 logger.warn("Entered wrong option\n");                    
                 break;               
             }
-        }     
+        } */    
     }
     
     /**
@@ -79,7 +80,7 @@ public class SearchPage {
      * @param profile profile of the user who got searched
      */
     public void showUserProfile(Profile profile, String profileId) {
-        int selectedOption;
+      /*  int selectedOption;
         String requestedUser = profileController.getUserName(profileId);      
         PostController postController = new PostController();
         String requestMenu = generateRequestMenu();
@@ -106,7 +107,7 @@ public class SearchPage {
 
        case Constants.BACK:
            break;
-       }
+       } */
     }
     
     /**
@@ -118,7 +119,7 @@ public class SearchPage {
         String userName;
         System.out.print("Enter the username : ");
         userName = scanner.nextLine();
-        return profileController.getUserProfile(userName);
+        return null; //profileController.getUserProfile(userName);
     }
 
     /**
@@ -171,6 +172,6 @@ public class SearchPage {
                    .append(" --> To go back ");
 
         return requestMenu.toString();
-    }
+    } 
 
 }

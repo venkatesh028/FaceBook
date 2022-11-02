@@ -20,7 +20,8 @@ public class PostView {
     private Scanner scanner;
     private ProfileController profileController;
     private CustomLogger logger;
-
+     
+    
     public PostView() {
         this.postController = new PostController();
         this.profileController = new ProfileController();
@@ -33,16 +34,16 @@ public class PostView {
      * 
      * @param userName - userName of the person who is uploading the post
      */ 
-    private void addPost(String profileId) {
-        String quotes;
-        String userName;
+    private void addPost(String userId) {
+       /* String quotes;
+        //String userName;
         System.out.print("Enter your quotes : ");
         quotes = scanner.nextLine();
-        userName = profileController.getUserName(profileId);
+        //userName = profileController.getUserName(userId);
 
-        if (postController.addPost(userName, quotes)) {
+        if (postController.addPost(userId, quotes)) {
             logger.info("Post added Successfully");
-        }        
+        }    */    
     }
     
     /** 
@@ -50,30 +51,30 @@ public class PostView {
      * 
      * @param likedUserName userName of the person who liked the post
      */
-    private void addLike(String profileId) {
-        String likedUserName = profileController.getUserName(profileId);
+    private void addLike(String userId) {
+        /*String likedUserName = profileController.getUserName(userId);
         System.out.println("Enter the post Id : ");
         String postId = scanner.nextLine();        
-        postController.addLike(likedUserName, postId);                   
+        postController.addLike(likedUserId, postId); */                  
     }
 
     /**
      * gets the userName who liked the post
      */
     private void showLikedUsers() {
-        String postId;
+      /*  String postId;
         System.out.println("Enter the PostId : ");
         postId = scanner.nextLine();
-        System.out.println(postController.getLikedUsers(postId));
+        System.out.println(postController.getLikedUsers(postId)); */
     }
     
     /**
      * Add comment to the post be getting the details about that post
      * 
-     * @param userID - id of the user who comment
+     * @param userId - id of the user who comment
      */
-    private void addComment(String profileId) {
-        String postId;
+    private void addComment(String userId) {
+       /* String postId;
         String comment;
         String commentedBy;
 
@@ -81,11 +82,11 @@ public class PostView {
         postId = scanner.nextLine();   
         System.out.print("Enter your comment : ");
         comment = scanner.nextLine();
-        commentedBy = profileController.getUserName(profileId);
+        //commentedBy = profileController.getUserName(userId);
 
-        if (postController.addComment(postId, commentedBy, comment)) {
+        if (postController.addComment(postId, commentedUserId, comment)) {
             logger.info("Comment added successfully ");
-        }      
+        }   */   
     }
     
     /**
@@ -93,15 +94,15 @@ public class PostView {
      * 
      * @param userId - userId for the post
      */
-    private void showComments(String profileId) {
-        String postId;
+    private void showComments(String userId) {
+     /*   String postId;
         List<String> comments;
         boolean isGoBack = false;
         
         System.out.print("Enter the Post Id : ");
         postId = scanner.nextLine();
         comments = postController.getComments(postId);
-        System.out.println(comments);
+        System.out.println(comments); */
 
     } 
     
@@ -111,8 +112,8 @@ public class PostView {
      *
      * @param userId userId of the user who is in this page
      */
-    public void displayPost(String profileId) {      
-        String userName = profileController.getUserName(profileId);
+    public void displayPost(String userId) {      
+       /* String userName = profileController.getUserName(userId);
         StringBuilder statement = new StringBuilder();
         int action;
         boolean postFeedRunning = true;
@@ -136,15 +137,15 @@ public class PostView {
             } 
             
             System.out.println(statement);
-            action = getInput();
+            action = getOption();
 
             switch (action) {
             case Constants.ADDPOST:
-                addPost(profileId);
+                addPost(userId);
                 break;
 
             case Constants.LIKE:
-                addLike(profileId);
+                addLike(userId);
                 break;
  
             case Constants.LIKEDUSERS:
@@ -152,11 +153,11 @@ public class PostView {
                 break;
       
             case Constants.COMMENT:
-                addComment(profileId);
+                addComment(userId);
                 break;
 
             case Constants.VIEW_COMMENTS:
-                showComments(profileId);
+                showComments(userId);
                 break;
 
             case Constants.EXIT_POSTPAGE:
@@ -166,24 +167,24 @@ public class PostView {
             default:
                 logger.warn("You entered wrong option");
             }    
-        }
+        } */
     }
 
     /**
-     * Get the input from the user
+     * Get the option from the user
      *
-     * @return input input given by the user
+     * @return option option given by the user
      */
-    private int getInput() {
+    private int getOption() {
         Scanner scanner = new Scanner(System.in);
-        int input = 0;
+        int option = 0;
 
         try {
-            input = scanner.nextInt();    
+            option = scanner.nextInt();    
         } catch(InputMismatchException e) {
             logger.error("Enter Only Number not String\n");
-            return input;
+            return option;
         }
-        return input;
-    }
+        return option;
+    } 
 }

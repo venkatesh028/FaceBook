@@ -24,7 +24,7 @@ public class NotificationController {
      * @param requestedUser the user who gave the request
      */ 
     public boolean addNotification(String userName, Notification notification) {         
-        return notificationService.addNotification(userName, notification);    
+        return false; //notificationService.addNotification(userName, notification);    
     } 
     
     /**
@@ -34,7 +34,7 @@ public class NotificationController {
      * @return requests all the requests based on the user
      */
     public Set<Notification> getNotifications(String userName) {
-        return notificationService.getNotifications(userName);
+        return null; // notificationService.getNotifications(userName);
     }
     
     /**
@@ -44,6 +44,6 @@ public class NotificationController {
      * @return boolean  true or false based on the result
      */
     public boolean clearNotification(String userName, String requestedUserName) {
-        return notificationService.clearNotification(userName, requestedUserName);
+        return false; //notificationService.clearNotification(userName, requestedUserName);
     }
 }

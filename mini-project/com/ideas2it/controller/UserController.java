@@ -11,7 +11,7 @@ import com.ideas2it.model.Profile;
 /**
  * It contains validation method for validating the user details
  *
- * @version 1.0 08-SEP-2022
+ * @version 1.2 31-OCT-2022
  * @author Venkatesh TM
  */
 public class UserController {
@@ -24,49 +24,89 @@ public class UserController {
     } 
 
     /**
-     * Check is that email is exist 
-     *
-     * @param  email   email of the user
-     * @return boolean true if the account is exist else false 
-     */
-    public boolean isEmailExist(String email) {
-        return userService.isEmailExist(email);       
-    }
-
-    /**
      * Create new account for the user
      *
      * @param  key      email of the user as a key
      * @param  user     details of the user
      * @return boolean  true if account is created successfully else false
      */
-    public User create(User user, Profile profile){
+    public boolean create(User user, Profile profile){
         return userService.create(user, profile);
     }
-   
-    
-    /**
-     * Check is the credentials are valid
-     *
-     * @param  email    email of the user
-     * @param  password password of the user
-     * @return boolean  true if the credentials are valid else false
-     */
-    public boolean isValidCredentials(String email, String password) {
-        return userService.isValidCredentials(email, password);
-    }
-
 
     /**
      * Delete the user account 
      *
-     * @param  email   email of the user to find the account
+     * @param  userId   id of the user to find the account
      * @return booelan true if the account is deleted Successfully else false
      */      
-    public boolean delete(String email) {
-        return userService.delete(email);
+    public boolean delete(String userId) {
+        return userService.delete(userId);
     }
     
+    /**
+     * Updates the user Details 
+     * 
+     * @param user - Updated details of the user
+     * @return boolean true or false based on the updation
+     */
+    public boolean update(User user) {
+        return userService.update(user);
+    }
+
+    /**
+     * Update the Email of the user
+     * 
+     * @param userId   id of the user
+     * @parma newEmail updated email of the user
+     * @retun boolean  true or false based on the response
+     */
+    public boolean updateEmail(String userId, String newEmail) {
+        return userService.updateEmail(userId, newEmail);
+    }
+
+    /**
+     * Updates the password of the user
+     *
+     * @param userId - id of the user
+     * @param newPassword - new password 
+     * @return boolean  true or false based on the response
+     */
+    public boolean updatePassword(String userId, String newPassword) {
+        return userService.updatePassword(userId, newPassword);
+    }
+
+    /**
+     * Updates the Dateofbirth and age of the user
+     *
+     * @param userId - id of the user
+     * @param dateOfBirth - dateOfBirth entered by the user
+     */
+    public boolean updateDateOfBirthAndAge(String userId, LocalDate dateOfBirth, int age) {
+        return userService.updateDateOfBirthAndAge(userId, dateOfBirth, age);
+    }
+    
+    /**
+     * Updates the phone number of the user
+     * 
+     * @param  userId - id of the user
+     * @param  phoneNumber - phone number of the user
+     * @return boolean true or false based on the response
+     */
+    public boolean updatePhoneNumber(String userId, long phoneNumber) {
+        return userService.updatePhoneNumber(userId, phoneNumber);
+    }
+
+    /** 
+     * Get the user Based on th id
+     *
+     * @param  userId userid of the user
+     * @return user   user 
+     */     
+    public User getUser(String userId) {
+        return userService.getById(userId);  
+    }
+
     /** 
      * Gets the userId of the user
      *
@@ -77,47 +117,26 @@ public class UserController {
         return userService.getUserId(email);
     }
 
-    /** 
-     * Get the user Based on th id
-     *
-     * @param  userId userid of the user
-     * @return user   user 
-     */     
-    public User getById(String userId) {
-        return userService.getById(userId);  
-    }
-
     /**
-     * Shows the personal info of the user
+     * Check is that email is exist 
      *
-     * @param  userId userId of the user
-     * @return user   user details 
-     */   
-    public User showPersonalInfo(String userId) {
-        return userService.showPersonalInfo(userId);
-    }
+     * @param  email   email of the user
+     * @return boolean true if the account is exist else false 
+     */
+    public boolean isEmailExist(String email) {
+        return userService.isEmailExist(email);       
+    }   
     
     /**
-     * Update the personal information of the user
-     * 
-     * @param  userId   user id of the user 
-     * @param  user     user 
-     * @return userName username of the user 
+     * Check is the credentials are valid
+     *
+     * @param  email    email of the user
+     * @param  password password of the user
+     * @return boolean  true if the credentials are valid else false
      */
-    public User update(String userId, User user) {
-        return userService.update(userId, user);
-    }
-
-    /** 
-     * Update the loginCredentials of the user 
-     * 
-     * @param  oldEmail old email of the user 
-     * @param  newEmail new email of the user
-     * @return boolean  true after the update
-     */
-    public String updateLoginCredentials(String oldEmail, String newEmail) {
-        return userService.updateLoginCredentials(oldEmail, newEmail);
-    }
+    public boolean isValidCredentials(String email, String password) {
+        return userService.isValidCredentials(email, password);
+    }  
     
     /** 
      * Checks the given dateOfBith matches to the given format 
@@ -163,17 +182,7 @@ public class UserController {
      */
     public int calculateAge(LocalDate dateOfBirth) {
         return userService.calculateAge(dateOfBirth);
-    }   
-    
-    /**
-     * Get the userId based on the username
-     * 
-     * @param  userName username of the user
-     * @return userId   id of the user based on the userName
-     */
-    public String getUserIdByUserName(String userName) {
-        return userService.getUserIdByUserName(userName);
-    }
+    }     
 
     /**
      * Check the given name matches the given format
@@ -194,7 +203,6 @@ public class UserController {
     public boolean isValidEmail(String email) {
         return validationUtil.isValidEmail(email);
     }
-
 
     /**
      * Check is this a valid password

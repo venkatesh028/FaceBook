@@ -27,7 +27,8 @@ public class NotificationService {
      * @param requestedUser the user who gave the request
      */     
     public boolean addNotification(String userName, Notification notification) {
-        return notificationDao.addNotification(userName, notification);
+      // notificationDao.addNotification(userName, notification);
+      return false;
     }
     
     /**
@@ -35,9 +36,10 @@ public class NotificationService {
      * 
      * @param  userName userName of the user
      * @return requests all the requests based on the user
-     */
+     * /
     public Set<Notification> getNotifications(String userName) {
-        return notificationDao.getNotifications(userName);
+       //notificationDao.getNotifications(userName);
+       return false;
     }
     
     /**
@@ -47,14 +49,14 @@ public class NotificationService {
      * @param requestedUserName - name of the person who gave the request
      */
     public boolean clearNotification(String userName, String requestedUserName) {
-        Set<Notification> notifications = getNotifications(userName);
+       /* Set<Notification> notifications = getNotifications(userName);
         
         for (Notification notification : notifications) {
             if (notification.getUserName().equals(requestedUserName)) {
                 notifications.remove(notification);
                 break;
             }   
-        }
+        } */
         return true;        
     }
 }

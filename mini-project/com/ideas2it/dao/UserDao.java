@@ -1,6 +1,7 @@
 package com.ideas2it.dao;
 
-import java.util.Map;
+import java.util.List;
+import java.time.LocalDate;
 
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
@@ -14,75 +15,86 @@ import com.ideas2it.model.Profile;
 public interface UserDao {
 
     /**
-     * Create account for the user and add with id as key in users
+     * Creates account for the user and add with id as key in users
      *  
      * @param  user     details of the user
      * @return boolean  true after adding the user in map
      */
-    public User create(User user);
+    public int create(User user);
 
     /** 
-     * Delete the account
+     * Deletes the account
      * 
-     * @param  userId  userId of the user
-     * @return boolean true after deleting the account
+     * @param  id   id of the user
+     * @return noOfRowDeleted - number of rows deleted 
      */
-    public boolean delete(String userId);
-
-    /** 
-     * Get the all the users
-     * 
-     * @return users all the users
-     */
-    public Map<String, User> getUsers();
+    public int delete(String id);
+    
+    public int update(User user);
 
     /**
-     * Get the particular user based on the userId
+     * Updates the eamil of the user
      * 
-     * @param  userId userId of the user
-     * @return user   particular userdetails 
-     */ 
-    public User getById(String userId);
+     * @param  id - id of the user
+     * @param  newEmail - email of the user
+     * @return noOfRowsUpdated - number of rows updated 
+     */
+    public int updateEmail(String id, String newEmail);
     
     /**
-     * Update the information of the user
+     * Updates the password of the user
+     * 
+     * @param id - id of the user
+     * @param password - password of the user
+     * @return noOfRowsUpdated - number of rows updated
+     */
+    public int updatePassword(String id, String password);
+    
+    /**
+     * Updates the dateofbirth and age of the user
+     * 
+     * @param id - id of the user
+     * @param dateOfBirth - dateofbirth of the user
+     * @param age   - age of the user
+     * @return noOfRowsUpdated - number of rows updated
+     */
+    public int updateDateOfBirthAndAge(String id, LocalDate dateOfBirth, int age);
+    
+    /**
+     * Updates the phone number of the user
+     * 
+     * @param  id - id of the user
+     * @param  phoneNumber - phone number of the user
+     * @return noOfRowsUpdated - number of rows updated
+     */
+    public int updatePhoneNumber(String id, long phoneNumber);
+    
+    /**
+     * Gets the user based on the id
+     * 
+     * @param id - id of the user 
+     * @return user - user details
+     */
+    public User getUser(String id);
+    
+    /**
+     * Gets the existing emails 
      *
-     * @paran  userId  userid of the user
-     * @param  user    updated information of the user
-     * @return boolean true after updating the user
+     * @return existingEmail - list of existing emails
      */
-    public User update(String userId, User user);
-
+    public List<String> getExistingEmails();
+    
     /**
-     * Get the profile of the particular user
-     * 
-     * @param  userId  userId of the user
-     * @return profile profile of the particular user
-     */    
-    public Profile getProfile(String userId);
+     * Gets the password for the eamil
+     *
+     * @return password - password for the email 
+     */
+    public String getPassword(String email);
     
     /** 
-     * Get the loginCredentials of the user
-     *
-     * @return loginCredentials logincredentials of the user
-     */
-    public Map<String, String> getLoginCredentials();
-
-    /**
-     * Update the loginCredentials of the user
+     * Gets the id of the user based on the email 
      * 
-     * @param oldEmail old email in loginCredentials
-     * @parma newEmail updated email of the user
-     * @retun boolean  true after the update
+     * @return id - id of the user based on the email
      */
-    public String updateLoginCredentials(String oldEmail, String newEmail);
-    
-    /**
-     * Get the username by the userId
-     * 
-     * @param  userId   user id of the user
-     * @return username username of the user
-     */  
-    public String getUserName(String userId);
-    
+    public String getId(String email); 
 }

@@ -25,7 +25,8 @@ public class NotificationView {
     private NotificationController notificationController;
     private UserController userController;
     private CustomLogger logger;
-
+    
+    
     public NotificationView () {
         this.profileController = new ProfileController();
         this.notificationController = new NotificationController();
@@ -38,11 +39,11 @@ public class NotificationView {
      * 
      * @param userId   id of the user
      */ 
-    public void showRequests(String profileId) {
-        int selectedOption;
+    public void showRequests(String userId) {
+       /* int selectedOption;
         String userName;
         String requestedProfileId = "";        
-        userName = profileController.getUserName(profileId);
+        userName = profileController.getUserName(userId);
         Set<Notification> notifications = notificationController.getNotifications(userName); 
 
         StringBuilder notificationMessage = new StringBuilder();
@@ -61,9 +62,9 @@ public class NotificationView {
 
                 switch (selectedOption) {
                 case Constants.ACCEPT:
-                    requestedProfileId = profileController.getProfileIdByUserName(notification.getUserName());
-                    profileController.addFriend(profileId, notification.getUserName());
-                    profileController.addFriend(requestedProfileId, userName);
+                    requesteduserId = profileController.getuserIdByUserName(notification.getUserName());
+                    profileController.addFriend(userId, notification.getUserName());
+                    profileController.addFriend(requesteduserId, userName);
                     notificationController.clearNotification(userName, notification.getUserName());
                     break;
 
@@ -77,7 +78,7 @@ public class NotificationView {
             }
         } else {
             logger.info("There is no notofication\n");
-        }    
+        }  */
     }
 
     /**

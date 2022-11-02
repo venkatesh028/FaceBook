@@ -1,7 +1,7 @@
 package com.ideas2it.view;
 
-import java.util.Scanner;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 import com.ideas2it.constant.Constants;
 import com.ideas2it.logger.CustomLogger;
@@ -9,7 +9,7 @@ import com.ideas2it.logger.CustomLogger;
  * Shows the feed page to user based on the user action
  * It takes to the further pages 
  *
- * @version 1.0 22-SEP-2022
+ * @version 1.2 31-OCT-2022
  * @author Venkatesh TM
  */
 public class FeedView {
@@ -40,7 +40,7 @@ public class FeedView {
      *
      * @param profileId 
      */
-    public void showNewsFeed(String profileId) {        
+    public void showNewsFeed(String userId) {        
         int action;
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
@@ -48,27 +48,27 @@ public class FeedView {
 
         while (isRunning) {
             System.out.println(feedMenu);
-            action = getInput();
+            action = getOption();
             
             switch (action) {
             case Constants.SHOW_POST:
-                postView.displayPost(profileId);
+               // postView.displayPost(userId);
                 break;
             
             case Constants.SHOW_PROFILE:
-                profileView.displayProfilePage(profileId);
+                profileView.displayProfilePage(userId);
                 break;
 
             case Constants.SHOW_NOTIFICATION:
-                notificationView.showRequests(profileId);
+               // notificationView.showRequests(userId);
                 break;
 
             case Constants.SHOW_SEARCH:
-                searchPage.showSearchPage(profileId);
+                //searchPage.showSearchPage(userId);
                 break;
 
             case Constants.SHOW_SETTING:
-                settingView.displaySettingPage(profileId);
+                settingView.displaySettingPage(userId);
                 break;
 
             case Constants.LOGUT:
@@ -79,21 +79,21 @@ public class FeedView {
     }
     
     /**
-     * Get input from the user 
+     * Gets option from the user 
      * 
-     * @return input 
+     * @return option 
      */
-    private int getInput() {
+    private int getOption() {
         Scanner scanner = new Scanner(System.in);
-        int input = 0;
+        int option = 0;
 
         try {
-            input = scanner.nextInt();    
+            option = scanner.nextInt();    
         } catch(InputMismatchException e) {
             logger.error("Enter Only Number not String\n");
-            return input;
+            return option;
         }
-        return input;
+        return option;
     }
     
     private String generateFeedMenu() {

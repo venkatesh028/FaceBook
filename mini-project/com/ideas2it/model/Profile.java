@@ -21,9 +21,7 @@ public class Profile {
     private String userName;
     private String bio;
     private int friendsCount;
-    private List<Post> post; 
-    private Set<String> friends = new HashSet<>();
-    private boolean isPrivate= false;
+  
 
     public Profile() {}
 
@@ -32,7 +30,7 @@ public class Profile {
         this.friendsCount = 0;
     }
     
-    public void setProfileId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
     
@@ -48,23 +46,15 @@ public class Profile {
         this.bio = bio;
     }
     
-    public void setFriendsCount() {
-        this.friendsCount++;
+    public void setFriendsCount(int friendsCount) {
+        this.friendsCount = friendsCount;
     }
     
-    public void setPost(List<Post> post) {
-        this.post = post;
-    }
-    
-    public void setFriend(String friendName) {
-        this.friends.add(friendName);
-    }
-    
-    public void setPrivate(boolean isPrivate) {
+   /* public void setPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
-    }
+    }*/
     
-    public String getProfileId() {
+    public String getId() {
         return id;
     }
 
@@ -80,13 +70,9 @@ public class Profile {
         return friendsCount;
     }
     
-    public Set<String> getFriends() {
-        return friends;
-    }
-    
-    public boolean getIsPrivate() {
+    /*public boolean getIsPrivate() {
         return isPrivate;
-    }
+    }*/
     
     public String getUserId() {
         return userId;
@@ -96,8 +82,7 @@ public class Profile {
         StringBuilder profileMessage = new StringBuilder();
         profileMessage.append("\nUserName : ").append(userName)
                       .append("\nBio      : ").append(bio)
-                      .append("\nFriends  : ").append(friendsCount)
-                      .append("\nFriendsList : ").append(friends);
+                      .append("\nFriends  : ").append(friendsCount);
         return profileMessage.toString();
     }
 }  

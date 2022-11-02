@@ -1,6 +1,30 @@
-2022-10-17 10:15:46,086 ERROR com.ideas2it.view.SearchPage [main] Enter Only Number not String
+2022-11-02 15:17:11,334 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Error in connection
+2022-11-02 15:28:11,482 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Error in connection
+2022-11-02 15:32:06,945 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Error in connection
+2022-11-02 15:32:38,059 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 15:32:38,113 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 15:40:54,325 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Error in connection
+2022-11-02 15:45:12,780 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Error in connection
+2022-11-02 15:49:29,995 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Error in connection
+2022-11-02 16:03:01,875 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Error in connection
+2022-11-02 16:03:39,476 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 16:03:39,537 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 16:05:57,163 ERROR com.ideas2it.view.UserView [main] Enter Only Number not String
 
-2022-10-17 11:11:10,233 ERROR com.ideas2it.view.SearchPage [main] Enter Only Number not String
+2022-11-02 16:06:02,774 ERROR com.ideas2it.view.UserView [main] Enter Only Number not String
 
-2022-10-17 11:50:23,857 ERROR com.ideas2it.view.SearchPage [main] Enter Only Number not String
-
+2022-11-02 16:06:42,067 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 16:06:42,120 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 16:09:46,328 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 16:09:46,376 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 16:22:06,809 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 16:22:06,872 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 16:27:58,907 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 16:27:58,974 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 16:36:51,814 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 16:36:51,845 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 16:51:04,658 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] User Account is not Created 
+2022-11-02 16:51:04,705 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Profile not created
+2022-11-02 18:32:04,645 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Something went wrong 
+2022-11-02 18:38:55,830 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] No value specified for parameter 1
+2022-11-02 22:50:25,745 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] Value '9003916668' is outside of valid range for type java.lang.Integer
