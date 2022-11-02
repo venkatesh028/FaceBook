@@ -2,7 +2,6 @@ package com.ideas2it.dao;
 
 import java.util.List;
 import com.ideas2it.model.Post;
-import com.ideas2it.model.Like;
 
 /**
  * Perform add, update and get function for the post
@@ -29,8 +28,23 @@ public interface PostDao {
      */
     public int update(String id, String content);  
     
+
+    /**
+     * Updates the like count
+     * 
+     * @param id - id of the post
+     * @param likeCount - count of the post
+     * @return noOfRowsUpdated - number of the rows based on the updation
+     */
     public int updateLikeCount(String id, int likeCount);
     
+    /**
+     * Updates the comment count
+     * 
+     * @param id - id of the post
+     * @param commentCount - count of the comments
+     * @return noOfRowsUpdated - number of the rows based on the updation
+     */
     public int updateCommentCount(String id, int commentCount);
 
     /** 

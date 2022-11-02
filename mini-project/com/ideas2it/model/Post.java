@@ -25,12 +25,21 @@ public class Post {
     private int likeCount;
     private int commentCount;
     
+    
     public Post() {}
 
     public Post(String id, String postedUserId, String content) {
         this.id = id;
         this.postedUserId = postedUserId;
         this.content = content;  
+    }
+
+    public Post(String id, String postedUserName, String content, int likeCount, int commentCount) {
+        this.id = id;
+        this.postedUserName = postedUserName;
+        this.content = content;
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;        
     }
     
     public void setPostId(String id) {
@@ -73,14 +82,15 @@ public class Post {
         return postedUserName;
     }
     
-    /*public String toString() {
+    public String toString() {
         StringBuilder post = new StringBuilder();
-        post.append("\npostedUserName : ").append(postedUserName)
+        post.append("\nPostId : ").append(id)
+            .append("\npostedUserName : ").append(postedUserName)
             .append("\ncontents   : ").append(content)
             .append("\nLikes    : ").append(likeCount)
-            .append("\tComments : ").append(CommentCount);
+            .append("\tComments : ").append(commentCount);
 
         return post.toString();
-    }*/
+    }
     
 }

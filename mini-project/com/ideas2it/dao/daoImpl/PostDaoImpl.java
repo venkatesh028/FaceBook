@@ -63,7 +63,7 @@ public class PostDaoImpl implements PostDao {
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE post SET content = ? WHERE id = ?;";
+            query = "UPDATE post SET content = ?, updated_date_time = now() WHERE id = ?;";
             statement = connection.prepareStatement(query); 
             statement.setString(1,content);
             statement.setString(2,id);
@@ -78,13 +78,17 @@ public class PostDaoImpl implements PostDao {
         }
         return noOfRowsUpdated;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override 
     public int updateLikeCount(String id, int likeCount) {
         int noOfRowsUpdated = 0;
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE post SET like_count = ? WHERE id = ?;";
+            query = "UPDATE post SET like_count = ?, updated_date_time = now() WHERE id = ?;";
             statement = connection.prepareStatement(query);
             statement.setInt(1, likeCount);
             statement.setString(2, id);
@@ -99,13 +103,17 @@ public class PostDaoImpl implements PostDao {
         }
         return noOfRowsUpdated;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override 
     public int updateCommentCount(String id, int commentCount) {
         int noOfRowsUpdated = 0;
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE post SET comment_count = ? WHERE id = ?;";
+            query = "UPDATE post SET comment_count = ?, updated_date_time = now() WHERE id = ?;";
             statement = connection.prepareStatement(query);
             statement.setInt(1, commentCount);
             statement.setString(2, id);
@@ -131,12 +139,16 @@ public class PostDaoImpl implements PostDao {
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT * FROM post;";
+            query = "SELECT post.id, profile.username, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id;";
             statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
             posts = new ArrayList<>();
 
             while (resultSet.next()){
+                Post post = new Post(resultSet.getString("id"),resultSet.getString("postedUserName")
+                                        ,resultSet.getString("content"),resultSet.getInt("likeCount")
+                                        ,resultSet.getInt("commentCount"));
+                posts.add(post);     
             }  
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
@@ -159,14 +171,17 @@ public class PostDaoImpl implements PostDao {
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT * FROM post WHERE user_id = ?;";
+            query = "SELECT post.id, profile.username, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id WHERE user_id = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1,userId);
             resultSet = statement.executeQuery();            
             postOfParticularUser = new ArrayList<>();
 
             while (resultSet.next()){
-               
+                Post post = new Post(resultSet.getString("id"),resultSet.getString("postedUserName")
+                                   ,resultSet.getString("content"),resultSet.getInt("likeCount")
+                                   ,resultSet.getInt("commentCount"));
+                postOfParticularUser.add(post);               
             }  
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());

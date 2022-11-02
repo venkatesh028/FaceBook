@@ -26,7 +26,8 @@ public class Constants {
     
     public final static int UPDATE_PROFILE = 1;
     public final static int DELETE_POST =2;
-    public final static int EXIT_PROFILEPAGE = 3;
+    public static final int UPDATE_POST = 3; 
+    public final static int EXIT_PROFILEPAGE = 4;
 
     public final static int UPDATE_USERNAME = 1;
     public final static int UPDATE_BIO = 2;
@@ -63,5 +64,6 @@ public class Constants {
     
     public final static int ACCEPT = 1;
     public final static int REJECT = 2;
-    public final static int SKIP = 3;     
+    public final static int SKIP = 3;
+     
 }

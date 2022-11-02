@@ -65,7 +65,7 @@ public class PostController {
      * @param  postId - id of the post
      * @return bolean - true or false based 
      */
-    public boolean deletePost(String postId) {
+    public boolean delete(String postId) {
         return postService.delete(postId);
     }       
 }
