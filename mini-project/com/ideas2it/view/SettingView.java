@@ -150,29 +150,21 @@ public class SettingView {
      * @param userId - userId id of the user
      */
     private void updatePassword(String userId) {
-      /*  User user = userController.getById(userId);
+        User user = userController.getUser(userId);
         String oldPassword;
         String newPassword;
         boolean isPasswordValid = false;
-        System.out.println("Enter your old Password : ");
+        System.out.print("Enter your old Password : ");
         oldPassword = scanner.nextLine();
         
-        if (userController.isPasswordMatches(userId, oldPassword)) {
-            while (!isPasswordValid) {
-                System.out.println("Enter the new password : ");
-                newPassword = scanner.nextLine();     
-            
-                if (userController.isValidPassword(newPassword)) {
-                    user.setPassword(newPassword);
-                    isPasswordValid = true;
-                } else { 
-                    logger.info("Invalid your password must contain (a-ZA-Z0-9) and Any Special Character within 8-20\n");  
-                }            
-            }
+        if (userController.isPasswordMatches(user.getEmail(),oldPassword)) {
+            System.out.print("Enter New Password : ");
+            newPassword = getPassword();
+            user.setPassword(newPassword);            
         } else {
-            logger.info("Try to enter the correct Password\n");
+            System.out.println("Invalid password");
         }
-        userController.update(userId, user);    */  
+        userController.update(user);    
     }
     
     /**
@@ -223,7 +215,7 @@ public class SettingView {
                 break;  
 
             case Constants.UPDATE_PASSWORD:
-               // updatePassword(userId);
+                updatePassword(userId);
                 break;
 
             case Constants.VISIBILITY:
@@ -306,4 +298,30 @@ public class SettingView {
                    .append(" -->To View Exit");
         return settingMenu.toString();
     } 
+ 
+    /**
+     * Gets the password of the user
+     * And validate it
+     * 
+     * @return password  password of the user if it is valid
+     */
+    private String getPassword() { 
+        boolean isValid = false;
+        String password = "";
+        StringBuilder formatMessage = new StringBuilder();
+        formatMessage.append("Invalid Password.")
+                     .append("\npassword must contain (a-ZA-Z0-9)")
+                     .append(" and Any Special Character range must be 8-20)");
+         
+        while (!isValid) {
+            password = scanner.nextLine();
+            
+            if (userController.isValidPassword(password)) {
+                isValid = true;
+            } else {
+                System.out.println(formatMessage);    
+            }            
+        }  
+        return password;        
+    }
 }

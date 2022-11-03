@@ -9,8 +9,8 @@ public class Comment {
     
     public Comment() {}
  
-    public Comment(String id, String commentedUserId, String content) {
-        this.id = id;
+    public Comment(String postId, String commentedUserId, String content) {
+        this.postId = postId;
         this.commentedUserId = commentedUserId;
         this.content = content;
     }
@@ -53,5 +53,15 @@ public class Comment {
 
     public String getContent() {
         return content;
-    }    
+    }  
+    
+    public String toString() {
+        StringBuilder comment = new StringBuilder();
+        
+        comment.append("\nComment ID : ").append(id)
+               .append("\n").append(commentedUserName)
+               .append(" : ").append(content);
+
+        return comment.toString();
+    }  
 }

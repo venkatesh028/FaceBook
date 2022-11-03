@@ -27,7 +27,7 @@ public interface LikeDao {
      * @param unLikedUserId - id of the user who unLikedUserId
      * @return noOfRowsDeleted - number of rows deleted based on the creation
      */
-    public int delete(String postId, String unLikedUserId);
+    public int delete(String postId, String userId);
     
     /**
      * Gets the like count for the particular post

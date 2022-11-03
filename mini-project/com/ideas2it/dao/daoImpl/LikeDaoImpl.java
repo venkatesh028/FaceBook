@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.Like;
+import com.ideas2it.dao.LikeDao;
+
 
 /**
  * Performs a Create, Delete and read Operations for Like
@@ -23,8 +25,8 @@ public class LikeDaoImpl implements LikeDao {
     String query;
     CustomLogger logger;
 
-    public LikeDao() {
-        logger = new CustomLogger(LikeDao.class);
+    public LikeDaoImpl() {
+        logger = new CustomLogger(LikeDaoImpl.class);
     }
     
     /**
@@ -38,6 +40,9 @@ public class LikeDaoImpl implements LikeDao {
             connection = DatabaseConnection.getConnection();
             query = "INSERT INTO post_like (id, post_id, liked_user_id, created_date_time) VALUES(?,?,?,now());";
             statement = connection.prepareStatement(query);
+            statement.setString(1,like.getId());
+            statement.setString(2,like.getPostId());
+            statement.setString(3,like.getLikedUserId());
             noOfRowsAffected = statement.executeUpdate();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
@@ -59,7 +64,7 @@ public class LikeDaoImpl implements LikeDao {
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "DELETE FROM like WHERE post_id = ? AND liked_user_id = ?;";
+            query = "DELETE FROM post_like WHERE post_id = ? AND liked_user_id = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1,postId);
             statement.setString(2,userId);
@@ -118,7 +123,7 @@ public class LikeDaoImpl implements LikeDao {
             statement = connection.prepareStatement(query);
             statement.setString(1,postId);
             resultSet = statement.executeQuery();
-            likedUserId = new ArrayList<>(); 
+            likedUsersId = new ArrayList<>(); 
             
             while (resultSet.next()) {
                 likedUsersId.add(resultSet.getString("liked_user_id"));
@@ -131,7 +136,7 @@ public class LikeDaoImpl implements LikeDao {
                 connection.close();
             } catch (SQLException sqlException) {}
         } 
-        return likedUsersId.isEmpty()? null : likedUsersId;         
+        return likedUsersId;         
     }
 
     /**
@@ -144,14 +149,14 @@ public class LikeDaoImpl implements LikeDao {
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT username FROM profile JOIN post_like ON post_like.liked_user_id = profile.user_id  WHERE post_id = ?;";
+            query = "SELECT username FROM profile JOIN post_like ON post_like.liked_user_id = profile.user_id  WHERE post_like.post_id = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1,postId);
             resultSet = statement.executeQuery();
             likedUserNames = new ArrayList<>(); 
             
             while (resultSet.next()) {
-                likedUserNames.add(resultSet.getString("liked_user_id"));
+                likedUserNames.add(resultSet.getString("username"));
             }         
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
@@ -161,6 +166,6 @@ public class LikeDaoImpl implements LikeDao {
                 connection.close();
             } catch (SQLException sqlException) {}
         } 
-        return likedUserNames.isEmpty()? null : likedUserNames;         
+        return likedUserNames;         
     }  
 }

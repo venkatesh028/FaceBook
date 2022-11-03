@@ -52,7 +52,7 @@ public class FeedView {
             
             switch (action) {
             case Constants.SHOW_POST:
-               // postView.displayPost(userId);
+                postView.displayPost(userId);
                 break;
             
             case Constants.SHOW_PROFILE:

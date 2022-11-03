@@ -1,5 +1,7 @@
 package com.ideas2it.controller;
 
+import java.util.List;
+
 import com.ideas2it.model.Comment;
 import com.ideas2it.service.CommentService;
 
@@ -10,7 +12,7 @@ public class CommentController {
         commentService = new CommentService();
     }
     
-    public boolean create(Comment comment) { 
+    public boolean addComment(Comment comment) { 
         return commentService.create(comment);
     }
     
@@ -18,8 +20,12 @@ public class CommentController {
         return commentService.update(id, content);
     }
    
-    public boolean delete(String id) {   
-        return commentService.delete(id);
+    public boolean deleteComment(Comment comment) {   
+        return commentService.delete(comment);
+    }
+    
+    public Comment getComment(String id) {
+        return commentService.getComment(id);
     }
     
     public List<Comment> getComments(String postId) {

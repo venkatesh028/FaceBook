@@ -1,14 +1,13 @@
 package com.ideas2it.view;
 
-import java.util.Scanner;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 import com.ideas2it.constant.Constants;
+import com.ideas2it.controller.PostController;
+import com.ideas2it.controller.ProfileController;
 import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.model.Profile;
-import com.ideas2it.controller.ProfileController;
-import com.ideas2it.controller.PostController;
-import com.ideas2it.controller.UserController;
 
 /**
  * Shows the profile page to the user based on the user action
@@ -20,14 +19,12 @@ import com.ideas2it.controller.UserController;
 public class ProfileView {
     private ProfileController profileController;
     private PostController postController;
-    private UserController userController;
     private Scanner scanner;  
     private CustomLogger logger;                                  
      
     public ProfileView() {
         this.profileController = new ProfileController();
         this.postController = new PostController();
-        this.userController = new UserController();
         this.scanner = new Scanner(System.in);
         this.logger = new CustomLogger(ProfileView.class);
     }
@@ -98,9 +95,8 @@ public class ProfileView {
      * 
      * @param userId userId of the user
      */    
-    private void showPostByUserName(String userId) {
-       // String userName = profileController.getUserName(userId);
-      //  System.out.println(postController.getPostByUserName(userName)); 
+    private void showMyPost(String userId) {         
+        System.out.println(postController.getPostOfParticularUser(userId)); 
     }
     
     /**
@@ -108,15 +104,15 @@ public class ProfileView {
      *
      */
     private void deletePost() {
-       /* String postId;
+        String postId;
         System.out.print("Enter the PostId : ");
         postId = scanner.nextLine();
 
-        if (postController.deletePost(postId)) {
+        if (postController.delete(postId)) {
             System.out.println("Post Deleted ..");
         } else {
             logger.info("Something went wrong..");
-        }*/
+        }
     }
 
     /**
@@ -131,7 +127,7 @@ public class ProfileView {
 
         while (profilePage) {   
             showProfile(userId); 
-            //showPostByUserName(userId);
+            showMyPost(userId);
             System.out.println(profileMenu);
             selectedOption = getOption();
 
@@ -140,12 +136,16 @@ public class ProfileView {
                 updateProfile(userId);
                 break;
 
+            case Constants.UPDATE_POST:
+                updatePost();
+                break;
+                
             case Constants.DELETE_POST:
-               // deletePost();
+                deletePost();
                 break;
             
             case Constants.EXIT_PROFILEPAGE:
-                profilePage = false;
+                profilePage = false;                
                 break;
 
             default:
@@ -154,6 +154,20 @@ public class ProfileView {
         }  
     }
     
+    private void updatePost() {
+        String postId;
+        String content;
+        System.out.println("Enter the Post ID : ");
+        postId = scanner.nextLine();
+        System.out.println("Enter the updates in content");
+        content = scanner.nextLine();        
+        if (postController.update(postId, content)) {
+            System.out.println("Post Updated");
+        } else {
+            System.out.println("Not updated");
+        }    
+    }
+
     /**
      * Get the input from the user
      *
@@ -182,7 +196,9 @@ public class ProfileView {
 
         profileMenu.append("\nEnter ").append(Constants.UPDATE_PROFILE)
                    .append(" --> To update Profile").append("\nEnter ")
-                   .append(Constants.DELETE_POST).append("--> To delete the post ")    
+                   .append(Constants.DELETE_POST).append("--> To delete the post ") 
+                   .append("\nEnter ").append(Constants.UPDATE_POST)
+                   .append(" --> To Update the post")
                    .append("\nEnter ").append(Constants.EXIT_PROFILEPAGE)
                    .append(" --> To Exit");
 

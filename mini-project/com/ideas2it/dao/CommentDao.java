@@ -36,6 +36,13 @@ public interface CommentDao {
      * @return noOfRowsDeleted - number of rows deleted based on the deletion
      */
     public int delete(String id);
+    
+    /**
+     * Gets the count of comments
+     * 
+     * @param postId - id of the post
+     */
+    public int getCommentsCount(String postId);
 
     /**
      * Gets the comments for the particular post
@@ -43,5 +50,13 @@ public interface CommentDao {
      * @param  postId - id of the post
      * @return comments - list of comments 
      */
-    public List<Comment> getComments(String postId);     
+    public List<Comment> getComments(String postId); 
+    
+    /**
+     * Gets the particular comment based on the id 
+     *
+     * @param id - id of the comment
+     * @return comment - details of the comment
+     */ 
+    public Comment getComment(String id);    
 }

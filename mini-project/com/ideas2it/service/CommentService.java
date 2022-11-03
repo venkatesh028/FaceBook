@@ -1,8 +1,10 @@
 package com.ideas2it.service;
 
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 
-import com.ideas2it.model.comment;
+import com.ideas2it.model.Comment;
 import com.ideas2it.dao.CommentDao;
 import com.ideas2it.dao.daoImpl.CommentDaoImpl;
 
@@ -14,9 +16,11 @@ import com.ideas2it.dao.daoImpl.CommentDaoImpl;
  */
 public class CommentService {
     CommentDao commentDao;
-    
+    PostService postService;
+
     public CommentService() {
         commentDao = new CommentDaoImpl();
+        postService = new PostService();
     }
     
     /**
@@ -32,6 +36,10 @@ public class CommentService {
         id = UUID.randomUUID().toString();
         comment.setId(id);
         isCreated = (commentDao.create(comment) > 0);
+
+        if (isCreated) {
+            postService.updateCommentCount(comment.getPostId(),commentDao.getCommentsCount(comment.getPostId()));
+        }
         return isCreated;
     }
     
@@ -44,7 +52,7 @@ public class CommentService {
      */
     public boolean update(String id, String content) {
         boolean isUpdated;
-        isUpdated = commentDao.update(id, content);
+        isUpdated = commentDao.update(id, content) > 0;
         return isUpdated;
     }
     
@@ -54,9 +62,11 @@ public class CommentService {
      * @param id - id of the comment
      * @return isDeleted - true or false based on the response
      */
-    public boolean delete(String id) {
+    public boolean delete(Comment comment) {
         boolean isDeleted;
-        isDeleted = commentDao.Delete(id);
+        isDeleted = commentDao.delete(comment.getId()) > 0;
+        postService.updateCommentCount(comment.getPostId(),commentDao.getCommentsCount(comment.getPostId()));
+        return isDeleted;
     }  
     
     /**
@@ -69,5 +79,15 @@ public class CommentService {
         List<Comment> listOfComments;
         listOfComments = commentDao.getComments(postId);
         return listOfComments;
+    }
+    
+    /**
+     * Gets the particular comment
+     * 
+     * @param id - id of the comment
+     * @return comment - comment details
+     */
+    public Comment getComment(String id) {
+        return commentDao.getComment(id);
     }
 }

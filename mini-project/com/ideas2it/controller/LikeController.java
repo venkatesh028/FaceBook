@@ -1,5 +1,7 @@
 package com.ideas2it.controller;
 
+import java.util.List;
+
 import com.ideas2it.model.Like;
 import com.ideas2it.service.LikeService;
 
@@ -16,7 +18,7 @@ public class LikeController {
     }
     
     public List<String> getLikedUserNames(String postId) {
-        return likeService.getLikedUserNames(postI);
+        return likeService.getLikedUserNames(postId);
     } 
     
 }

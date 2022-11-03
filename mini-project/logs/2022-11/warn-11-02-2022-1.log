@@ -1,0 +1,18 @@
+2022-11-02 15:44:41,894 WARN com.ideas2it.view.UserView [main] Invalid username
+
+2022-11-02 16:50:20,374 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-11-02 17:16:19,864 WARN com.ideas2it.view.UserView [main] Email Already exist
+
+2022-11-02 18:29:00,434 WARN com.ideas2it.view.UserView [main] Email Already exist
+
+2022-11-02 18:30:07,467 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-11-02 19:56:21,073 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-11-02 19:56:22,653 WARN com.ideas2it.view.UserView [main] Invalid email format
+
+2022-11-02 19:56:30,822 WARN com.ideas2it.view.UserView [main] Email Already exist
+
+2022-11-02 19:56:36,553 WARN com.ideas2it.view.UserView [main] Email Already exist
+

@@ -156,8 +156,8 @@ public class UserService {
      * @param  oldPassword  password of the user 
      * @return boolean      true or false based on the result
      */
-    public boolean isPasswordMatches(String userId, String oldPassword) {        
-        return userDao.getPassword(userId).equals(oldPassword);
+    public boolean isPasswordMatches(String email, String oldPassword) {        
+        return userDao.getPassword(email).equals(oldPassword);
     }
     
     /**

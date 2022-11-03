@@ -16,11 +16,19 @@ import com.ideas2it.dao.daoImpl.LikeDaoImpl;
  */
 public class LikeService {
     LikeDao likeDao;
+    PostService postService;
 
     public LikeService() {
-        likdeDao = new LikeDaoImpl();   
+        likeDao = new LikeDaoImpl();  
+        postService = new PostService();  
     }
-
+    
+    /** 
+     * Creates the like by setting id 
+     * 
+     * @param  like - details of the like 
+     * @return isCreated - true or false based on the response 
+     */
     private boolean create(Like like) {
         String id;
         boolean isCreated; 
@@ -31,29 +39,56 @@ public class LikeService {
         return isCreated;
     }
     
-    private boolean delete(String postId, String unLikedUserId) {
+    /**
+     * Deletes the like for the particular post
+     *
+     * @param  postId - id of the post
+     * @param  userId - id of the user
+     * @return isDeleted - true or false based on the response
+     */
+    private boolean delete(String postId, String userId) {
         boolean isDeleted;
-        isDeleted = (likeDao.delete(postId, unLikeUserId) > 0);
+        isDeleted = (likeDao.delete(postId, userId) > 0);
         return isDeleted;
     }
     
-    public int getLikeCountOfPost(String postId) {
+    /**
+     * Gets the like count of the post based on the postId
+     *
+     * @param  postId - id of the post
+     * @return likeCount - count of the like 
+     */
+    private int getLikeCountOfPost(String postId) {
            return likeDao.getLikeCountOfPost(postId);
     }
     
+    /**
+     * Gets the list of the liked usernames
+     * 
+     * @param postId - id of the post
+     * @return lisOfLikedUser - list odf liked usernames for that post
+     */
     public List<String> getLikedUserNames(String postId) {
         return likeDao.getLikedUserNamesOfPost(postId);
     }
-
+    
+    /**
+     * Add like to the post
+     * 
+     * @param like - details of the like 
+     * @return isAdded - true or false based on the response
+     */
     public boolean addLike(Like like) {
         List<String> likedUsers;
-        boolean isAdded;
-        likedUsers = getLikedUsersIdOfPost(like.getPostId());
+        boolean isAdded = false;
+        likedUsers = likeDao.getLikedUsersIdOfPost(like.getPostId());
         
         if (!likedUsers.contains(like.getLikedUserId())) {
-            isAdded = create(like);    
+            isAdded = create(like);  
+            postService.updateLikeCount(like.getPostId(),getLikeCountOfPost(like.getPostId()));
         } else {
-            delete(like.getPostId(), like.getLikedUserId());    
+            delete(like.getPostId(), like.getLikedUserId()); 
+            postService.updateLikeCount(like.getPostId(),getLikeCountOfPost(like.getPostId()));   
         }
         return isAdded;
     }   
