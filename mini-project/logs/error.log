@@ -20,3 +20,4 @@
 2022-11-03 15:59:43,113 ERROR com.ideas2it.view.PostView [main] Enter Only Number not String
 
 2022-11-03 16:00:26,194 ERROR com.ideas2it.dao.daoImpl.CommentDaoImpl [main] Unknown column 'comment.post_id' in 'where clause'
+2022-11-03 23:17:54,927 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Unknown column 'private' in 'field list'

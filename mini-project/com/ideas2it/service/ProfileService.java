@@ -95,4 +95,24 @@ public class ProfileService {
         List<String> existingUserNames = profileDao.getExistingUserNames();
         return existingUserNames.contains(userName);
     }
+
+     /**
+      * Sets the profile as public 
+      * 
+      * @param  userId - id of the user
+      * @return boolean - true or false based on the response
+      */
+     public boolean setPublic(String userId) {
+         return profileDao.setPublic(userId) > 0;
+     }
+
+     /**
+      * Sets the profile as private
+      * 
+      * @param  userId - id of the user
+      * @return boolean - true or false based on the response
+      */
+     public boolean setPrivate(String userId) {
+         return profileDao.setPrivate(userId) > 0;
+     }
 }

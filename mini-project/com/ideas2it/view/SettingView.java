@@ -173,17 +173,36 @@ public class SettingView {
      * @param userId  id of the user 
      */
     private void changeVisibility(String userId) {
-        /*StringBuilder visibilityMessage = new StringBuilder();
-        visibilityMessage.append(Constants.PRIVATE).append(" --> Private ");
-        System.out.print(visibilityMessage);
-        System.out.print("Selecte the visibility : ");
-        int type = getOption();  
-        
-        if (Constants.PRIVATE == type) {
-            profileController.changeVisibility(userId, true);
-        } else {
-            profileController.changeVisibility(userId, false);
-        }   */
+        boolean isGoBack = false;
+        int option;
+        StringBuilder visibilityInstruction = new StringBuilder();
+        visibilityInstruction.append("\nEnter ").append(Constants.SET_PUBLIC)
+                             .append(" --> To set in Public ")
+                             .append("\nEnter ").append(Constants.SET_PRIVATE)
+                             .append(" --> To set in private ")
+                             .append("\nEnter ").append(Constants.GO_BACK)
+                             .append(" --> To Go back ");
+        while (!isGoBack) {
+            System.out.println(visibilityInstruction);
+            option = getOption();
+
+            switch (option) {
+            case Constants.SET_PUBLIC:
+                profileController.setPublic(userId);
+                break;
+
+            case Constants.SET_PRIVATE:
+                profileController.setPrivate(userId);
+                break;
+
+            case Constants.GO_BACK:
+                isGoBack = true;
+                break;
+
+            default:
+                System.out.println("You Entered Wrong option"); 
+            }
+        }
     }
     
     /**
@@ -219,7 +238,8 @@ public class SettingView {
                 break;
 
             case Constants.VISIBILITY:
-              //  changeVisibility(userId);
+                
+                changeVisibility(userId);
                 break;
 
             case Constants.EXIT_SETTING:

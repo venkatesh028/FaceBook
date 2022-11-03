@@ -23,7 +23,7 @@ public interface ProfileDao {
      * Deletes the profile of the user based on the profile id
      * 
      * @param profileId - profile id whose profile need to be deleted 
-     * @param noOfRowsDeleted - based on the deletion response
+     * @return noOfRowsDeleted - based on the deletion response
      */
     public int delete(String userId);
 
@@ -31,7 +31,7 @@ public interface ProfileDao {
      * Updates the profile details of the user
      * 
      * @param profile - profile with updated details 
-     * @param noOfRowsUpdated - based on the updation
+     * @return noOfRowsUpdated - based on the updation
      */
     public int update(Profile profile);    
     
@@ -57,4 +57,20 @@ public interface ProfileDao {
      * @return userNames list of existing usernames
      */
     public List<String> getExistingUserNames();  
+    
+    /**
+     * Sets the profile as public
+     * 
+     * @param  userId - id of the user
+     * @return noOfRowsUpdated - based on the updation
+     */
+    public int setPublic(String userId); 
+
+    /**
+     * Sets the profile as private
+     * 
+     * @param  userId - id of the user
+     * @return noOfRowsUpdated - based on the updation
+     */
+    public int setPrivate(String userId) ;
 }

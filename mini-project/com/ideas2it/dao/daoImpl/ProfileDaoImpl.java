@@ -198,4 +198,52 @@ public class ProfileDaoImpl implements ProfileDao {
         }
         return userNames;         
     }
+   
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int setPublic(String userId) {
+        int noOfRowsUpdated = 0;
+        
+        try {
+            connection = DatabaseConnection.getConnection();
+            query = "UPDATE profile SET visibility = 'public', updated_date_time = now() WHERE user_id = ?;";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,userId);
+            noOfRowsUpdated = statement.executeUpdate();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            try { 
+                statement.close();
+                connection.close();
+            } catch (SQLException sqlException) {};
+        }
+        return noOfRowsUpdated; 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int setPrivate(String userId) {
+        int noOfRowsUpdated = 0;
+        
+        try {
+            connection = DatabaseConnection.getConnection();
+            query = "UPDATE profile SET visibility = 'private', updated_date_time = now() WHERE user_id = ?;";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,userId);
+            noOfRowsUpdated = statement.executeUpdate();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            try { 
+                statement.close();
+                connection.close();
+            } catch (SQLException sqlException) {};
+        }
+        return noOfRowsUpdated; 
+    }
 }

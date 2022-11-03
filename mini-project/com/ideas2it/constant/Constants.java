@@ -67,5 +67,9 @@ public class Constants {
     public final static int REJECT = 2;
     public final static int SKIP = 3;
 
-    public final static int EXIT_LIKED_USERS = 1;     
+    public final static int EXIT_LIKED_USERS = 1;   
+    
+    public final static int SET_PUBLIC = 1;
+    public final static int SET_PRIVATE = 2;
+    public final static int GO_BACK = 3;  
 }

@@ -77,4 +77,24 @@ public class ProfileController {
      public boolean isUserNameExist(String username) {
          return profileService.isUserNameExist(username);
      } 
+     
+     /**
+      * Sets the profile as public 
+      * 
+      * @param  userId - id of the user
+      * @return boolean - true or false based on the response
+      */
+     public boolean setPublic(String userId) {
+         return profileService.setPublic(userId);
+     }
+
+     /**
+      * Sets the profile as private
+      * 
+      * @param  userId - id of the user
+      * @return boolean - true or false based on the response
+      */
+     public boolean setPrivate(String userId) {
+         return profileService.setPrivate(userId);
+     }
 } 

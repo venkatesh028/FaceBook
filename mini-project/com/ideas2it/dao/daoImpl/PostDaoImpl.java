@@ -139,7 +139,7 @@ public class PostDaoImpl implements PostDao {
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT post.id, profile.username as posted_user_name, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id;";
+            query = "SELECT post.id, profile.username as posted_user_name, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id WHERE profile.visibility = 'public';";
             statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
             posts = new ArrayList<>();
