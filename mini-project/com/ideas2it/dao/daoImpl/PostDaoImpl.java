@@ -139,15 +139,25 @@ public class PostDaoImpl implements PostDao {
         
         try {
             connection = DatabaseConnection.getConnection();
+<<<<<<< HEAD
             query = "SELECT post.id, profile.username as posted_user_name, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id;";
+=======
+            query = "SELECT post.id, profile.username, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id;";
+>>>>>>> 45f98acb43a591497d734561c853d4e97a554136
             statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
             posts = new ArrayList<>();
 
             while (resultSet.next()){
+<<<<<<< HEAD
                 Post post = new Post(resultSet.getString("id"),resultSet.getString("posted_user_name")
                                         ,resultSet.getString("content"),resultSet.getInt("like_count")
                                         ,resultSet.getInt("comment_count"));
+=======
+                Post post = new Post(resultSet.getString("id"),resultSet.getString("postedUserName")
+                                        ,resultSet.getString("content"),resultSet.getInt("likeCount")
+                                        ,resultSet.getInt("commentCount"));
+>>>>>>> 45f98acb43a591497d734561c853d4e97a554136
                 posts.add(post);     
             }  
         } catch (SQLException sqlException) {
@@ -171,16 +181,26 @@ public class PostDaoImpl implements PostDao {
         
         try {
             connection = DatabaseConnection.getConnection();
+<<<<<<< HEAD
             query = "SELECT post.id, profile.username as posted_user_name, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id WHERE post.user_id = ?;";
+=======
+            query = "SELECT post.id, profile.username, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id WHERE user_id = ?;";
+>>>>>>> 45f98acb43a591497d734561c853d4e97a554136
             statement = connection.prepareStatement(query);
             statement.setString(1,userId);
             resultSet = statement.executeQuery();            
             postOfParticularUser = new ArrayList<>();
 
             while (resultSet.next()){
+<<<<<<< HEAD
                 Post post = new Post(resultSet.getString("id"),resultSet.getString("posted_user_name")
                                    ,resultSet.getString("content"),resultSet.getInt("like_count")
                                    ,resultSet.getInt("comment_count"));
+=======
+                Post post = new Post(resultSet.getString("id"),resultSet.getString("postedUserName")
+                                   ,resultSet.getString("content"),resultSet.getInt("likeCount")
+                                   ,resultSet.getInt("commentCount"));
+>>>>>>> 45f98acb43a591497d734561c853d4e97a554136
                 postOfParticularUser.add(post);               
             }  
         } catch (SQLException sqlException) {

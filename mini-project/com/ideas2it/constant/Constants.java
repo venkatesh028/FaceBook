@@ -66,7 +66,10 @@ public class Constants {
     public final static int ACCEPT = 1;
     public final static int REJECT = 2;
     public final static int SKIP = 3;
+<<<<<<< HEAD
     
     public final static int EXIT_LIKED_USERS = 1;
+=======
+>>>>>>> 45f98acb43a591497d734561c853d4e97a554136
      
 }
