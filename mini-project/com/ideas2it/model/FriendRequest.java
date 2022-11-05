@@ -1,11 +1,10 @@
-pacakage com.ideas2it.model;
+package com.ideas2it.model;
 
 public class FriendRequest {
     private String id;
     private String userId;
-    private String requestedUserId;
-    private String status = "notAccepted";
-    
+    private String requestedUserId;     
+    private String status;
 
     public FriendRequest() {}
     
@@ -29,7 +28,7 @@ public class FriendRequest {
     public void setRequestedDateAndTime() {
     }
     
-    public void setRequestStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
     
@@ -45,7 +44,7 @@ public class FriendRequest {
         return requestedUserId;
     }
     
-    public String getRequestStatus() { 
+    public String getStatus() { 
         return status;
     }
 }

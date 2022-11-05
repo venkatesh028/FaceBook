@@ -1,6 +1,6 @@
 package com.ideas2it.dao;
 
-import java.util.Set;
+import java.util.List;
 
 import com.ideas2it.model.Notification;
 
@@ -19,13 +19,18 @@ public interface NotificationDao {
      * @param  requestedUser name of the user who gave the request
      * @return boolean       true after adding the request
      */     
-    public boolean addNotification(String userName, Notification notification);
+    public int create(Notification notification);
+    
+    public int update(String requestId);
+     
+    public int delete(String requestId);
     
     /**
      * Get the requests given to the user based on the userName
      * 
      * @param userName userName of the user
      */
-    public Set<Notification> getNotifications(String userName);    
+    public List<Notification> getNotifications(String userId);    
     
+ 
 }

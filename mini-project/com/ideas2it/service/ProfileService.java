@@ -58,8 +58,28 @@ public class ProfileService {
      */
     public boolean update(Profile profile) {
         boolean isUpdated;
-        isUpdated = (profileDao.update(profile) > 0 )? true : false;
+        isUpdated = (profileDao.update(profile) > 0 );
         return isUpdated; 
+    }
+    
+    public boolean increaseFriendCount(String userId) {
+        boolean isUpdated;
+        int friendCount;
+        Profile profile = getProfile(userId);
+        friendCount = profile.getFriendsCount(); 
+        profile.setFriendsCount(friendCount + 1);
+        isUpdated = profileDao.update(profile) > 0;
+        return isUpdated;
+    }
+
+    public boolean decreaseFriendCount(String userId) {
+        boolean isUpdated;
+        int friendCount;
+        Profile profile = getProfile(userId);
+        friendCount = profile.getFriendsCount(); 
+        profile.setFriendsCount(friendCount - 1);
+        isUpdated = profileDao.update(profile) > 0;
+        return isUpdated;
     }
 
     /**
@@ -70,7 +90,7 @@ public class ProfileService {
      */
     public boolean delete(String userId) {
         boolean isDeleted;
-        isDeleted = (profileDao.delete(userId) > 0) ? true : false;
+        isDeleted = (profileDao.delete(userId) > 0);
         return isDeleted;
     }  
     

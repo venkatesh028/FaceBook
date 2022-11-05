@@ -77,6 +77,7 @@ public class ProfileDaoImpl implements ProfileDao {
                 profile.setUserName(resultSet.getString("username"));
                 profile.setBio(resultSet.getString("bio"));
                 profile.setFriendsCount(resultSet.getInt("friends_count")); 
+                profile.setVisibility(resultSet.getString("visibility"));
             }
         }  catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
@@ -98,11 +99,13 @@ public class ProfileDaoImpl implements ProfileDao {
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE profile SET username = ?, bio = ?, updated_date_time = now() WHERE user_id = ?;";
+            query = "UPDATE profile SET username = ?, bio = ?,friends_count = ?, updated_date_time = now() WHERE user_id = ?;";
             statement = connection.prepareStatement(query);
-            statement.setString(1,profile.getUserName());
-            statement.setString(2,profile.getBio());
-            statement.setString(3,profile.getUserId());
+            statement.setString(1, profile.getUserName());
+            statement.setString(2, profile.getBio());
+            statement.setInt(3, profile.getFriendsCount());
+            statement.setString(4, profile.getUserId());
+         
             noOfRowsUpdated = statement.executeUpdate();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
@@ -156,9 +159,11 @@ public class ProfileDaoImpl implements ProfileDao {
             
             if (resultSet.next()) { 
                 profile = new Profile();
+                profile.setUserId(resultSet.getString("user_Id"));
                 profile.setUserName(resultSet.getString("username"));
                 profile.setBio(resultSet.getString("bio"));
                 profile.setFriendsCount(resultSet.getInt("friends_count"));
+                profile.setVisibility(resultSet.getString("visibility"));
             }
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());

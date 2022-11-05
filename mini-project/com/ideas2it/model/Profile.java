@@ -21,6 +21,7 @@ public class Profile {
     private String userName;
     private String bio;
     private int friendsCount;
+    private String visibility;
   
 
     public Profile() {}
@@ -50,9 +51,9 @@ public class Profile {
         this.friendsCount = friendsCount;
     }
     
-   /* public void setPrivate(boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }*/
+    public void setVisibility(String visibility) {
+        this.visibility= visibility;
+    }
     
     public String getId() {
         return id;
@@ -69,10 +70,10 @@ public class Profile {
     public int getFriendsCount() {
         return friendsCount;
     }
-    
-    /*public boolean getIsPrivate() {
-        return isPrivate;
-    }*/
+
+    public String getVisibility() {
+        return visibility;
+    }
     
     public String getUserId() {
         return userId;

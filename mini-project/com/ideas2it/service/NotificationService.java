@@ -1,7 +1,8 @@
 package com.ideas2it.service;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import com.ideas2it.dao.NotificationDao;
 import com.ideas2it.dao.daoImpl.NotificationDaoImpl;
@@ -26,9 +27,13 @@ public class NotificationService {
      * @param userName      userName of the user for who the request is given
      * @param requestedUser the user who gave the request
      */     
-    public boolean addNotification(String userName, Notification notification) {
-      // notificationDao.addNotification(userName, notification);
-      return false;
+    public boolean create(Notification notification) {
+        String id;
+        boolean isCreated;
+        id = UUID.randomUUID().toString();
+        notification.setId(id);
+        isCreated = notificationDao.create(notification) > 0;
+        return isCreated;
     }
     
     /**
@@ -36,10 +41,15 @@ public class NotificationService {
      * 
      * @param  userName userName of the user
      * @return requests all the requests based on the user
-     * /
-    public Set<Notification> getNotifications(String userName) {
-       //notificationDao.getNotifications(userName);
-       return false;
+     */
+    public List<Notification> getNotifications(String userId) {
+        return notificationDao.getNotifications(userId);
+    }
+    
+    public boolean update(String requestId) {
+        boolean isUpdated;
+        isUpdated = notificationDao.update(requestId) > 0;
+        return isUpdated;
     }
     
     /**
@@ -48,15 +58,9 @@ public class NotificationService {
      * @param userName          - username to who the request is given
      * @param requestedUserName - name of the person who gave the request
      */
-    public boolean clearNotification(String userName, String requestedUserName) {
-       /* Set<Notification> notifications = getNotifications(userName);
-        
-        for (Notification notification : notifications) {
-            if (notification.getUserName().equals(requestedUserName)) {
-                notifications.remove(notification);
-                break;
-            }   
-        } */
+    public boolean clearNotification(String id) {
+        boolean isDeleted;
+        isDeleted = notificationDao.delete(id) > 0;
         return true;        
     }
 }

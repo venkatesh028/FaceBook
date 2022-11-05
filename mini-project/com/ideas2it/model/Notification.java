@@ -1,6 +1,6 @@
 package com.ideas2it.model;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 /**
  * Contain the attributes of the Notification
@@ -12,31 +12,58 @@ import java.time.LocalDate;
  * @author Venkatesh TM
  */
 public class Notification {
-    private String    id;
-    private String    userId;
-    private LocalDate requestGivenAt;
+    private String id;
+    private String userId;
+    private String requestId;
+    private String requestedUserName;
+    private Timestamp requestGivenAt;
+      
+    public Notification() {}
     
-    public Notification(String userId, LocalDate requestGivenAt) {
-        this.userId = userId;
-        this.requestGivenAt = requestGivenAt;
+    public void setId(String id) {
+        this.id = id;
     }
     
-    public String getUserId() {
-        return userId;
-    }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
-    
-    public void setLocalDate(LocalDate requestGivenAt) {
-        this.requestGivenAt = requestGivenAt;
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
     
-   /* public String toString() {
+    public void setRequestedUserName(String requestedUserName) {
+        this.requestedUserName = requestedUserName;
+    }
+    
+    public void setRequestGivenAt(Timestamp requestGivenAt) {
+        this.requestGivenAt = requestGivenAt;
+    }
+
+    public String getId() {
+        return id;
+    }
+ 
+    public String getUserId() {
+        return userId;
+    }
+    
+    public String getRequestId() { 
+        return requestId;
+    }
+    
+    public String getRequestedUserName() {
+        return requestedUserName;
+    }
+    
+    public Timestamp getRequestGivenAt() {
+       return requestGivenAt;
+    }
+    
+    public String toString() {
         StringBuilder notification = new StringBuilder();
-        notification.append("\nFriend Request given By ").append(userName)
+        notification.append("\nFriend Request given By ").append(requestedUserName)
                     .append("\nAt ").append(requestGivenAt);
         return notification.toString();
-    } */ 
+    }
 }

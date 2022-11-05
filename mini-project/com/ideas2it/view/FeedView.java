@@ -60,11 +60,11 @@ public class FeedView {
                 break;
 
             case Constants.SHOW_NOTIFICATION:
-               // notificationView.showRequests(userId);
+                notificationView.showNotification(userId);
                 break;
 
             case Constants.SHOW_SEARCH:
-                //searchPage.showSearchPage(userId);
+                searchPage.showSearchPage(userId);
                 break;
 
             case Constants.SHOW_SETTING:
