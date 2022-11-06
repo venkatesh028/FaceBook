@@ -23,6 +23,10 @@ public class FriendDaoImpl implements FriendDao {
         this.logger = new CustomLogger(FriendDaoImpl.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int create(Friend friend) {
         int noOfRowsAffected = 0;
         
@@ -44,7 +48,11 @@ public class FriendDaoImpl implements FriendDao {
         }
         return noOfRowsAffected;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int delete(Friend friend) {
         int noOfRowsDeleted = 0;
         
@@ -64,8 +72,12 @@ public class FriendDaoImpl implements FriendDao {
             } catch (SQLException sqlException) {}
         }
         return noOfRowsDeleted;
-    }
-    
+    }    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<String> getFriends(String userId) {
         List<String> friends = null;
         ResultSet resultSet;

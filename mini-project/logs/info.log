@@ -1,8 +1,3 @@
-2022-11-05 12:18:01,030 INFO com.ideas2it.view.UserView [main] Invalid password try again
-2022-11-05 12:18:14,146 INFO com.ideas2it.view.UserView [main] Invalid password try again
-2022-11-05 12:18:17,886 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
-2022-11-05 12:30:32,158 INFO com.ideas2it.view.UserView [main] Invalid password try again
-2022-11-05 13:45:00,898 INFO com.ideas2it.view.NotificationView [main] There is no notofication
-
-2022-11-05 18:20:05,071 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
-2022-11-05 18:25:52,552 INFO com.ideas2it.view.UserView [main] Invalid password try again
+2022-11-06 22:29:02,358 INFO com.ideas2it.view.UserView [main] Invalid password try again
+2022-11-06 22:59:08,394 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
+2022-11-06 23:25:35,262 INFO com.ideas2it.view.PostView [main] Post added Successfully

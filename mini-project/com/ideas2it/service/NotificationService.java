@@ -22,10 +22,10 @@ public class NotificationService {
     }
     
     /** 
-     * Add the requests of the particular user with requested user details
+     * creates the notification 
      *
-     * @param userName      userName of the user for who the request is given
-     * @param requestedUser the user who gave the request
+     * @param  notification - details of the notification
+     * @return isCreated  - true or false based on result;
      */     
     public boolean create(Notification notification) {
         String id;
@@ -37,26 +37,32 @@ public class NotificationService {
     }
     
     /**
-     * Get the requests of the particular user
+     * Gets the requests of the particular user
      * 
-     * @param  userName userName of the user
-     * @return requests all the requests based on the user
+     * @param  userId - id of the user
+     * @return listOfNotifications all the notifications based on the user
      */
     public List<Notification> getNotifications(String userId) {
         return notificationDao.getNotifications(userId);
     }
     
-    public boolean update(String requestId) {
+    /**
+     * Updates the notification 
+     * 
+     * @param id - id of the notification
+     * @return isUpdated - true or false based on the result
+     */     
+    public boolean update(String id) {
         boolean isUpdated;
-        isUpdated = notificationDao.update(requestId) > 0;
+        isUpdated = notificationDao.update(id) > 0;
         return isUpdated;
     }
     
     /**
      * Clears the request notification based on the responce
      * 
-     * @param userName          - username to who the request is given
-     * @param requestedUserName - name of the person who gave the request
+     * @param id - id of the notification
+     * @param isDeleted - true or false based on the result
      */
     public boolean clearNotification(String id) {
         boolean isDeleted;

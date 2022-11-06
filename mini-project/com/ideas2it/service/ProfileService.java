@@ -62,6 +62,12 @@ public class ProfileService {
         return isUpdated; 
     }
     
+    /** 
+     * Increase the friend's count based on the user profile
+     * 
+     * @param userId - id of the user
+     * @return isUpdated - true or false based on the result
+     */
     public boolean increaseFriendCount(String userId) {
         boolean isUpdated;
         int friendCount;
@@ -72,6 +78,12 @@ public class ProfileService {
         return isUpdated;
     }
 
+    /** 
+     * Decrease the friend's count based on the user profile
+     * 
+     * @param userId - id of the user
+     * @return isUpdated - true or false based on the result
+     */
     public boolean decreaseFriendCount(String userId) {
         boolean isUpdated;
         int friendCount;

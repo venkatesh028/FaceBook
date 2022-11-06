@@ -9,10 +9,35 @@ import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.FriendRequest;
 
+/**
+ * It perform create, update, get operation for the friend request 
+ * 
+ * @version 1.0 04-NOV-2022
+ * @author Venkatesh TM
+ */
 public interface FriendRequestDao {
-
+    
+    /**
+     * Creates the friendRequest
+     * 
+     * @param friendRequest - details of the friendRequest
+     * @return noOfRowsAffected - number of rows affected based on the creation
+     */
     public int create(FriendRequest friendRequest);
+    
+    /**
+     * Updates the friendrequest 
+     * 
+     * @param friendRequest - details of the friendRequest
+     * @return noOfRowsUpdated - number of rows affected based on the updation
+     */
     public int update(FriendRequest friendRequest);
     
+    /**
+     * Gets the friendrequest 
+     *  
+     * @param id - id of the request
+     * @return friendRequest - details of the friendRequest 
+     */
     public FriendRequest get(String requestId);
 }

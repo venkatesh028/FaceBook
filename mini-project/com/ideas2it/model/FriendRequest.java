@@ -25,9 +25,6 @@ public class FriendRequest {
         this.requestedUserId = requestedUserId;
     }
     
-    public void setRequestedDateAndTime() {
-    }
-    
     public void setStatus(String status) {
         this.status = status;
     }

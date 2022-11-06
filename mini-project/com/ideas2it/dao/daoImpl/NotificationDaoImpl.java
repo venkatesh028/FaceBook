@@ -82,14 +82,37 @@ public class NotificationDaoImpl implements NotificationDao  {
             } catch (SQLException sqlException) {}
         }   
         return notifications;        
-    }
-    
-    public int update(String requestId) {
-        return 1;
-    }
-    
-  
+    }    
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int update(String id) {
+        int noOfRowsUpdated = 0;
+        String status = "seen";
+        try { 
+            connection = DatabaseConnection.getConnection();
+            query = "UPDATE notification SET notification_status = ?, updated_date_time = now() WHERE id = ?;";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,status);
+            statement.setString(2,id);
+            noOfRowsUpdated = statement.executeUpdate();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            try { 
+                statement.close();
+                connection.close();
+            } catch (SQLException sqlException) {}
+        }   
+        return noOfRowsUpdated;
+    } 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override  
     public int delete(String id) {
         int noOfRowsDeleted = 0;
         
@@ -108,6 +131,5 @@ public class NotificationDaoImpl implements NotificationDao  {
             } catch (SQLException sqlException) {}
         }   
         return noOfRowsDeleted;
-    }
-   
+    }   
 }

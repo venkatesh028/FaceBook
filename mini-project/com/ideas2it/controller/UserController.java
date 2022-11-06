@@ -27,7 +27,6 @@ public class UserController {
     /**
      * Create new account for the user
      *
-     * @param  key      email of the user as a key
      * @param  user     details of the user
      * @return boolean  true if account is created successfully else false
      */

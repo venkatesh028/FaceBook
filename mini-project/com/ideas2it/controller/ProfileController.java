@@ -21,7 +21,7 @@ public class ProfileController {
      * and add profile to the database 
      * 
      * @param  profile - profile contain the details of the profile 
-     * @return profileId - profileId of the profile
+     * @return boolean - true or false based on the response
      */
     public boolean create(Profile profile) {
         return profileService.create(profile);
@@ -41,7 +41,7 @@ public class ProfileController {
      * Updates the userName and bio of the profile
      * 
      * @param profile - details of the profile
-     * @return boolean - true or false based on the result
+     * @return boolean - true or false based on the response
      */
     public boolean update(Profile profile) {
         return profileService.update(profile);
@@ -51,12 +51,11 @@ public class ProfileController {
      * Deletes the profile based on the profileId
      *
      * @param  userId - id of the user which need to be deleted 
-     * @return profile   - profile which got deleted 
+     * @return boolean - true or false based on the response 
      */
     public boolean delete(String userId) {
         return profileService.delete(userId);
-    }
-     
+    }    
     
     /**
      * Gets the profileId based on the username 

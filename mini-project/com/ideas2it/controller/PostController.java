@@ -21,9 +21,9 @@ public class PostController {
     /**
      * Add the post 
      * 
-     * @param  postedBy name of the user who posted the post
-     * @parma  content   post of the user 
-     * @return boolean  true after adding the post
+     * @param  userId  - id of the user who posted the post
+     * @parma  content  - post of the user 
+     * @return boolean -  true after adding the post
      */
     public boolean addPost(String userId, String content) {
         return postService.create(userId, content);

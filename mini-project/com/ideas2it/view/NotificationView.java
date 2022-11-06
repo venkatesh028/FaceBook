@@ -60,10 +60,14 @@ public class NotificationView {
                            .append( " --> To skip now "); 
         System.out.println(requestMessage);
         selectedOption = getOption();
+
         switch (selectedOption) {
-        case Constants.ACCEPT:         
+        case Constants.ACCEPT: 
+            String accepted = "accepted";
+            friendRequest.setStatus(accepted);        
             friendController.create(new Friend(userId, profile.getUserId()));
             friendController.create(new Friend(profile.getUserId(), userId));
+            friendRequestController.update(friendRequest);
             notificationController.clearNotification(notification.getId());
             break;
 
@@ -102,6 +106,7 @@ public class NotificationView {
                 switch(selectedOption) {
                 case Constants.VIEW_REQUEST:
                     viewRequest(userId, notification);
+                    notificationController.update(notification.getId());
                     break;
 
                 case Constants.TO_GO_BACK:

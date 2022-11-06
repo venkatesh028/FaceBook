@@ -4,25 +4,42 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.ideas2it.logger.CustomLogger;
+
+/**
+ * Database Connection class gets the sql connection
+ *
+ * @version 1.0 01-Nov-2022
+ * @author Venkatesh TM
+ */
 public class DatabaseConnection {
     private static Connection connection = null;
+    private static CustomLogger logger = new CustomLogger(DatabaseConnection.class);
 
     private DatabaseConnection() {
+        String link = "jdbc:mysql://localhost:3306/facebook";
+        String userName = "root";
+        String password = "Venkatesh@09";
+
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/facebook", "root", "Venkatesh@09");
+            connection = DriverManager.getConnection(link, userName, password);
         } catch (SQLException sqlException) {
-            System.out.println("Connection Not Created");
+            logger.error(sqlException.getMessage());
         }
     }
 
+    /**
+     * Gets the connection for the for mysql database
+     */
     public static Connection getConnection() {
         try {
             if (null == connection || connection.isClosed()) {
                 DatabaseConnection databaseConnection = new DatabaseConnection();
             }
-        } catch (SQLException sqlE) {
-            System.out.println("Error");
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
         }
+
         return connection;
     }
 }
