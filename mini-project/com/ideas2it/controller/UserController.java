@@ -10,7 +10,7 @@ import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 
 /**
- * It contains validation method for validating the user details
+ * It implements the logic to Update, delete, create, read and validation operation for the user 
  *
  * @version 1.2 31-OCT-2022
  * @author Venkatesh TM

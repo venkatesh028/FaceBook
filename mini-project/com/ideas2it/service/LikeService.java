@@ -9,7 +9,7 @@ import com.ideas2it.dao.LikeDao;
 import com.ideas2it.dao.daoImpl.LikeDaoImpl;
 
 /**
- * Perform is the Create,Update,Delete Operation of Like
+ * Implements the logic for Create,Update,Delete Operation of Like
  *
  * @version 1.0 02-NOV-2022
  * @author Venkatesh TM

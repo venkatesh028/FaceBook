@@ -11,7 +11,7 @@ import com.ideas2it.dao.daoImpl.ProfileDaoImpl;
 import com.ideas2it.model.Profile;
 
 /** 
- * Perform the Create, update, delete taks for the user profile
+ * Implements the logic of Create, update, delete operation for the user profile
  * 
  * @version 1.0 22-SEP-2022
  * @author  Venkatesh TM
@@ -41,9 +41,9 @@ public class ProfileService {
     }
 
     /**
-     * gets the profile of the user 
+     * Gets the profile of the user 
      *
-     * @param  profileId - profileId of the user
+     * @param  userId - id of the user
      * @return profile - profile details of the user
      */
     public Profile getProfile(String userId) {
@@ -97,7 +97,7 @@ public class ProfileService {
     /**
      * Deletes the profile based on the profileId
      *
-     * @param  profileId - id of the profile which need to be deleted 
+     * @param  userId - id of the user which need to be deleted 
      * @return profile   - profile which got deleted 
      */
     public boolean delete(String userId) {
@@ -128,23 +128,23 @@ public class ProfileService {
         return existingUserNames.contains(userName);
     }
 
-     /**
-      * Sets the profile as public 
-      * 
-      * @param  userId - id of the user
-      * @return boolean - true or false based on the response
-      */
-     public boolean setPublic(String userId) {
-         return profileDao.setPublic(userId) > 0;
-     }
+   /**
+    * Sets the profile as public 
+    * 
+    * @param  userId - id of the user
+    * @return boolean - true or false based on the response
+    */
+    public boolean setPublic(String userId) {
+        return profileDao.setPublic(userId) > 0;
+    }
 
-     /**
-      * Sets the profile as private
-      * 
-      * @param  userId - id of the user
-      * @return boolean - true or false based on the response
-      */
-     public boolean setPrivate(String userId) {
-         return profileDao.setPrivate(userId) > 0;
-     }
+    /**
+     * Sets the profile as private
+     * 
+     * @param  userId - id of the user
+     * @return boolean - true or false based on the response
+     */
+    public boolean setPrivate(String userId) {
+        return profileDao.setPrivate(userId) > 0;
+    }
 }

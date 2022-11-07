@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.ideas2it.model.Friend;
 
-/**
- * Perform the Creation, Deletion and Get operation of the friend
+/** 
+ * It is interface for the friend dao impl it contains the method for
+ * create, delete, get operations for friend
  *
  * @version 1.0 01-Nov-2022
  * @author Venkatesh TM

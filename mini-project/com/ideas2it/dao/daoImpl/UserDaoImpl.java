@@ -23,8 +23,7 @@ import com.ideas2it.dao.UserDao;
  */
 public class UserDaoImpl implements UserDao {
     private CustomLogger logger;
-    Connection connection;  
-    String query;    
+    Connection connection;      
     PreparedStatement statement;
      
     
@@ -38,11 +37,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int create(User user) {
         int userCreated = 0;
-
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO user(id, email, password, date_of_birth,")
+             .append(" age, created_date_time) ")
+             .append("VALUES(?,?,?,?,?,now());");
+        
         try {
             connection = DatabaseConnection.getConnection();
-            query = "INSERT INTO user(id, email, password, date_of_birth, age, created_date_time) VALUES(?,?,?,?,?,now());";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,user.getId());
             statement.setString(2,user.getEmail());
             statement.setString(3,user.getPassword());
@@ -59,14 +61,21 @@ public class UserDaoImpl implements UserDao {
         }
         return userCreated;
     } 
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int update(User user) {
         int userUpdated = 0;
-
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE user SET email = ?, password = ?, ")
+             .append("date_of_birth = ?, age = ?, phone_number = ?, ")
+             .append("updated_date_time = now() WHERE id = ?;");
+        
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE user SET email = ?, password = ?, date_of_birth = ?, age = ?, phone_number = ?, updated_date_time = now() WHERE id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,user.getEmail());
             statement.setString(2,user.getPassword());
             statement.setDate(3,Date.valueOf(user.getDateOfBirth()));
@@ -83,8 +92,7 @@ public class UserDaoImpl implements UserDao {
             } catch (SQLException e) {};
         }
         return userUpdated;    
-    }
- 
+    }  
     
     /**
      * {@inheritDoc}
@@ -92,10 +100,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int delete(String id) {
         int noOfRowDeleted = 0;
+        String query;
+        query = "DELETE FROM user WHERE id = ?;";
 
         try {
             connection = DatabaseConnection.getConnection();
-            query = "DELETE FROM user WHERE id = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1,id);
             noOfRowDeleted = statement.executeUpdate();
@@ -116,11 +125,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int updateEmail(String id, String newEmail) {
         int noOfRowsUpdated = 0;
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE user SET email = ?, update_date_time = now() ")
+             .append("WHERE id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE user SET email = ?, update_date_time = now() WHERE id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,newEmail);
             statement.setString(2,id);
             noOfRowsUpdated = statement.executeUpdate();            
@@ -141,6 +152,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int updatePassword(String id, String password) {
         int noOfRowsUpdated = 0;
+        String query;
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -166,10 +178,10 @@ public class UserDaoImpl implements UserDao {
     @Override 
     public int updateDateOfBirthAndAge(String id, LocalDate dateOfBirth, int age) {
         int noOfRowsUpdated = 0;
-        
+        String query = "UPDATE user SET date_of_birth = ?, age = ?, updated_date_time = now() WHERE id = ?;";
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE user SET date_of_birth = ?, age = ?, updated_date_time = now() WHERE id = ?;";
             statement = connection.prepareStatement(query);
             statement.setDate(1,Date.valueOf(dateOfBirth));
             statement.setInt(2,age);
@@ -192,10 +204,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int updatePhoneNumber(String id, long phoneNumber) {
         int noOfRowsUpdated = 0;
-        
+        String query;
+        query = "UPDATE user SET phone_number = ?, updated_date_time = now() WHERE id = ?;";
+
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "UPDATE user SET phone_number = ?, updated_date_time = now() WHERE id = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setLong(1,phoneNumber);
             statement.setString(2,id);
@@ -218,10 +231,11 @@ public class UserDaoImpl implements UserDao {
     public User getUser(String id) {
         ResultSet resultSet;
         User user = null;
+        String query;
+        query = "SELECT * FROM user where id = ? ;";
 
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "SELECT * FROM user where id = ? ;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1,id);
             resultSet = statement.executeQuery();
@@ -252,11 +266,12 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<String> getExistingEmails() {
         ResultSet resultSet;
+        String query;
         List<String> existingEmail = new ArrayList<>();
+        query = "SELECT email FROM user;";
 
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "SELECT email FROM user;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
 
@@ -281,10 +296,11 @@ public class UserDaoImpl implements UserDao {
     public String getPassword(String email) {
         ResultSet resultSet;
         String password = null;
+        String query;
+        query = "SELECT password FROM user WHERE email = ?;";
 
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "SELECT password FROM user WHERE email = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1,email);
             resultSet = statement.executeQuery();
@@ -310,10 +326,11 @@ public class UserDaoImpl implements UserDao {
     public String getId(String email) {
         ResultSet resultSet;
         String id = null;
+        String query;
+        query = "SELECT id FROM user WHERE email = ?;";
 
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "SELECT id FROM user WHERE email = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1,email);
             resultSet = statement.executeQuery();

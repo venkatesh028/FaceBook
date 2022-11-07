@@ -5,7 +5,8 @@ import java.util.List;
 import com.ideas2it.model.Like;
 
 /**
- * Perform create, delete and get function for the like
+ * It is interface for the like dao impl it contains the method for
+ * create, get operations for like
  * 
  * @version 1.0 01-NOV-2022
  * @author Venkatesh TM

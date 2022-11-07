@@ -10,7 +10,8 @@ import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.FriendRequest;
 
 /**
- * It perform create, update, get operation for the friend request 
+ * It is interface for the friendrequest dao impl it contains the method for
+ * create, update, get operations for friendrequest
  * 
  * @version 1.0 04-NOV-2022
  * @author Venkatesh TM

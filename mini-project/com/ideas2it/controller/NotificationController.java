@@ -7,7 +7,7 @@ import com.ideas2it.model.Notification;
 import java.util.List;
 
 /**
- * Add the requests of the user and shows to the user
+ * Implements the create, update, get and delete operations for the Notification
  * 
  * @version 1.0 05-OCT-2022
  * @author  Venkatesh TM
@@ -20,7 +20,7 @@ public class NotificationController {
     }
     
     /** 
-     * creates the notification 
+     * Creates the notification 
      *
      * @param  notification - details of the notification
      * @return boolean  - true or false based on response;
@@ -40,7 +40,7 @@ public class NotificationController {
     }
     
     /**
-     * Clears the request notification based on the responce
+     * Clears the notification based on the responce
      * 
      * @param userName          - username to who the request is given
      * @param requestedUserName - name of the person who gave the request
@@ -50,7 +50,7 @@ public class NotificationController {
     }  
     
     /**
-     * Gets the requests of the particular user
+     * Gets the notifications of the particular user
      * 
      * @param id - id of the notification
      * @param isDeleted - true or false based on the result

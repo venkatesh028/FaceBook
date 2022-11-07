@@ -14,8 +14,7 @@ import com.ideas2it.dao.FriendDao;
 
 public class FriendDaoImpl implements FriendDao {
     private CustomLogger logger;
-    private Connection connection;  
-    private String query;    
+    private Connection connection;     
     private PreparedStatement statement;
 
     
@@ -29,11 +28,14 @@ public class FriendDaoImpl implements FriendDao {
     @Override
     public int create(Friend friend) {
         int noOfRowsAffected = 0;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO friend")
+             .append("(id, user_id, friend_id, created_date_time) ")
+             .append("VALUES(?,?,?,now());");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "INSERT INTO friend(id, user_id, friend_id, created_date_time) VALUES(?,?,?,now());";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,friend.getId());
             statement.setString(2,friend.getUserId());
             statement.setString(3,friend.getFriendId());
@@ -55,10 +57,11 @@ public class FriendDaoImpl implements FriendDao {
     @Override
     public int delete(Friend friend) {
         int noOfRowsDeleted = 0;
-        
+        String query;
+        query = "DELETE FROM friend WHERE user_id = ? AND friend_id = ?;";
+
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "DELETE FROM friend WHERE user_id = ? AND friend_id = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1,friend.getUserId());
             statement.setString(2,friend.getFriendId());
@@ -81,11 +84,15 @@ public class FriendDaoImpl implements FriendDao {
     public List<String> getFriends(String userId) {
         List<String> friends = null;
         ResultSet resultSet;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT profile.username ")
+             .append("FROM profile JOIN friend ")
+             .append("ON friend.friend_id = profile.user_id ")
+             .append("WHERE friend.user_id = ?;");
+
         try {
             connection = DatabaseConnection.getConnection(); 
-            query = "SELECT profile.username FROM profile JOIN friend ON friend.friend_id = profile.user_id WHERE friend.user_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,userId);
             resultSet = statement.executeQuery();
             friends = new ArrayList<>();

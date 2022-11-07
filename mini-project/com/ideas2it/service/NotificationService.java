@@ -9,7 +9,7 @@ import com.ideas2it.dao.daoImpl.NotificationDaoImpl;
 import com.ideas2it.model.Notification;
 
 /**
- * Add the requests of the user and shows to the user
+ * Implements the create, update, get and delete operations for the Notification
  * 
  * @version 1.0 05-OCT-2022
  * @author  Venkatesh TM
@@ -37,7 +37,7 @@ public class NotificationService {
     }
     
     /**
-     * Gets the requests of the particular user
+     * Gets the notifications of the particular user
      * 
      * @param  userId - id of the user
      * @return listOfNotifications all the notifications based on the user
@@ -59,7 +59,7 @@ public class NotificationService {
     }
     
     /**
-     * Clears the request notification based on the responce
+     * Clears the notification based on the id
      * 
      * @param id - id of the notification
      * @param isDeleted - true or false based on the result

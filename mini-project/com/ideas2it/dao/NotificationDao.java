@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.ideas2it.model.Notification;
 
-/**
- * Add, update, delete and get the requests notification for the user 
+/** 
+ * It is interface for the notification dao impl it contains the method for
+ * create, update, delete, get operations for notification
  * 
  * @Version 1.0 06-OCT-2022
  * @author Venkatesh TM

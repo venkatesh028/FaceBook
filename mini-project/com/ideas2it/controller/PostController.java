@@ -6,7 +6,7 @@ import com.ideas2it.model.Post;
 import com.ideas2it.service.PostService;
 
 /**
- * Perform the Create, View, Update, Delete functionality of the Post
+ * Implements the create, get, update, delete operation for the post
  *
  * @version 1.0 24-SEP-2022
  * @author Venkatesh TM

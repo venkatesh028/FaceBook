@@ -9,7 +9,7 @@ import com.ideas2it.dao.CommentDao;
 import com.ideas2it.dao.daoImpl.CommentDaoImpl;
 
 /**
- * Perform is the Create,Update,Delete Operation of Comment
+ * Implements the logic of Create,Update,Delete Operation for Comment
  *
  * @version 1.0 02-NOV-2022
  * @author Venkatesh TM
@@ -24,7 +24,7 @@ public class CommentService {
     }
     
     /**
-     * Creates comment 
+     * Creates the comment 
      *
      * @param  comment - details of the comment
      * @return isCreated - true or false based on the response

@@ -6,7 +6,7 @@ import com.ideas2it.model.Like;
 import com.ideas2it.service.LikeService;
 
 /**
- * It performs the add and get operations of the like
+ * Implements the logic of  add and get operations for the like
  *
  * @version 1.0 03-NOV-2022
  * @author Venkatesh TM

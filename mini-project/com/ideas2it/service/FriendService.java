@@ -7,6 +7,12 @@ import com.ideas2it.model.Friend;
 import com.ideas2it.dao.FriendDao;
 import com.ideas2it.dao.daoImpl.FriendDaoImpl;
 
+/**
+ * It implements the logic of create, delete and get operation for friend
+ * 
+ * @version  1.0 05-Nov-2022
+ * @author Venkatesh TM
+ */
 public class FriendService {
     
     FriendDao friendDao;
@@ -17,6 +23,12 @@ public class FriendService {
         profileService = new ProfileService();
     }
      
+    /**
+     * Creates the friend id and set in the friend 
+     *
+     * @param friend - details of the friend
+     * @return isCreated - true or false based on the result
+     */
     public boolean create(Friend friend){
         String id;
         boolean isCreated;
@@ -27,6 +39,12 @@ public class FriendService {
         return isCreated;
     }
     
+    /**
+     * Deletes the friend 
+     *
+     * @param friend - details of the friend 
+     * @return isDeleted - true or false based on the result
+     */
     public boolean delete(Friend friend) {
         boolean isDeleted;
         isDeleted = friendDao.delete(friend) > 0;
@@ -34,6 +52,12 @@ public class FriendService {
         return isDeleted; 
     }
    
+    /**
+     * Gets the list of friends
+     * 
+     * @param userId - id of the user
+     * @return listOfFriends - username of the friends
+     */
     public List<String> getFriends(String userId) {
         return friendDao.getFriends(userId);
     }

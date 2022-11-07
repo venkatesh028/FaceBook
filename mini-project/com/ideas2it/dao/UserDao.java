@@ -7,7 +7,8 @@ import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 
 /**
- * Perform the creation and delete operation for the user account 
+ * It is interface for the User dao impl it contains the method for
+ * create, update, delete, get operations for user
  * 
  * @version 1.0 22-SEP-2022
  * @author  Venkatesh TM
@@ -15,7 +16,7 @@ import com.ideas2it.model.Profile;
 public interface UserDao {
 
     /**
-     * Creates account for the user and add with id as key in users
+     * Creates the user
      *  
      * @param  user     details of the user
      * @return boolean  true after adding the user in map
@@ -23,13 +24,19 @@ public interface UserDao {
     public int create(User user);
 
     /** 
-     * Deletes the account
+     * Deletes the user
      * 
      * @param  id   id of the user
      * @return noOfRowDeleted - number of rows deleted 
      */
     public int delete(String id);
     
+    /**
+     * Updates the user 
+     *
+     * @param user - details of the user
+     * @return noOfRowsUpdated - number of rows updated
+     */
     public int update(User user);
 
     /**
@@ -87,6 +94,7 @@ public interface UserDao {
     /**
      * Gets the password for the eamil
      *
+     * @param email - email of the user
      * @return password - password for the email 
      */
     public String getPassword(String email);
@@ -94,6 +102,7 @@ public interface UserDao {
     /** 
      * Gets the id of the user based on the email 
      * 
+     * @param email - email of the user
      * @return id - id of the user based on the email
      */
     public String getId(String email); 

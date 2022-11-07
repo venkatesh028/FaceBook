@@ -22,7 +22,6 @@ import com.ideas2it.dao.ProfileDao;
 public class ProfileDaoImpl implements ProfileDao {
     Connection connection;
     PreparedStatement statement;
-    String query;
     CustomLogger logger;
     
     public ProfileDaoImpl() {
@@ -35,11 +34,14 @@ public class ProfileDaoImpl implements ProfileDao {
     @Override    
     public int create(Profile profile) {
         int noOfRowsAffected = 0;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO profile")
+             .append("(id, user_id, username, created_date_time) ")
+             .append("VALUES(?,?,?,now());");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "INSERT INTO profile(id, user_id, username, created_date_time) VALUES(?,?,?,now());";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,profile.getId());
             statement.setString(2,profile.getUserId());
             statement.setString(3,profile.getUserName());
@@ -62,10 +64,11 @@ public class ProfileDaoImpl implements ProfileDao {
     public Profile getProfile(String userId) {
         ResultSet resultSet;
         Profile profile = null;
+        String query;
+        query = "SELECT * FROM profile WHERE user_id = ?;";
 
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "SELECT * FROM profile WHERE user_id = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1,userId);
             resultSet = statement.executeQuery();
@@ -96,11 +99,15 @@ public class ProfileDaoImpl implements ProfileDao {
     @Override
     public int update(Profile profile) {
         int noOfRowsUpdated = 0;
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE profile SET ")
+             .append("username = ?, bio = ?,friends_count = ?, ")
+             .append("updated_date_time = now() ")
+             .append("WHERE user_id = ?;");
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE profile SET username = ?, bio = ?,friends_count = ?, updated_date_time = now() WHERE user_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1, profile.getUserName());
             statement.setString(2, profile.getBio());
             statement.setInt(3, profile.getFriendsCount());
@@ -124,10 +131,11 @@ public class ProfileDaoImpl implements ProfileDao {
     @Override
     public int delete(String userId) {
         int noOfRowsDeleted = 0;
-        
+        String query;
+        query = "DELETE FROM profile WHERE user_id = ?;";
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "DELETE FROM profile WHERE user_id = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1,userId);
             noOfRowsDeleted = statement.executeUpdate();
@@ -149,10 +157,11 @@ public class ProfileDaoImpl implements ProfileDao {
     public Profile getUserProfileByUserName(String userName) {
         ResultSet resultSet;
         Profile profile = null;
-        
+        String query;
+        query = "SELECT * FROM profile WHERE username = ?;";
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT * FROM profile WHERE username = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1,userName);
             resultSet = statement.executeQuery();
@@ -183,10 +192,11 @@ public class ProfileDaoImpl implements ProfileDao {
     public List<String> getExistingUserNames() {
         List<String> userNames = new ArrayList();
         ResultSet resultSet;
-        
+        String query;
+        query = "SELECT username FROM profile;";
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT username FROM profile;";
             statement = connection.prepareStatement(query);
             resultSet = statement.executeQuery();
             
@@ -210,11 +220,14 @@ public class ProfileDaoImpl implements ProfileDao {
     @Override
     public int setPublic(String userId) {
         int noOfRowsUpdated = 0;
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE profile SET ")
+             .append("visibility = 'public', updated_date_time = now() ")
+             .append("WHERE user_id = ?;");
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE profile SET visibility = 'public', updated_date_time = now() WHERE user_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,userId);
             noOfRowsUpdated = statement.executeUpdate();
         } catch (SQLException sqlException) {
@@ -234,11 +247,15 @@ public class ProfileDaoImpl implements ProfileDao {
     @Override
     public int setPrivate(String userId) {
         int noOfRowsUpdated = 0;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE profile SET ")
+             .append("query = visibility = 'private', ")
+             .append("updated_date_time = now() ")
+             .append("WHERE user_id = ?;");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE profile SET visibility = 'private', updated_date_time = now() WHERE user_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,userId);
             noOfRowsUpdated = statement.executeUpdate();
         } catch (SQLException sqlException) {

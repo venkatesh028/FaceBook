@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import com.ideas2it.logger.CustomLogger;
 
 /**
- * Database Connection class gets the sql connection
+ * Implements logic to create the sql databse connection
  *
  * @version 1.0 01-Nov-2022
  * @author Venkatesh TM

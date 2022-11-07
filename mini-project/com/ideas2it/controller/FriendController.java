@@ -6,7 +6,7 @@ import com.ideas2it.model.Friend;
 import com.ideas2it.service.FriendService;
 
 /**
- * It performs the create, delete and get operation for Friend
+ * It implements the logic of create, delete and get operation for friend
  *
  * @version  1.0 05-Nov-2022
  * @author Venkatesh TM

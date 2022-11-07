@@ -22,7 +22,6 @@ public class PostDaoImpl implements PostDao {
     CustomLogger logger;
     Connection connection;
     PreparedStatement statement;
-    String query;
     
     public PostDaoImpl() {
         logger = new CustomLogger(PostDaoImpl.class);
@@ -34,11 +33,14 @@ public class PostDaoImpl implements PostDao {
     @Override  
     public int create(Post post) {   
         int noOfRowsAffected = 0;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO ")
+             .append("post(id, user_id, content, created_date_time) ")
+             .append("VALUES(?,?,?,now());");
+
         try {     
             connection = DatabaseConnection.getConnection();
-            query = "INSERT INTO post(id, user_id, content, created_date_time) VALUES(?,?,?,now());";
-            statement = connection.prepareStatement(query); 
+            statement = connection.prepareStatement(query.toString()); 
             statement.setString(1,post.getId());
             statement.setString(2,post.getPostedUserId());
             statement.setString(3,post.getContent());
@@ -60,11 +62,14 @@ public class PostDaoImpl implements PostDao {
     @Override 
     public int update(String id, String content) {
         int noOfRowsUpdated = 0;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE post SET ")
+             .append("query = content = ?, updated_date_time = now() ")
+             .append("WHERE id = ?;");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE post SET content = ?, updated_date_time = now() WHERE id = ?;";
-            statement = connection.prepareStatement(query); 
+            statement = connection.prepareStatement(query.toString()); 
             statement.setString(1,content);
             statement.setString(2,id);
             noOfRowsUpdated = statement.executeUpdate();          
@@ -85,11 +90,14 @@ public class PostDaoImpl implements PostDao {
     @Override 
     public int updateLikeCount(String id, int likeCount) {
         int noOfRowsUpdated = 0;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE post ")
+             .append("SET like_count = ?, updated_date_time = now() ")
+             .append("WHERE id = ?;");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE post SET like_count = ?, updated_date_time = now() WHERE id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setInt(1, likeCount);
             statement.setString(2, id);
             noOfRowsUpdated = statement.executeUpdate();
@@ -110,11 +118,14 @@ public class PostDaoImpl implements PostDao {
     @Override 
     public int updateCommentCount(String id, int commentCount) {
         int noOfRowsUpdated = 0;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE post SET ")
+             .append("comment_count = ?, updated_date_time = now() ")
+             .append("WHERE id = ?;");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE post SET comment_count = ?, updated_date_time = now() WHERE id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setInt(1, commentCount);
             statement.setString(2, id);
             noOfRowsUpdated = statement.executeUpdate();
@@ -136,11 +147,15 @@ public class PostDaoImpl implements PostDao {
     public List<Post> getUserPosts() {
         List<Post> posts = null;
         ResultSet resultSet;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT post.id, profile.username as posted_user_name, ")
+             .append("post.content, post.like_count, post.comment_count ")
+             .append("FROM post JOIN profile ON profile.user_id = post.user_id ")
+             .append("WHERE profile.visibility = 'public';");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT post.id, profile.username as posted_user_name, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id WHERE profile.visibility = 'public';";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             resultSet = statement.executeQuery();
             posts = new ArrayList<>();
 
@@ -167,12 +182,16 @@ public class PostDaoImpl implements PostDao {
     @Override
     public List<Post> getPostOfParticularUser(String userId) {
         List<Post> postOfParticularUser = null;
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT post.id, profile.username as posted_user_name, ")
+             .append("post.content, post.like_count, post.comment_count ")
+             .append("FROM post JOIN profile ON profile.user_id = post.user_id ")
+             .append("WHERE post.user_id = ?;");
         ResultSet resultSet;
         
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT post.id, profile.username as posted_user_name, post.content, post.like_count, post.comment_count FROM post JOIN profile ON profile.user_id = post.user_id WHERE post.user_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,userId);
             resultSet = statement.executeQuery();            
             postOfParticularUser = new ArrayList<>();
@@ -191,8 +210,7 @@ public class PostDaoImpl implements PostDao {
                 connection.close();
             } catch (SQLException sqlException) {}
         } 
-        return postOfParticularUser;
-       
+        return postOfParticularUser;       
     }
 
     /**
@@ -201,10 +219,11 @@ public class PostDaoImpl implements PostDao {
     @Override
     public int delete(String id) { 
         int noOfRowsDeleted = 0;
-        
+        String query;
+        query = "DELETE FROM post WHERE id = ?;";
+
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "DELETE FROM post WHERE id = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1, id);
             noOfRowsDeleted = statement.executeUpdate();

@@ -15,7 +15,6 @@ import com.ideas2it.connection.DatabaseConnection;
 public class NotificationDaoImpl implements NotificationDao  { 
     private CustomLogger logger;
     private Connection connection;  
-    private String query;    
     private PreparedStatement statement;      
     
     public NotificationDaoImpl() {
@@ -28,11 +27,14 @@ public class NotificationDaoImpl implements NotificationDao  {
     @Override
     public int create(Notification notification) {
         int noOfRowsAffected  = 0;
-         
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO notification ")
+             .append("(id, friend_request_id, created_date_time) ")
+             .append("VALUES(?,?,now());");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "INSERT INTO notification (id, friend_request_id, created_date_time) VALUES(?,?,now());";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,notification.getId());
             statement.setString(2,notification.getRequestId());
             noOfRowsAffected = statement.executeUpdate();       
@@ -54,11 +56,17 @@ public class NotificationDaoImpl implements NotificationDao  {
     public List<Notification> getNotifications(String userId) {
         ResultSet resultSet;
         List<Notification> notifications = null;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT notification.id, notification.friend_request_id, ") 
+             .append("profile.username, friend_request.created_date_time ")
+             .append("FROM notification JOIN friend_request ")
+             .append("ON friend_request.id = notification.friend_request_id ")
+             .append("JOIN profile ON profile.user_id = friend_request.requested_user_id ")
+             .append("WHERE friend_request.user_id = ?;");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT notification.id, notification.friend_request_id, profile.username, friend_request.created_date_time FROM notification JOIN friend_request ON friend_request.id = notification.friend_request_id JOIN profile ON profile.user_id = friend_request.requested_user_id WHERE friend_request.user_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,userId);
             resultSet = statement.executeQuery();
             notifications = new ArrayList<>();
@@ -91,10 +99,14 @@ public class NotificationDaoImpl implements NotificationDao  {
     public int update(String id) {
         int noOfRowsUpdated = 0;
         String status = "seen";
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE notification SET ")
+             .append("notification_status = ?, updated_date_time = now() ")
+             .append("WHERE id = ?;");
+
         try { 
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE notification SET notification_status = ?, updated_date_time = now() WHERE id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,status);
             statement.setString(2,id);
             noOfRowsUpdated = statement.executeUpdate();
@@ -115,10 +127,11 @@ public class NotificationDaoImpl implements NotificationDao  {
     @Override  
     public int delete(String id) {
         int noOfRowsDeleted = 0;
-        
+        String query;
+        query = "DELETE FROM notification WHERE id = ?;";
+
         try { 
-            connection = DatabaseConnection.getConnection();
-            query = "DELETE FROM notification WHERE id = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1,id);
             noOfRowsDeleted = statement.executeUpdate();

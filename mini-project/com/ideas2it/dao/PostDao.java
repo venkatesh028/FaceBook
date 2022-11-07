@@ -3,8 +3,9 @@ package com.ideas2it.dao;
 import java.util.List;
 import com.ideas2it.model.Post;
 
-/**
- * Perform add, update and get function for the post
+/** 
+ * It is interface for the Post dao impl it contains the method for
+ * create, update, delete, get operations for post
  * 
  * @version 1.0 22-SEP-2022
  * @author Venkatesh TM
@@ -26,8 +27,7 @@ public interface PostDao {
      * @param  content - content of the post need to be updated
      * @return noOfRowsUpdated - number of the rows based on the updation
      */
-    public int update(String id, String content);  
-    
+    public int update(String id, String content);      
 
     /**
      * Updates the like count

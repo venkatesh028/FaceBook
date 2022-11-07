@@ -1,10 +1,12 @@
 package com.ideas2it.dao;
 
 import java.util.List;
+
 import com.ideas2it.model.Profile;
 
 /**
- * Performs create, get, update, delete funtionality of the profile
+ * It is interface for the profile dao impl it contains the method for
+ * create, update, delete, get operations for profile
  *
  * @version 1.1 31-OCT-2022
  * @author Venkatesh TM

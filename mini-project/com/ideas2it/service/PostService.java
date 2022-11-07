@@ -11,7 +11,7 @@ import com.ideas2it.dao.PostDao;
 import com.ideas2it.dao.daoImpl.PostDaoImpl;
 
 /**
- * Perform the add post, like and comment for the post 
+ * Implements the create, get, update, delete operation for the post 
  * 
  * @version 1.0 23-SEP-2022
  * @author Venkatesh TM
@@ -24,7 +24,7 @@ public class PostService {
     }
     
     /**
-     * Adds the post 
+     * Creates the post 
      * 
      * @param  postedUserId - id of the user who posted the post
      * @parma  content   - post of the user 
@@ -69,7 +69,7 @@ public class PostService {
      * Updates the comment count of post based on the post id
      * 
      * @param postId - id of the post 
-     * @param likeCount - count of the comment
+     * @param commentCount - count of the comment
      * @return isUpdated - true or false based on the response
      */
     public boolean updateCommentCount(String postId, int commentCount) {
@@ -102,7 +102,7 @@ public class PostService {
     }
     
     /**
-     * Gets the post based on there userName 
+     * Gets the post based on there userId 
      * 
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
@@ -110,7 +110,7 @@ public class PostService {
     public List<Post> getPostOfParticularUser(String userId) {
         List<Post> userPosts;
         userPosts = postDao.getPostOfParticularUser(userId);
-
+      
         return userPosts;
     } 
 }

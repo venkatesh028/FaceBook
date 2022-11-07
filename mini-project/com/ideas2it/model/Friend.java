@@ -1,5 +1,14 @@
 package com.ideas2it.model;
 
+/**
+ * Contain the attributes of the Friend
+ * Constructor is used to initialize the attributes 
+ * and getter and setter method  is used to update and retrive the attributes
+ * tostring method is used to return the values
+ *
+ * @version 1.0 02-NOV-2022
+ * @author Venkatesh TM
+ */
 public class Friend {
     private String id;
     private String userId;

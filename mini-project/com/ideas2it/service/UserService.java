@@ -14,7 +14,7 @@ import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 
 /**
- * Perform the Update, delete, create operation for the user
+ * It implements the logic of Update, delete, create, read and validation operation for the user
  *
  * @version 1.0 22-SEP-2022
  * @author Venkatesh TM
@@ -45,7 +45,13 @@ public class UserService {
         profileService.create(profile);
         return isCreated;
     }
-    
+   
+    /**
+     * Updates the user 
+     *
+     * @param user - details of the user
+     * @return isUpdated - true or false based on the result
+     */
     public boolean update(User user) {
         boolean isUpdated;
         isUpdated = userDao.update(user) > 0;

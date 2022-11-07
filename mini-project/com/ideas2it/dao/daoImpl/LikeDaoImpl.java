@@ -22,7 +22,6 @@ import com.ideas2it.dao.LikeDao;
 public class LikeDaoImpl implements LikeDao {
     Connection connection;
     PreparedStatement statement;
-    String query;
     CustomLogger logger;
 
     public LikeDaoImpl() {
@@ -35,11 +34,14 @@ public class LikeDaoImpl implements LikeDao {
     @Override 
     public int create(Like like) {
         int noOfRowsAffected = 0;
-         
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO post_like ")
+             .append("(id, post_id, liked_user_id, created_date_time) ")
+             .append("VALUES(?,?,?,now());");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "INSERT INTO post_like (id, post_id, liked_user_id, created_date_time) VALUES(?,?,?,now());";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,like.getId());
             statement.setString(2,like.getPostId());
             statement.setString(3,like.getLikedUserId());
@@ -61,10 +63,11 @@ public class LikeDaoImpl implements LikeDao {
     @Override 
     public int delete(String postId, String userId) {
         int noOfRowsDeleted = 0;
-        
+        String query;
+        query = "DELETE FROM post_like WHERE post_id = ? AND liked_user_id = ?;";
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "DELETE FROM post_like WHERE post_id = ? AND liked_user_id = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1,postId);
             statement.setString(2,userId);
@@ -87,11 +90,13 @@ public class LikeDaoImpl implements LikeDao {
     public int getLikeCountOfPost(String postId) {
         int likeCount = 0;
         ResultSet resultSet;
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT count(id) AS like_count ")
+             .append("FROM post_like WHERE post_id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT count(id) AS like_count FROM post_like WHERE post_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,postId);
             resultSet = statement.executeQuery();
             
@@ -116,10 +121,11 @@ public class LikeDaoImpl implements LikeDao {
     public List<String> getLikedUsersIdOfPost(String postId) {
         List<String> likedUsersId = null;
         ResultSet resultSet;
-        
+        String query;
+        query = "SELECT liked_user_id FROM post_like WHERE post_id = ?;";
+
         try {
-            connection = DatabaseConnection.getConnection();
-            query = "SELECT liked_user_id FROM post_like WHERE post_id = ?;";
+            connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
             statement.setString(1,postId);
             resultSet = statement.executeQuery();
@@ -146,11 +152,14 @@ public class LikeDaoImpl implements LikeDao {
     public List<String> getLikedUserNamesOfPost(String postId) {
         List<String> likedUserNames = null;
         ResultSet resultSet;
-        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT username FROM profile JOIN post_like ")
+             .append("ON post_like.liked_user_id = profile.user_id  ")
+             .append("WHERE post_like.post_id = ?;");
+
         try {
             connection = DatabaseConnection.getConnection();
-            query = "SELECT username FROM profile JOIN post_like ON post_like.liked_user_id = profile.user_id  WHERE post_like.post_id = ?;";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,postId);
             resultSet = statement.executeQuery();
             likedUserNames = new ArrayList<>(); 

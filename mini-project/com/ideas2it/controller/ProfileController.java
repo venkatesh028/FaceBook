@@ -4,7 +4,7 @@ import com.ideas2it.service.ProfileService;
 import com.ideas2it.model.Profile;
 
 /**
- * Perform the set, get and update operation for the profile
+ * Implemtens create, get, update and delete operation for the profile
  *
  * @version 1.0 23-SEP-2022
  * @author  Venkatesh TM
@@ -17,8 +17,7 @@ public class ProfileController {
     }
     
     /**
-     * Create the profileId for the profile and set that
-     * and add profile to the database 
+     * Creates the profile
      * 
      * @param  profile - profile contain the details of the profile 
      * @return boolean - true or false based on the response
@@ -38,7 +37,7 @@ public class ProfileController {
     } 
     
     /**
-     * Updates the userName and bio of the profile
+     * Updates the profile
      * 
      * @param profile - details of the profile
      * @return boolean - true or false based on the response
@@ -48,7 +47,7 @@ public class ProfileController {
     }
 
     /**
-     * Deletes the profile based on the profileId
+     * Deletes the profile based on the userId
      *
      * @param  userId - id of the user which need to be deleted 
      * @return boolean - true or false based on the response 
@@ -66,34 +65,34 @@ public class ProfileController {
     public Profile getProfileByUserName(String userName) {
         return profileService.getUserProfileByUserName(userName);
     }
-
+    
     /**
      * Check is the username is exist or not
      * 
      * @param  userName username given by the user
      * @return boolean  true if the name is not exist else false
      */
-     public boolean isUserNameExist(String username) {
-         return profileService.isUserNameExist(username);
-     } 
-     
-     /**
-      * Sets the profile as public 
-      * 
-      * @param  userId - id of the user
-      * @return boolean - true or false based on the response
-      */
-     public boolean setPublic(String userId) {
-         return profileService.setPublic(userId);
-     }
+    public boolean isUserNameExist(String username) {
+        return profileService.isUserNameExist(username);
+    }
+      
+    /**
+     * Sets the profile as public 
+     * 
+     * @param  userId - id of the user
+     * @return boolean - true or false based on the response
+     */
+    public boolean setPublic(String userId) {
+        return profileService.setPublic(userId);
+    }
 
-     /**
-      * Sets the profile as private
-      * 
-      * @param  userId - id of the user
-      * @return boolean - true or false based on the response
-      */
-     public boolean setPrivate(String userId) {
-         return profileService.setPrivate(userId);
-     }
+    /**
+     * Sets the profile as private
+     * 
+     * @param  userId - id of the user
+     * @return boolean - true or false based on the response
+     */
+    public boolean setPrivate(String userId) {
+        return profileService.setPrivate(userId);
+    }
 } 

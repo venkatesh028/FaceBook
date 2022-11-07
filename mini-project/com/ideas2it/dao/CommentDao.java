@@ -5,7 +5,8 @@ import java.util.List;
 import com.ideas2it.model.Comment;
 
 /**
- * Perform the Creation,Updation,Deletion and Get operation of the comment
+ * It is interface for the Comment dao impl it contains the method for
+ * create, update, delete, get operations for comment
  *
  * @version 1.0 01-Nov-2022
  * @author Venkatesh TM
@@ -13,7 +14,7 @@ import com.ideas2it.model.Comment;
 public interface CommentDao {
     
     /**
-     * Creates comment 
+     * Creates the comment
      *
      * @param  comment - details of the comment
      * @return noOfRowsAffected - number of rows affected based on the comment creation

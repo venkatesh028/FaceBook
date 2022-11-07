@@ -1,5 +1,14 @@
 package com.ideas2it.model;
 
+/**
+ * Contain the attributes of the Comment
+ * Constructor is used to initialize the attributes 
+ * and getter and setter method  is used to update and retrive the attributes
+ * tostring method is used to return the values
+ *
+ * @version 1.0 01-NOV-2022
+ * @author Venkatesh TM
+ */
 public class Comment {
     private String id;
     private String postId;

@@ -4,7 +4,7 @@ import com.ideas2it.service.FriendRequestService;
 import com.ideas2it.model.FriendRequest;
 
 /**
- * It performs the create, update, delete, get operations for the friend request
+ * It implements the logic of create, update, delete, get operations for the friend request
  *
  * @version 1.0 03-Nov-2022
  * @author Venkatesh TM
