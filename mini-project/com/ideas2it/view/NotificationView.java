@@ -5,20 +5,17 @@ import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.ideas2it.controller.ProfileController;
-import com.ideas2it.controller.UserController;
-import com.ideas2it.controller.NotificationController;
 import com.ideas2it.constant.Constants;
-import com.ideas2it.controller.NotificationController;
 import com.ideas2it.model.Notification;
-import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.model.Friend;
 import com.ideas2it.model.FriendRequest;
 import com.ideas2it.model.Profile;
 import com.ideas2it.controller.FriendController;
 import com.ideas2it.controller.FriendRequestController;
-import com.ideas2it.constant.Constants;
-
+import com.ideas2it.controller.NotificationController;
+import com.ideas2it.controller.ProfileController;
+import com.ideas2it.controller.UserController;
+import com.ideas2it.logger.CustomLogger;
 /**
  * Notification view shows the friend request received from the different users
  * User can Accept or rejecet the request based on the user wish
@@ -45,6 +42,12 @@ public class NotificationView {
         this.searchPage = new SearchPage();
     }
     
+    /**
+     * Shows the request details and also provide option to accept, reject and skip
+     *
+     * @param userId - id of the user
+     * @param notification - details of the notification
+     */
     public void viewRequest(String userId,Notification notification) {
         Profile profile ;
         int selectedOption;
@@ -72,8 +75,11 @@ public class NotificationView {
             break;
 
         case Constants.REJECT:
-             //notificationController.clearNotification();
-             break;
+            String rejected = "rejected";
+            friendRequest.setStatus(rejected);
+            friendRequestController.update(friendRequest);
+            notificationController.clearNotification(notification.getId());
+            break;
 
         case Constants.SKIP:
              break;
@@ -81,9 +87,9 @@ public class NotificationView {
     }
     
     /**
-     * Shows the requests received from the users
+     * Shows the Notification of the users and provide view & go back options
      * 
-     * @param userId   id of the user
+     * @param userId - id of the user
      */ 
     public void showNotification(String userId) {
         int selectedOption;

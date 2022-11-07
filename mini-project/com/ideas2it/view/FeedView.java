@@ -38,7 +38,7 @@ public class FeedView {
     /**
      * Shows the newsfeed page
      *
-     * @param profileId 
+     * @param userId 
      */
     public void showNewsFeed(String userId) {        
         int action;
@@ -96,6 +96,9 @@ public class FeedView {
         return option;
     }
     
+    /**
+     * Generates the feed menu
+     */
     private String generateFeedMenu() {
         StringBuilder feedMenu = new StringBuilder();
 
@@ -113,5 +116,4 @@ public class FeedView {
                 .append(" --> To Logout");
         return feedMenu.toString();
     }
-
 }

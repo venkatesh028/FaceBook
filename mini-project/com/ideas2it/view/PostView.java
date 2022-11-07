@@ -65,7 +65,7 @@ public class PostView {
     }
 
     /**
-     * gets the userName who liked the post
+     * Gets the userName who liked the post
      */
     private void showLikedUsers() {
         String postId;
@@ -84,7 +84,7 @@ public class PostView {
     }
     
     /**
-     * Add comment to the post be getting the details about that post
+     * Add comment to the post by getting the details about that post
      * 
      * @param userId - id of the user who comment
      */
@@ -126,6 +126,11 @@ public class PostView {
         } 
     } 
     
+    /**
+     * Deletes the comment by getting the id of the comment
+     *
+     * @param userId - id of the user 
+     */
     private void deleteComment(String userId) {
         String postId;
         String commentId;
@@ -149,7 +154,7 @@ public class PostView {
      * Shows the post to the user and also provide the option to
      * Add post, like and comment 
      *
-     * @param userId userId of the user who is in this page
+     * @param userId - id of the user who is in this page
      */
     public void displayPost(String userId) {      
         

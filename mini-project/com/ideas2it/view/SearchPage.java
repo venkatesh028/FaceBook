@@ -91,7 +91,13 @@ public class SearchPage {
             System.out.println("Account is private ");
         }
     }
-
+    
+    /**
+     * Shows the option to give the friend request to the user
+     * 
+     * @param profile - details of the profile who got searched 
+     * @param userId - id of the user who is searching
+     */
     public void showRequestOption(Profile profile, String userId) {
         String requestMenu = generateRequestMenu();
         int selectedOption;

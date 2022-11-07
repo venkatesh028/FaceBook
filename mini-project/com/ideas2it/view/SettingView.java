@@ -40,9 +40,9 @@ public class SettingView {
     }
     
     /**
-     * Shows the personal information of the user
+     * Shows the personal information of the user based on the userId
      * 
-     * @param userId - userId of the user
+     * @param userId - Id of the user
      */
     private void showPersonalInfo(String userId) {
         System.out.println(userController.getUser(userId));            
@@ -147,7 +147,7 @@ public class SettingView {
      * Updates the password of the user by getting new password 
      * from the user
      * 
-     * @param userId - userId id of the user
+     * @param userId - id of the user
      */
     private void updatePassword(String userId) {
         User user = userController.getUser(userId);

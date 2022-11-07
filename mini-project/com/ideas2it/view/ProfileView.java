@@ -30,9 +30,9 @@ public class ProfileView {
     }
     
     /**
-     * Shows the update page 
+     * Shows the update profile option to update the username and bio of the profile 
      *
-     * @param userId
+     * @param userId - id of the user
      */
     private void updateProfile(String userId) {
         Profile profile = profileController.getProfile(userId);
@@ -91,9 +91,9 @@ public class ProfileView {
     }
 
     /**
-     * Shows the post by the username
+     * Shows the post of the user based on the id
      * 
-     * @param userId userId of the user
+     * @param userId - Id of the user
      */    
     private void showMyPost(String userId) {         
         System.out.println(postController.getPostOfParticularUser(userId)); 
@@ -101,7 +101,6 @@ public class ProfileView {
     
     /**
      * Delete the post based on the id
-     *
      */
     private void deletePost() {
         String postId;
@@ -118,7 +117,7 @@ public class ProfileView {
     /**
      * Shows the profilepage of the user
      * 
-     * @param userId userId of the user
+     * @param userId - id of the user
      */
     public void displayProfilePage(String userId) {
         int selectedOption; 
@@ -154,6 +153,9 @@ public class ProfileView {
         }  
     }
     
+    /**
+     * Updates the post by getting the details like postId and content
+     */
     private void updatePost() {
         String postId;
         String content;
