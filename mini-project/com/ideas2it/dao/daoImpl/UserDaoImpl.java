@@ -50,14 +50,12 @@ public class UserDaoImpl implements UserDao {
             statement.setString(3,user.getPassword());
             statement.setDate(4,Date.valueOf(user.getDateOfBirth()));
             statement.setInt(5,user.getAge());
-            userCreated = statement.executeUpdate();
+            userCreated = statement.executeUpdate(); 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+        } finally {            
+            DatabaseConnection.closeConnection();
         }
         return userCreated;
     } 
@@ -83,13 +81,11 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(5,user.getPhoneNumber());
             statement.setString(6,user.getId());
             userUpdated = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return userUpdated;    
     }  
@@ -108,13 +104,11 @@ public class UserDaoImpl implements UserDao {
             statement = connection.prepareStatement(query);
             statement.setString(1,id);
             noOfRowDeleted = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowDeleted;
     }
@@ -134,14 +128,12 @@ public class UserDaoImpl implements UserDao {
             statement = connection.prepareStatement(query.toString());
             statement.setString(1,newEmail);
             statement.setString(2,id);
-            noOfRowsUpdated = statement.executeUpdate();            
+            noOfRowsUpdated = statement.executeUpdate();
+            statement.close();            
         } catch (SQLException sqlException) { 
             logger.error(sqlException.getMessage());
         }finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }  
@@ -160,14 +152,12 @@ public class UserDaoImpl implements UserDao {
             statement = connection.prepareStatement(query);
             statement.setString(1,password);
             statement.setString(2,id);
-            noOfRowsUpdated = statement.executeUpdate();            
+            noOfRowsUpdated = statement.executeUpdate();   
+            statement.close();         
         } catch (SQLException sqlException) { 
             logger.error(sqlException.getMessage());
         }finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }
@@ -187,13 +177,11 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(2,age);
             statement.setString(3,id);
             noOfRowsUpdated = statement.executeUpdate(); 
+            statement.close();
         } catch (SQLException sqlException) { 
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }    
@@ -212,14 +200,12 @@ public class UserDaoImpl implements UserDao {
             statement = connection.prepareStatement(query);
             statement.setLong(1,phoneNumber);
             statement.setString(2,id);
-            noOfRowsUpdated = statement.executeUpdate();             
+            noOfRowsUpdated = statement.executeUpdate();     
+            statement.close();        
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }
@@ -248,14 +234,12 @@ public class UserDaoImpl implements UserDao {
                 user.setDateOfBirth((resultSet.getDate("date_of_birth").toLocalDate()));
                 user.setAge(resultSet.getInt("age"));
                 user.setPhoneNumber(resultSet.getLong("phone_number"));
-            }              
+            }     
+            statement.close();         
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return user;
     }
@@ -278,13 +262,11 @@ public class UserDaoImpl implements UserDao {
             while (resultSet.next()) {
                 existingEmail.add(resultSet.getString("email"));   
             }
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error("Error in connection");
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return existingEmail;
     }
@@ -307,7 +289,8 @@ public class UserDaoImpl implements UserDao {
             
             if (resultSet.next()) {
                 password = resultSet.getString("password");
-            }
+            } 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
@@ -338,13 +321,11 @@ public class UserDaoImpl implements UserDao {
             if (resultSet.next()) {
                 id = resultSet.getString("id");
             }
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {};
+            DatabaseConnection.closeConnection();
         }
         return id;
     }

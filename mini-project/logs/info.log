@@ -1,3 +1,5 @@
 2022-11-07 12:29:14,172 INFO com.ideas2it.view.UserView [main] Account is not Created
 2022-11-07 14:25:40,647 INFO com.ideas2it.view.PostView [main] Post added Successfully
 2022-11-07 14:32:46,785 INFO com.ideas2it.view.PostView [main] Comment added successfully 
+2022-11-08 17:18:30,403 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
+2022-11-08 17:18:56,907 INFO com.ideas2it.view.UserView [main] Invalid password try again

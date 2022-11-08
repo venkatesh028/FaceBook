@@ -12,6 +12,12 @@ import com.ideas2it.model.Notification;
 import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.connection.DatabaseConnection;
 
+/**
+ * Performs the Create, get, Update, delete operations for the Notification
+ * 
+ * @version 1.0 04-NOV-2022
+ * @author Venkatesh TM
+ */
 public class NotificationDaoImpl implements NotificationDao  { 
     private CustomLogger logger;
     private Connection connection;  
@@ -37,14 +43,12 @@ public class NotificationDaoImpl implements NotificationDao  {
             statement = connection.prepareStatement(query.toString());
             statement.setString(1,notification.getId());
             statement.setString(2,notification.getRequestId());
-            noOfRowsAffected = statement.executeUpdate();       
+            noOfRowsAffected = statement.executeUpdate(); 
+            statement.close();      
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
-        } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+        } finally {  
+            DatabaseConnection.closeConnection();
         }   
         return noOfRowsAffected;    
     }
@@ -80,14 +84,11 @@ public class NotificationDaoImpl implements NotificationDao  {
                notification.setRequestGivenAt(resultSet.getTimestamp("created_date_time"));
                notifications.add(notification);
             }
-
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }   
         return notifications;        
     }    
@@ -110,13 +111,11 @@ public class NotificationDaoImpl implements NotificationDao  {
             statement.setString(1,status);
             statement.setString(2,id);
             noOfRowsUpdated = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }   
         return noOfRowsUpdated;
     } 
@@ -135,13 +134,11 @@ public class NotificationDaoImpl implements NotificationDao  {
             statement = connection.prepareStatement(query);
             statement.setString(1,id);
             noOfRowsDeleted = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }   
         return noOfRowsDeleted;
     }   

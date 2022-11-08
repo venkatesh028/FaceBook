@@ -12,6 +12,12 @@ import com.ideas2it.model.Friend;
 import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.dao.FriendDao;
 
+/**
+ * Performs the Create, get, Update, delete operations for the Friend
+ * 
+ * @version 1.0 04-NOV-2022
+ * @author Venkatesh TM
+ */
 public class FriendDaoImpl implements FriendDao {
     private CustomLogger logger;
     private Connection connection;     
@@ -40,13 +46,11 @@ public class FriendDaoImpl implements FriendDao {
             statement.setString(2,friend.getUserId());
             statement.setString(3,friend.getFriendId());
             noOfRowsAffected = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) { 
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch(SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsAffected;
     }
@@ -65,14 +69,12 @@ public class FriendDaoImpl implements FriendDao {
             statement = connection.prepareStatement(query);
             statement.setString(1,friend.getUserId());
             statement.setString(2,friend.getFriendId());
-            noOfRowsDeleted = statement.executeUpdate();          
+            noOfRowsDeleted = statement.executeUpdate();  
+            statement.close();        
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsDeleted;
     }    
@@ -100,13 +102,11 @@ public class FriendDaoImpl implements FriendDao {
             while(resultSet.next()) {
                 friends.add(resultSet.getString("username"));
             }
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return friends;
     }

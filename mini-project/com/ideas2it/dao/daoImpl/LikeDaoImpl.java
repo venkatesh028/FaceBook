@@ -46,13 +46,11 @@ public class LikeDaoImpl implements LikeDao {
             statement.setString(2,like.getPostId());
             statement.setString(3,like.getLikedUserId());
             noOfRowsAffected = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsAffected;
     }
@@ -71,14 +69,12 @@ public class LikeDaoImpl implements LikeDao {
             statement = connection.prepareStatement(query);
             statement.setString(1,postId);
             statement.setString(2,userId);
-            noOfRowsDeleted = statement.executeUpdate();
+            noOfRowsDeleted = statement.executeUpdate(); 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsDeleted;
     }
@@ -103,13 +99,11 @@ public class LikeDaoImpl implements LikeDao {
             if (resultSet.next()) {
                 likeCount = resultSet.getInt("like_count");
             }
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());   
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch(SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return likeCount;
     }
@@ -133,14 +127,12 @@ public class LikeDaoImpl implements LikeDao {
             
             while (resultSet.next()) {
                 likedUsersId.add(resultSet.getString("liked_user_id"));
-            }         
+            } 
+            statement.close();         
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         } 
         return likedUsersId;         
     }
@@ -166,14 +158,12 @@ public class LikeDaoImpl implements LikeDao {
             
             while (resultSet.next()) {
                 likedUserNames.add(resultSet.getString("username"));
-            }         
+            }    
+            statement.close();     
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         } 
         return likedUserNames;         
     }  

@@ -42,4 +42,13 @@ public class DatabaseConnection {
 
         return connection;
     }
+    
+    public static void closeConnection() {
+
+        try {
+            connection.close();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        }
+    }
 }

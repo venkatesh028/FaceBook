@@ -45,14 +45,12 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.setString(1,profile.getId());
             statement.setString(2,profile.getUserId());
             statement.setString(3,profile.getUserName());
-            noOfRowsAffected = statement.executeUpdate();        
+            noOfRowsAffected = statement.executeUpdate();      
+            statement.close();  
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsAffected;
     }
@@ -82,13 +80,11 @@ public class ProfileDaoImpl implements ProfileDao {
                 profile.setFriendsCount(resultSet.getInt("friends_count")); 
                 profile.setVisibility(resultSet.getString("visibility"));
             }
+            statement.close();
         }  catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {};
+            DatabaseConnection.closeConnection();
         }
         return profile;
     }
@@ -114,13 +110,11 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.setString(4, profile.getUserId());
          
             noOfRowsUpdated = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     } 
@@ -139,13 +133,11 @@ public class ProfileDaoImpl implements ProfileDao {
             statement = connection.prepareStatement(query);
             statement.setString(1,userId);
             noOfRowsDeleted = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsDeleted;
     }  
@@ -174,13 +166,11 @@ public class ProfileDaoImpl implements ProfileDao {
                 profile.setFriendsCount(resultSet.getInt("friends_count"));
                 profile.setVisibility(resultSet.getString("visibility"));
             }
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         }  finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {};
+            DatabaseConnection.closeConnection();
         }
         return profile;
     }
@@ -202,14 +192,12 @@ public class ProfileDaoImpl implements ProfileDao {
             
             while (resultSet.next()) {
                 userNames.add(resultSet.getString("username"));
-            }
+            } 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         }  finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {};
+            DatabaseConnection.closeConnection();
         }
         return userNames;         
     }
@@ -230,13 +218,11 @@ public class ProfileDaoImpl implements ProfileDao {
             statement = connection.prepareStatement(query.toString());
             statement.setString(1,userId);
             noOfRowsUpdated = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated; 
     }
@@ -257,14 +243,12 @@ public class ProfileDaoImpl implements ProfileDao {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
             statement.setString(1,userId);
-            noOfRowsUpdated = statement.executeUpdate();
+            noOfRowsUpdated = statement.executeUpdate(); 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {};
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated; 
     }

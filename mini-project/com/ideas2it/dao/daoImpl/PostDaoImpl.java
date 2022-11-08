@@ -44,14 +44,12 @@ public class PostDaoImpl implements PostDao {
             statement.setString(1,post.getId());
             statement.setString(2,post.getPostedUserId());
             statement.setString(3,post.getContent());
-            noOfRowsAffected = statement.executeUpdate();
+            noOfRowsAffected = statement.executeUpdate(); 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsAffected;
     }
@@ -72,14 +70,12 @@ public class PostDaoImpl implements PostDao {
             statement = connection.prepareStatement(query.toString()); 
             statement.setString(1,content);
             statement.setString(2,id);
-            noOfRowsUpdated = statement.executeUpdate();          
+            noOfRowsUpdated = statement.executeUpdate();  
+            statement.close();        
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }
@@ -101,13 +97,11 @@ public class PostDaoImpl implements PostDao {
             statement.setInt(1, likeCount);
             statement.setString(2, id);
             noOfRowsUpdated = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }
@@ -128,14 +122,12 @@ public class PostDaoImpl implements PostDao {
             statement = connection.prepareStatement(query.toString());
             statement.setInt(1, commentCount);
             statement.setString(2, id);
-            noOfRowsUpdated = statement.executeUpdate();
+            noOfRowsUpdated = statement.executeUpdate(); 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }
@@ -164,14 +156,12 @@ public class PostDaoImpl implements PostDao {
                                         ,resultSet.getString("content"),resultSet.getInt("like_count")
                                         ,resultSet.getInt("comment_count"));
                 posts.add(post);     
-            }  
+            }
+            statement.close();  
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+        } finally { 
+            DatabaseConnection.closeConnection();
         } 
         return posts;
     }
@@ -201,14 +191,12 @@ public class PostDaoImpl implements PostDao {
                                    ,resultSet.getString("content"),resultSet.getInt("like_count")
                                    ,resultSet.getInt("comment_count"));
                 postOfParticularUser.add(post);               
-            }  
+            } 
+            statement.close(); 
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         } 
         return postOfParticularUser;       
     }
@@ -227,13 +215,11 @@ public class PostDaoImpl implements PostDao {
             statement = connection.prepareStatement(query);
             statement.setString(1, id);
             noOfRowsDeleted = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close(); 
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsDeleted;
     } 

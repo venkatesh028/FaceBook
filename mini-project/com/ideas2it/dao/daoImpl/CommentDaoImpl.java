@@ -46,13 +46,11 @@ public class CommentDaoImpl implements CommentDao {
             statement.setString(3,comment.getCommentedUserId());
             statement.setString(4,comment.getContent());
             noOfRowsAffected = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsAffected;
     }
@@ -75,13 +73,11 @@ public class CommentDaoImpl implements CommentDao {
             statement.setString(1,content);
             statement.setString(2,id);
             noOfRowsUpdated = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }
@@ -100,13 +96,11 @@ public class CommentDaoImpl implements CommentDao {
             statement = connection.prepareStatement(query);
             statement.setString(1,id);
             noOfRowsDeleted = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());    
         } finally {
-            try { 
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsDeleted;
     }
@@ -130,14 +124,12 @@ public class CommentDaoImpl implements CommentDao {
             
             if (resultSet.next()) {
                 commentsCount = resultSet.getInt("comments_count");
-            }
+            } 
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return commentsCount;     
     }
@@ -169,14 +161,11 @@ public class CommentDaoImpl implements CommentDao {
                 comment.setContent(resultSet.getString("content"));
                 comments.add(comment);
             }
-
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return comments;
     }
@@ -201,13 +190,11 @@ public class CommentDaoImpl implements CommentDao {
             if (resultSet.next()) {
                 comment.setCommentedUserId(resultSet.getString("commented_user_id"));
             }
+            statement.close();
         }  catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return comment;        
     }

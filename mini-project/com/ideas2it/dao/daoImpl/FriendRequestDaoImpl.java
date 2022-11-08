@@ -10,6 +10,12 @@ import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.FriendRequest;
 import com.ideas2it.dao.FriendRequestDao;
 
+/**
+ * Performs the Create, get, Update, delete operations for the FriendRequest 
+ * 
+ * @version 1.0 04-NOV-2022
+ * @author Venkatesh TM
+ */
 public class FriendRequestDaoImpl implements FriendRequestDao {
     private CustomLogger logger;
     Connection connection;     
@@ -18,7 +24,11 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
     public FriendRequestDaoImpl() {
         this.logger = new CustomLogger(FriendRequestDaoImpl.class);
     }
-
+   
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int create(FriendRequest friendRequest) {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
@@ -33,17 +43,19 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
             statement.setString(2,friendRequest.getUserId());
             statement.setString(3,friendRequest.getRequestedUserId());
             noOfRowsAffected = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch(SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsAffected;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int update(FriendRequest friendRequest) {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
@@ -57,17 +69,19 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
             statement.setString(1, friendRequest.getStatus());
             statement.setString(2, friendRequest.getId());
             noOfRowsUpdated = statement.executeUpdate();
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch(SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FriendRequest get(String requestId) {
         ResultSet resultSet;
         FriendRequest friendRequest = null;
@@ -88,13 +102,11 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
                 friendRequest.setRequestedUserId(resultSet.getString("requested_user_id"));
                 friendRequest.setStatus(resultSet.getString("request_status"));
             }
+            statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch(SQLException sqlException) {}
+            DatabaseConnection.closeConnection();
         }
         return friendRequest;
     }
