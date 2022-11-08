@@ -12,6 +12,8 @@ import com.ideas2it.dao.UserDao;
 import com.ideas2it.dao.daoImpl.UserDaoImpl;
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.constant.Constants;
 
 /**
  * It implements the logic of Update, delete, create, read and validation operation for the user
@@ -70,57 +72,21 @@ public class UserService {
         return isDeleted;
     }
 
-    /**
-     * Update the Email of the user
-     * 
-     * @param userId   id of the user
-     * @parma newEmail updated email of the user
-     * @retun boolean  true or false based on the response
-     */
-    public boolean updateEmail(String userId, String newEmail) {
-        return (userDao.updateEmail(userId, newEmail) > 0 )? true : false;        
-    }
-
-    /**
-     * Updates the password of the user
-     *
-     * @param userId - id of the user
-     * @param newPassword - new password 
-     * @return boolean  true or false based on the response
-     */
-    public boolean updatePassword(String userId, String newPassword) {
-        return (userDao.updatePassword(userId, newPassword) > 0) ? true : false;
-    }
-
-    /**
-     * Updates the Dateofbirth and age of the user
-     *
-     * @param userId - id of the user
-     * @param dateOfBirth - dateOfBirth entered by the user
-     */
-    public boolean updateDateOfBirthAndAge(String userId, LocalDate dateOfBirth, int age) {
-        return (userDao.updateDateOfBirthAndAge(userId, dateOfBirth, age) > 0);        
-    } 
-    
-    /**
-     * Updates the phone number of the user
-     * 
-     * @param  userId - id of the user
-     * @param  phoneNumber - phone number of the user
-     * @return boolean true or false based on the response
-     */
-    public boolean updatePhoneNumber(String userId, long phoneNumber) {
-        return (userDao.updatePhoneNumber(userId, phoneNumber) > 0) ? true : false;
-    }
-
     /** 
      * Get the user Based on th id
      *
      * @param  userId userid of the user
      * @return user   user 
      */ 
-    public User getById(String userId) {
-        return userDao.getUser(userId); 
+    public User getById(String userId) throws CustomException {
+        User user = userDao.getUser(userId);
+
+        if (null != user) {
+          
+        } else {
+            throw new CustomException(Constants.ERROR_01);
+        } 
+        return user; 
     }    
 
     /**

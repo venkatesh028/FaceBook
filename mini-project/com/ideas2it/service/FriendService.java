@@ -6,6 +6,8 @@ import java.util.List;
 import com.ideas2it.model.Friend;
 import com.ideas2it.dao.FriendDao;
 import com.ideas2it.dao.daoImpl.FriendDaoImpl;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.constant.Constants;
 
 /**
  * It implements the logic of create, delete and get operation for friend
@@ -58,7 +60,12 @@ public class FriendService {
      * @param userId - id of the user
      * @return listOfFriends - username of the friends
      */
-    public List<String> getFriends(String userId) {
-        return friendDao.getFriends(userId);
+    public List<String> getFriends(String userId) throws CustomException {
+        List<String> friends = friendDao.getFriends(userId);
+        
+        if (friends.isEmpty()) {
+            throw new CustomException(Constants.ERRORR_04);
+        } 
+        return friends;
     }
 }

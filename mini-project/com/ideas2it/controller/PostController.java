@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.ideas2it.model.Post;
 import com.ideas2it.service.PostService;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Implements the create, get, update, delete operation for the post
@@ -13,9 +15,11 @@ import com.ideas2it.service.PostService;
  */
 public class PostController {
     private PostService postService;
-     
+    private CustomLogger logger;
+       
     public PostController() { 
         this.postService = new PostService();
+        this.logger = new CustomLogger(PostController.class);
     }
 
     /**
@@ -46,7 +50,14 @@ public class PostController {
      * @return allPosts - all the post 
      */
     public List<Post> getUserPosts() {
-        return postService.getUserPosts();
+        List<Post> listOfPosts = null;
+         
+        try {
+            listOfPosts = postService.getUserPosts();
+        } catch (CustomException customException) {
+            logger.error(customException.getMessage());
+        }
+        return listOfPosts;
     }
     
     /**
@@ -56,7 +67,14 @@ public class PostController {
      * @return userPosts - posts of the particular user
      */
     public List<Post> getPostOfParticularUser(String userId) {
-        return postService.getPostOfParticularUser(userId);
+        List<Post> listOfPosts = null;
+         
+        try {
+            listOfPosts = postService.getPostOfParticularUser(userId);;
+        } catch (CustomException customException) {
+            logger.error(customException.getMessage());
+        }
+        return listOfPosts;
     } 
 
     /**

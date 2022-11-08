@@ -2,12 +2,15 @@ package com.ideas2it.view;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.List;
 
 import com.ideas2it.constant.Constants;
 import com.ideas2it.controller.PostController;
 import com.ideas2it.controller.ProfileController;
+import com.ideas2it.controller.FriendController;
 import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.model.Profile;
+import com.ideas2it.model.Post;
 
 /**
  * Shows the profile page to the user based on the user action
@@ -20,13 +23,15 @@ public class ProfileView {
     private ProfileController profileController;
     private PostController postController;
     private Scanner scanner;  
-    private CustomLogger logger;                                  
+    private CustomLogger logger; 
+    private FriendController friendController;                                 
      
     public ProfileView() {
         this.profileController = new ProfileController();
         this.postController = new PostController();
         this.scanner = new Scanner(System.in);
         this.logger = new CustomLogger(ProfileView.class);
+        this.friendController = new FriendController();
     }
     
     /**
@@ -95,8 +100,14 @@ public class ProfileView {
      * 
      * @param userId - Id of the user
      */    
-    private void showMyPost(String userId) {         
-        System.out.println(postController.getPostOfParticularUser(userId)); 
+    private void showMyPost(String userId) {  
+        List<Post> listOfPost = postController.getPostOfParticularUser(userId); 
+         
+        if (null != listOfPost) {
+            System.out.println(listOfPost);
+        } else {
+            System.out.println("No Post Uploaded yet");            
+        }           
     }
     
     /**
@@ -111,6 +122,17 @@ public class ProfileView {
             System.out.println("Post Deleted ..");
         } else {
             logger.info("Something went wrong..");
+        }
+    }
+    
+    private void showFriends(String userId) {
+        List<String> friends = friendController.getFriends(userId);
+        
+        if (null != friends) {
+            System.out.println(friends);
+            
+        } else {
+           System.out.println("No Friends added yet");   
         }
     }
 
@@ -142,7 +164,11 @@ public class ProfileView {
             case Constants.DELETE_POST:
                 deletePost();
                 break;
-            
+
+            case Constants.VIEW_FRIENDS:
+                showFriends(userId);
+                break;
+
             case Constants.EXIT_PROFILEPAGE:
                 profilePage = false;                
                 break;
@@ -201,6 +227,8 @@ public class ProfileView {
                    .append(Constants.DELETE_POST).append("--> To delete the post ") 
                    .append("\nEnter ").append(Constants.UPDATE_POST)
                    .append(" --> To Update the post")
+                   .append("\nEnter ").append(Constants.VIEW_FRIENDS)
+                   .append(" --> To View Friends ")
                    .append("\nEnter ").append(Constants.EXIT_PROFILEPAGE)
                    .append(" --> To Exit");
 

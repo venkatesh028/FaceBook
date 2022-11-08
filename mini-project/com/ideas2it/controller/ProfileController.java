@@ -2,6 +2,8 @@ package com.ideas2it.controller;
 
 import com.ideas2it.service.ProfileService;
 import com.ideas2it.model.Profile;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Implemtens create, get, update and delete operation for the profile
@@ -11,9 +13,11 @@ import com.ideas2it.model.Profile;
  */
 public class ProfileController {
     ProfileService profileService;
+    private CustomLogger logger;
 
     public ProfileController() {
         this.profileService = new ProfileService();
+        this.logger = new CustomLogger(ProfileController.class);
     }
     
     /**
@@ -62,8 +66,15 @@ public class ProfileController {
      * @param  userName  - userName of the profile 
      * @return profile - profile of the profile
      */
-    public Profile getProfileByUserName(String userName) {
-        return profileService.getUserProfileByUserName(userName);
+    public Profile getProfileByUserName(String userName) { 
+        Profile profile = null;
+         
+        try {
+            profile = profileService.getUserProfileByUserName(userName); 
+        } catch (CustomException customException) { 
+            logger.error(customException.getMessage());
+        }
+        return profile;
     }
     
     /**

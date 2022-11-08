@@ -140,7 +140,7 @@ public class PostView {
         System.out.println("Enter the commen Id : ");
         commentId = scanner.nextLine();
         comment = commentController.getComment(commentId);
-        
+      
         if (comment.getCommentedUserId().equals(userId)) {
             comment.setId(commentId);
             comment.setPostId(postId);
@@ -178,10 +178,10 @@ public class PostView {
     
         while (postFeedRunning) {       
             listOfPosts = postController.getUserPosts();
-            if (listOfPosts.isEmpty()) {
-                System.out.println("Post is not available");    
+            if (null != listOfPosts) {
+                System.out.println(listOfPosts);       
             } else {
-                System.out.println(listOfPosts);
+                System.out.println("Post is not available");
             } 
             
             System.out.println(statement);

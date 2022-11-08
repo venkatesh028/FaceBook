@@ -9,6 +9,8 @@ import java.util.HashSet;
 import com.ideas2it.dao.ProfileDao;
 import com.ideas2it.dao.daoImpl.ProfileDaoImpl;
 import com.ideas2it.model.Profile;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.constant.Constants;
 
 /** 
  * Implements the logic of Create, update, delete operation for the user profile
@@ -47,7 +49,8 @@ public class ProfileService {
      * @return profile - profile details of the user
      */
     public Profile getProfile(String userId) {
-        return profileDao.getProfile(userId);
+        Profile profile = profileDao.getProfile(userId);
+        return profile;
     }
     
     /**
@@ -71,7 +74,8 @@ public class ProfileService {
     public boolean increaseFriendCount(String userId) {
         boolean isUpdated;
         int friendCount;
-        Profile profile = getProfile(userId);
+       
+        Profile profile = getProfile(userId);        
         friendCount = profile.getFriendsCount(); 
         profile.setFriendsCount(friendCount + 1);
         isUpdated = profileDao.update(profile) > 0;
@@ -112,8 +116,14 @@ public class ProfileService {
      * @param  userName - username of the user
      * @return profile - details of the user
      */
-    public Profile getUserProfileByUserName(String userName) {
+    public Profile getUserProfileByUserName(String userName) throws CustomException {
         Profile profile = profileDao.getUserProfileByUserName(userName);
+
+        if (null != profile) {
+            
+        } else {
+            throw new CustomException(Constants.ERROR_02);
+        }
         return profile;
     }
 

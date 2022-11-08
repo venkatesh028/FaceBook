@@ -9,6 +9,8 @@ import com.ideas2it.model.Like;
 import com.ideas2it.model.Post;
 import com.ideas2it.dao.PostDao;
 import com.ideas2it.dao.daoImpl.PostDaoImpl;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.constant.Constants;
 
 /**
  * Implements the create, get, update, delete operation for the post 
@@ -94,10 +96,15 @@ public class PostService {
      *
      * @return allPosts - all the post 
      */
-    public List<Post> getUserPosts() {
+    public List<Post> getUserPosts() throws CustomException {
         List<Post> allPosts;
         allPosts = postDao.getUserPosts();
-
+        
+        if (!allPosts.isEmpty()) { 
+            
+        } else {
+            throw new CustomException(Constants.ERROR_03);
+        }
         return allPosts;
     }
     
@@ -107,9 +114,14 @@ public class PostService {
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
      */
-    public List<Post> getPostOfParticularUser(String userId) {
+    public List<Post> getPostOfParticularUser(String userId) throws CustomException {
         List<Post> userPosts;
         userPosts = postDao.getPostOfParticularUser(userId);
+        
+        if (!userPosts.isEmpty()) {
+        } else { 
+            throw new CustomException(Constants.ERROR_03);
+        }
       
         return userPosts;
     } 

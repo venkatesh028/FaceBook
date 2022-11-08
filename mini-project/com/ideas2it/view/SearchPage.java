@@ -61,7 +61,12 @@ public class SearchPage {
                 System.out.print("Enter the username : ");
                 userName = scanner.nextLine();
                 profile = search(userName);
-                showRequestOption(profile, userId);
+                
+                if (null != profile) {
+                    showRequestOption(profile, userId);
+                } else {
+                    System.out.println("There is no profile with this username");
+                }
                 break;
 
             case Constants.TO_GO_BACK:

@@ -8,6 +8,8 @@ import com.ideas2it.service.UserService;
 import com.ideas2it.util.ValidationUtil;
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * It implements the logic to Update, delete, create, read and validation operation for the user 
@@ -18,10 +20,12 @@ import com.ideas2it.model.Profile;
 public class UserController {
     private UserService userService;
     private ValidationUtil validationUtil;
+    private CustomLogger logger;
 
     public UserController() {
         this.userService = new UserService();
         this.validationUtil = new ValidationUtil();
+        this.logger = new CustomLogger(UserController.class);
     } 
 
     /**
@@ -54,49 +58,6 @@ public class UserController {
         return userService.update(user);
     }
 
-    /**
-     * Update the Email of the user
-     * 
-     * @param userId   id of the user
-     * @parma newEmail updated email of the user
-     * @retun boolean  true or false based on the response
-     */
-    public boolean updateEmail(String userId, String newEmail) {
-        return userService.updateEmail(userId, newEmail);
-    }
-
-    /**
-     * Updates the password of the user
-     *
-     * @param userId - id of the user
-     * @param newPassword - new password 
-     * @return boolean  true or false based on the response
-     */
-    public boolean updatePassword(String userId, String newPassword) {
-        return userService.updatePassword(userId, newPassword);
-    }
-
-    /**
-     * Updates the Dateofbirth and age of the user
-     *
-     * @param userId - id of the user
-     * @param dateOfBirth - dateOfBirth entered by the user
-     */
-    public boolean updateDateOfBirthAndAge(String userId, LocalDate dateOfBirth, int age) {
-        return userService.updateDateOfBirthAndAge(userId, dateOfBirth, age);
-    }
-    
-    /**
-     * Updates the phone number of the user
-     * 
-     * @param  userId - id of the user
-     * @param  phoneNumber - phone number of the user
-     * @return boolean true or false based on the response
-     */
-    public boolean updatePhoneNumber(String userId, long phoneNumber) {
-        return userService.updatePhoneNumber(userId, phoneNumber);
-    }
-
     /** 
      * Get the user Based on th id
      *
@@ -104,7 +65,13 @@ public class UserController {
      * @return user   user 
      */     
     public User getUser(String userId) {
-        return userService.getById(userId);  
+        User user = null;
+        try {
+            user = userService.getById(userId);  
+        } catch(CustomException customException) {
+            logger.error(customException.getMessage());         
+        }
+        return user;
     }
 
     /** 
@@ -145,6 +112,7 @@ public class UserController {
      * @return boolean     true if the given data matches the format else false
      */
     public boolean isValidDateOfBirth(String dateOfBirth) {
+
         try {
             validationUtil.isValidDateOfBirth(dateOfBirth);
         } catch(DateTimeParseException DE) {

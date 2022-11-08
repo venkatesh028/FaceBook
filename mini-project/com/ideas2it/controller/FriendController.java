@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.ideas2it.model.Friend;
 import com.ideas2it.service.FriendService;
+import com.ideas2it.logger.CustomLogger;
+import com.ideas2it.exception.CustomException;
 
 /**
  * It implements the logic of create, delete and get operation for friend
@@ -13,9 +15,11 @@ import com.ideas2it.service.FriendService;
  */
 public class FriendController {
     private FriendService friendService;
+    private CustomLogger logger;
 
     public FriendController() {
-        friendService = new FriendService();
+        this.friendService = new FriendService();
+        this.logger = new CustomLogger(FriendController.class);
     }
     
     /**
@@ -44,7 +48,14 @@ public class FriendController {
      * @param userId - id of the user
      * @return lisOfFriends - list of friends of the particuar user
      */
-    public List<String> getFriends(String userId) {  
-        return friendService.getFriends(userId);
+    public List<String> getFriends(String userId) {
+        List<String> friends = null; 
+
+        try {
+            friends = friendService.getFriends(userId);
+        } catch (CustomException customException) {
+            logger.error(customException.getMessage());
+        }
+        return friends;
     }
 }
