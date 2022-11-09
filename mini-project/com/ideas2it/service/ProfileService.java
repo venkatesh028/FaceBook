@@ -119,10 +119,8 @@ public class ProfileService {
     public Profile getUserProfileByUserName(String userName) throws CustomException {
         Profile profile = profileDao.getUserProfileByUserName(userName);
 
-        if (null != profile) {
-            
-        } else {
-            throw new CustomException(Constants.ERROR_02);
+        if (null == profile) {
+            throw new CustomException(Constants.ERROR_02);    
         }
         return profile;
     }
