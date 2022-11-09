@@ -100,10 +100,8 @@ public class PostService {
         List<Post> allPosts;
         allPosts = postDao.getUserPosts();
         
-        if (!allPosts.isEmpty()) { 
-            
-        } else {
-            throw new CustomException(Constants.ERROR_03);
+        if (allPosts.isEmpty()) { 
+            throw new CustomException(Constants.ERROR_03);   
         }
         return allPosts;
     }
@@ -118,11 +116,9 @@ public class PostService {
         List<Post> userPosts;
         userPosts = postDao.getPostOfParticularUser(userId);
         
-        if (!userPosts.isEmpty()) {
-        } else { 
+        if (userPosts.isEmpty()) {
             throw new CustomException(Constants.ERROR_03);
-        }
-      
+        }      
         return userPosts;
     } 
 }

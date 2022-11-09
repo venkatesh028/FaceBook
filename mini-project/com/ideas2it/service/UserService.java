@@ -81,11 +81,9 @@ public class UserService {
     public User getById(String userId) throws CustomException {
         User user = userDao.getUser(userId);
 
-        if (null != user) {
-          
-        } else {
+        if (null == user) {
             throw new CustomException(Constants.ERROR_01);
-        } 
+        }
         return user; 
     }    
 

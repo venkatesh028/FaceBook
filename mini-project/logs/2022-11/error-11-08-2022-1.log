@@ -1,0 +1,21 @@
+2022-11-07 12:29:14,108 ERROR com.ideas2it.dao.daoImpl.UserDaoImpl [main] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VALUES('a84ca97b-fe70-4ca3-a526-6a2af253455b','newEmail@gmail.com','NewEmail@09'' at line 1
+2022-11-07 12:29:14,170 ERROR com.ideas2it.dao.daoImpl.ProfileDaoImpl [main] Cannot add or update a child row: a foreign key constraint fails (`facebook`.`profile`, CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE)
+2022-11-07 14:26:15,955 ERROR com.ideas2it.dao.daoImpl.PostDaoImpl [main] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= SET like_count = 2, updated_date_time = now() WHERE id = '497b32e5-80bf-41d6-b' at line 1
+2022-11-08 16:40:59,666 ERROR com.ideas2it.dao.daoImpl.LikeDaoImpl [main] Cannot add or update a child row: a foreign key constraint fails (`facebook`.`post_like`, CONSTRAINT `post_like_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE)
+2022-11-08 16:43:51,883 ERROR com.ideas2it.dao.daoImpl.LikeDaoImpl [main] Cannot add or update a child row: a foreign key constraint fails (`facebook`.`post_like`, CONSTRAINT `post_like_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE)
+2022-11-08 17:35:31,631 ERROR com.ideas2it.dao.daoImpl.LikeDaoImpl [main] Cannot add or update a child row: a foreign key constraint fails (`facebook`.`post_like`, CONSTRAINT `post_like_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE)
+2022-11-08 19:41:29,978 ERROR com.ideas2it.controller.ProfileController [main] 
+Profile Not Exist
+2022-11-08 19:45:27,448 ERROR com.ideas2it.controller.ProfileController [main] 
+Profile Not Exist
+2022-11-08 19:58:56,897 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 19:59:40,175 ERROR com.ideas2it.dao.daoImpl.PostDaoImpl [main] Unknown column 'query' in 'field list'
+2022-11-08 19:59:40,221 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:28:32,144 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:28:45,395 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:39:36,156 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:39:38,987 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:42:19,180 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:42:20,583 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:44:49,630 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
+2022-11-08 20:44:51,785 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
