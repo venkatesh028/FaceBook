@@ -1,16 +1,16 @@
 package com.ideas2it.view;
 
-import java.util.Scanner;
 import java.lang.Exception;  
 import java.util.InputMismatchException;
 import java.time.LocalDate;
+import java.util.Scanner;
 
-import com.ideas2it.controller.ProfileController;
-import com.ideas2it.controller.UserController;
 import com.ideas2it.constant.Constants;
 import com.ideas2it.logger.CustomLogger;
-import com.ideas2it.model.User;
+import com.ideas2it.controller.ProfileController;
 import com.ideas2it.model.Profile;
+import com.ideas2it.controller.UserController;
+import com.ideas2it.model.User;
 
 /**
  * Shows the home page to the user based on the user option
@@ -37,13 +37,12 @@ public class UserView {
 
     /** 
      * Gets the emailId and password from the user
-     * and pass data to the validation based on result 
+     * and pass data to the validation result  is based on
      * values are stored
      */ 
     public void login() {
         String email;
-        String password;
-       
+        String password;       
         boolean isAccountExist = false;
     
         while (!isAccountExist) {
@@ -54,7 +53,8 @@ public class UserView {
  
             if (userController.isEmailExist(email)) {               
                 if (userController.isValidCredentials(email, password)) {
-                    feedView.showNewsFeed(profileController.getProfileId(userController.getUserId(email)));
+                    feedView.showNewsFeed(userController.getUserId(email));
+                    System.out.println("Account login Successfully ");
                     isAccountExist = true;
                 } else {
                     logger.info("Invalid password try again");
@@ -77,7 +77,7 @@ public class UserView {
         String profileId;
         int age;
 
-        user.setEmail(getEmail());  
+        user.setEmail(getEmail()); 
         user.setPassword(getPassword());
         user.setDateOfBirth(getDateOfBirth());          
         age = userController.calculateAge(user.getDateOfBirth());
@@ -86,16 +86,13 @@ public class UserView {
             user.setAge(age );            
             System.out.println("Set user name to keep your account unique"); 
             profile.setUserName(getUserName());       
-            user.setProfile(profile);
 
-            if (userController.create(user, profile) == null) { 
+            if (userController.create(user, profile)) { 
                 userId = userController.getUserId(user.getEmail()); 
-                profileId = profileController.getProfileId(userId);                 
-                System.out.println("Account Created Succesfully");
-                
-                feedView.showNewsFeed(profileId); 
+                System.out.println("Account Created Succesfully");                
+                feedView.showNewsFeed(userId); 
             } else {
-                logger.info("This email Id is alredy exist");
+                logger.info("Account is not Created");
             }  
         } else {
             logger.info("You are not elibile to create a account");
@@ -134,7 +131,7 @@ public class UserView {
     }  
 
     /**
-     * Get dateofBirth of the user
+     * Gets dateofBirth of the user
      * And Validate it
      *
      * @return dateOfBirth if it is valid 
@@ -157,7 +154,7 @@ public class UserView {
     }
     
     /**
-     * Get email of the user 
+     * Gets email of the user 
      * And validate it
      *
      * @return email email of the user if it is valid
@@ -184,7 +181,7 @@ public class UserView {
     }
     
     /**
-     * Get the password of the user
+     * Gets the password of the user
      * And validate it
      * 
      * @return password  password of the user if it is valid
@@ -211,7 +208,7 @@ public class UserView {
     }
     
     /**
-     * Get username of the user
+     * Gets username of the user
      * And validate it
      * 
      * @return userName username of the user if it is valid
@@ -238,9 +235,9 @@ public class UserView {
     }  
  
     /**
-     * Get input form the user 
+     * Gets option form the user 
      * 
-     * @return input input given by the user
+     * @return option - option given by the user
      */
     private int getOption() {
         Scanner scanner = new Scanner(System.in);
@@ -269,6 +266,7 @@ public class UserView {
                 .append(" --> To login ")
                 .append("\nEnter ").append(Constants.EXIT_HOMEPAGE)
                 .append(" --> To quit ");
+
         return homeMenu.toString();
     }
 }

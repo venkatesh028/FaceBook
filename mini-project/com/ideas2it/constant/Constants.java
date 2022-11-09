@@ -26,7 +26,9 @@ public class Constants {
     
     public final static int UPDATE_PROFILE = 1;
     public final static int DELETE_POST =2;
-    public final static int EXIT_PROFILEPAGE = 3;
+    public static final int UPDATE_POST = 3; 
+    public static final int  VIEW_FRIENDS = 4;
+    public final static int EXIT_PROFILEPAGE = 5;
 
     public final static int UPDATE_USERNAME = 1;
     public final static int UPDATE_BIO = 2;
@@ -37,7 +39,8 @@ public class Constants {
     public final static int LIKEDUSERS = 3;
     public final static int COMMENT = 4;
     public final static int VIEW_COMMENTS = 5;
-    public final static int EXIT_POSTPAGE = 6;   
+    public final static int DELETE_COMMENT = 6;
+    public final static int EXIT_POSTPAGE = 7;   
    
     public final static int SHOW_PERSONAL_INFO = 1;
     public final static int UPDATE_PERSONAL_INFO = 2;
@@ -63,5 +66,18 @@ public class Constants {
     
     public final static int ACCEPT = 1;
     public final static int REJECT = 2;
-    public final static int SKIP = 3;     
+    public final static int SKIP = 3;
+
+    public final static int EXIT_LIKED_USERS = 1;   
+    
+    public final static int SET_PUBLIC = 1;
+    public final static int SET_PRIVATE = 2;
+    public final static int GO_BACK = 3;  
+    
+    public final static int VIEW_REQUEST = 1;
+    
+    public final static String ERROR_01 = "User Not Found";
+    public final static String ERROR_02 = "Profile Not Exist";
+    public final static String ERROR_03 = "There is No Post Available";
+    public final static String ERRORR_04 = "There is No Friend";
 }

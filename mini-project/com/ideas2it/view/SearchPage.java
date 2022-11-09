@@ -11,6 +11,8 @@ import com.ideas2it.controller.PostController;
 import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.model.Notification;
 import com.ideas2it.model.Profile;
+import com.ideas2it.model.FriendRequest;
+import com.ideas2it.controller.FriendRequestController;
 
 /**
  * Search the user and give friend request 
@@ -22,15 +24,20 @@ public class SearchPage {
     private Scanner scanner;
     private ProfileController profileController;
     private ProfileView profileView;
+    private PostController postController;
     private NotificationController notificationController;
     private CustomLogger logger;
-
+    private FriendRequestController friendRequestController;
+    
+   
     public SearchPage() {
         this.scanner  = new Scanner(System.in);
         this.profileController = new ProfileController();
         this.profileView = new ProfileView();
         this.notificationController = new NotificationController();
         this.logger = new CustomLogger(SearchPage.class);
+        this.friendRequestController = new FriendRequestController();
+        this.postController = new PostController();
     }
     
     /**
@@ -41,7 +48,9 @@ public class SearchPage {
     public void showSearchPage(String userId){
         boolean isGoBack = false;  
         int selectedOption;
+        String userName;
         String searchMenu = generateSearchMenu();
+        Profile profile;
 
         while (!isGoBack) {
             System.out.print(searchMenu);
@@ -49,16 +58,14 @@ public class SearchPage {
 
             switch (selectedOption) {
             case Constants.SEARCH:
-                Profile profile = search(userId);
-
-                if (profile != null) {
-                    if (profile.getUserName().equals(profileController.getUserName(userId))) {
-                        profileView.displayProfilePage(userId);
-                    } else {
-                        showUserProfile(profile, userId);
-                    }
+                System.out.print("Enter the username : ");
+                userName = scanner.nextLine();
+                profile = search(userName);
+                
+                if (null != profile) {
+                    showRequestOption(profile, userId);
                 } else {
-                        logger.info("There is no account with this username ");
+                    System.out.println("There is no profile with this username");
                 }
                 break;
 
@@ -70,7 +77,7 @@ public class SearchPage {
                 logger.warn("Entered wrong option\n");                    
                 break;               
             }
-        }     
+        }  
     }
     
     /**
@@ -78,35 +85,50 @@ public class SearchPage {
      *
      * @param profile profile of the user who got searched
      */
-    public void showUserProfile(Profile profile, String profileId) {
-        int selectedOption;
-        String requestedUser = profileController.getUserName(profileId);      
-        PostController postController = new PostController();
-        String requestMenu = generateRequestMenu();
-
-        if (!profile.getIsPrivate()) {                 
-            System.out.print(profile);
-            System.out.print(postController.getPostByUserName(profile.getUserName()));
+    public void showUserProfile(Profile profile) {        
+        int selectedOption;            
+             
+        System.out.println(profile);
+        
+        if (profile.getVisibility().equals("public")) {
+            System.out.println(postController.getPostOfParticularUser(profile.getUserId())); 
         } else {
-            System.out.print(profile);
-            System.out.print("Account is private ");
+            System.out.println("Account is private ");
         }
-
-       System.out.println(requestMenu); 
-       selectedOption = getOption();      
+    }
+    
+    /**
+     * Shows the option to give the friend request to the user
+     * 
+     * @param profile - details of the profile who got searched 
+     * @param userId - id of the user who is searching
+     */
+    public void showRequestOption(Profile profile, String userId) {
+        String requestMenu = generateRequestMenu();
+        int selectedOption;
+        showUserProfile(profile);
+        System.out.println(requestMenu); 
+        selectedOption = getOption();       
        
-       switch (selectedOption) {
-       case Constants.ADD_FRIEND:
-           Notification notification = new Notification(requestedUser, LocalDate.now());
-           notificationController.addNotification(profile.getUserName(), notification);      
-           break;
+        switch (selectedOption) {
+        case Constants.ADD_FRIEND:
+            FriendRequest friendRequest = new FriendRequest();
+            friendRequest.setUserId(profile.getUserId());
+            friendRequest.setRequestedUserId(userId);
 
-       case Constants.REMOVE_FRIEND:     
-           break;
+            if (friendRequestController.create(friendRequest)) {
+                System.out.println("Request is Given");
+            } else {
+                System.out.println("Request is not given");
+            }
+            break;
 
-       case Constants.BACK:
-           break;
-       }
+        case Constants.REMOVE_FRIEND:     
+            break;
+       
+        case Constants.BACK:
+            break;
+        } 
     }
     
     /**
@@ -114,11 +136,8 @@ public class SearchPage {
      * 
      * @return profile profile based on the username
      */
-    public Profile search(String profileId) {
-        String userName;
-        System.out.print("Enter the username : ");
-        userName = scanner.nextLine();
-        return profileController.getUserProfile(userName);
+    public Profile search(String userName) {
+        return profileController.getProfileByUserName(userName);
     }
 
     /**
@@ -171,6 +190,6 @@ public class SearchPage {
                    .append(" --> To go back ");
 
         return requestMenu.toString();
-    }
+    } 
 
 }

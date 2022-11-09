@@ -1,7 +1,7 @@
 package com.ideas2it.service;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.UUID;
@@ -12,9 +12,11 @@ import com.ideas2it.dao.UserDao;
 import com.ideas2it.dao.daoImpl.UserDaoImpl;
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.constant.Constants;
 
 /**
- * Perform the Update, delete, create operation for the user
+ * It implements the logic of Update, delete, create, read and validation operation for the user
  *
  * @version 1.0 22-SEP-2022
  * @author Venkatesh TM
@@ -22,10 +24,79 @@ import com.ideas2it.model.Profile;
 public class UserService {
     private UserDao userDao;
     private ProfileService profileService;
-
+    
     public UserService() {
-        this.userDao = UserDaoImpl.getInsatance();
-        this.profileService = new ProfileService();
+        userDao = new UserDaoImpl();  
+        profileService = new ProfileService();     
+    }
+    
+    /**
+     * Create a account for the user and set the userId for the user
+     *
+     * @param  user  details of the user
+     * @return boolean true after adding the account 
+     */
+    public boolean create(User user, Profile profile) {
+        String id;
+        boolean isCreated;
+
+        id = UUID.randomUUID().toString();
+        user.setId(id);
+        profile.setUserId(id);  
+        isCreated = (userDao.create(user) > 0); 
+        profileService.create(profile);
+        return isCreated;
+    }
+   
+    /**
+     * Updates the user 
+     *
+     * @param user - details of the user
+     * @return isUpdated - true or false based on the result
+     */
+    public boolean update(User user) {
+        boolean isUpdated;
+        isUpdated = userDao.update(user) > 0;
+        return isUpdated;
+    }
+
+    /**
+     * Delete the account of the user based on the user request 
+     * 
+     * @param  userId  userId of the user
+     * @return boolean true after deleting the account
+     */
+    public boolean delete(String userId) {
+        int rowAffected = userDao.delete(userId);
+        boolean isDeleted = rowAffected > 0? true:false;
+        return isDeleted;
+    }
+
+    /** 
+     * Get the user Based on th id
+     *
+     * @param  userId userid of the user
+     * @return user   user 
+     */ 
+    public User getById(String userId) throws CustomException {
+        User user = userDao.getUser(userId);
+
+        if (null != user) {
+          
+        } else {
+            throw new CustomException(Constants.ERROR_01);
+        } 
+        return user; 
+    }    
+
+    /**
+     * Get the userid of the user based on the email 
+     *
+     * @param  email  email entered by the user
+     * @return userId Id of the user
+     */
+    public String getUserId(String email) {
+        return userDao.getId(email);
     }
 
     /**
@@ -35,118 +106,21 @@ public class UserService {
      * @return boolean true or false based on the result
      */ 
     public boolean isEmailExist(String email) {
-        Map<String, String> loginCredentials = userDao.getLoginCredentials();
-        return loginCredentials.containsKey(email);
-    }
-    
-    /**
-     * Create a account for the user and set the userId for the user
-     *
-     * @param  user  details of the user
-     * @return boolean true after adding the account 
-     */
-    public User create(User user, Profile profile) {
-        String userId;
-   
-        userId = UUID.randomUUID().toString();
-        user.setUserId(userId);       
-        profile.setUserId(userId);
-        profileService.create(profile); 
-        return userDao.create(user);
-    }
-    
-    /**
-     * Delete the account of the user based on the user request 
-     * 
-     * @param  userId  userId of the user
-     * @return boolean true after deleting the account
-     */
-    public boolean delete(String userId) {
-        return userDao.delete(userId);
+        List<String> existingEmail = userDao.getExistingEmails();
+        return existingEmail.contains(email);
     }
     
     /**
      * Check the given login credentials is valid or not 
      * 
      * @param  email    email of the user
-     * @return password password entered by the user
+     * @param  password password entered by the user
+     * @return boolean  True or false based on the result;
      */
-    public boolean isValidCredentials(String email, String password) {
-        User user;
-        boolean isValid = false;
-        Map<String, User> users;
-        Map<String, String> loginCredentials;
-        users = userDao.getUsers();
-        loginCredentials = userDao.getLoginCredentials();        
-        user = users.get(loginCredentials.get(email));
-      
-        return user != null ? user.getPassword().equals(password) : isValid;
+    public boolean isValidCredentials(String email, String password) { 
+        return userDao.getPassword(email).equals(password);        
     }
-    
-    /**
-     * Get the userid of the user based on the email 
-     *
-     * @param  email  email entered by the user
-     * @return userId userId of the user
-     */
-    public String getUserId(String email) {
-        Map<String, String> loginCredentials;
-        loginCredentials = userDao.getLoginCredentials();
-        return loginCredentials.get(email);
-    }
-    
-    /** 
-     * Get the user Based on th id
-     *
-     * @param  userId userid of the user
-     * @return user   user 
-     */ 
-    public User getById(String userId) {
-        return userDao.getById(userId); 
-    }
-
-    /**
-     * Shows the personal information of the user
-     * 
-     * @param  userId userId of the user
-     * @return user   personal information of the user
-     */    
-    public User showPersonalInfo(String userId) {
-        return userDao.getById(userId);
-    }
-    
-    /**
-     * Update the personal information of the user
-     *
-     * @param  userId   Id of the user
-     * @param  user     updated personal information of the user
-     * @return booelan  true after the updating
-     */ 
-    public User update(String userId, User user) { 
-        return userDao.update(userId, user);
-    }
-    
-    /**
-     * Update the loginCredentials of the user
-     * 
-     * @param oldEmail old email in loginCredentials
-     * @parma newEmail updated email of the user
-     * @retun boolean  true after the update
-     */
-    public String updateLoginCredentials(String oldEmail, String newEmail) {
-        return userDao.updateLoginCredentials(oldEmail, newEmail);        
-    }
-
-    /**
-     * get the profile of the user 
-     *
-     * @param  userId  userId of the user
-     * @return profile profile details of the user
-     */
-    public Profile getProfile(String userId) {
-        return userDao.getProfile(userId);
-    }
-    
+            
     /**
      * Check the entered password is correct
      * 
@@ -154,12 +128,8 @@ public class UserService {
      * @param  oldPassword  password of the user 
      * @return boolean      true or false based on the result
      */
-    public boolean isPasswordMatches(String userId, String oldPassword) {
-        Map<String, User> users; 
-        User user;
-        users = userDao.getUsers();
-        user = users.get(userId);
-        return user.getPassword().equals(oldPassword);
+    public boolean isPasswordMatches(String email, String oldPassword) {        
+        return userDao.getPassword(email).equals(oldPassword);
     }
     
     /**
@@ -174,23 +144,4 @@ public class UserService {
         age = Period.between(dateOfBirth, currentDate);
         return age.getYears();    
     }
-
-    /**
-     * Get the userId based on the uesrName 
-     * 
-     * @param  userName userName of the user
-     * @return userId   userid of the user based on the username 
-     */    
-    public String getUserIdByUserName(String userName) {
-        Map<String, User> users = userDao.getUsers();
-        String userId = "";
-
-        for (User user : users.values()) {
-            if (user.getProfile().getUserName().equals(userName)) {
-                 userId = user.getUserId();
-                break;
-            }
-        }
-        return userId;        
-    } 
 }

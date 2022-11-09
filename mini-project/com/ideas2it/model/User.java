@@ -14,25 +14,24 @@ import com.ideas2it.model.Profile;
  * @author Venkatesh TM
  */
 public class User {
-    private String userId;
+    private String id;
     private String email;
     private String password;
     private String gender;
     private LocalDate dateOfBirth;
-    private String phoneNumber;
     private int    age;
-    private Profile profile;
+    private long phoneNumber;
     
     public User() {}
 
-    public User(String userId, String email, String password) {
-        this.userId = userId;
+    public User(String id, String email, String password) {
+        this.id = id;
         this.email = email;
         this.password = password;
     }
     
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
    
     public void setEmail(String email) {
@@ -42,10 +41,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    } 
     
     public void setGender(String gender) { 
         this.gender = gender;
@@ -59,12 +54,12 @@ public class User {
         this.age = age;
     }
     
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
     
     public String getEmail() {
@@ -74,10 +69,6 @@ public class User {
     public String getPassword() {
         return password;
     }
-    
-    public Profile getProfile() {
-        return profile;
-    }
    
     public String getGender() {
         return gender;
@@ -86,15 +77,18 @@ public class User {
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
+    
+    public int getAge() {
+        return age;
+    }
      
-    public String getPhoneNumber() { 
+    public long getPhoneNumber() { 
         return phoneNumber;
     }
     
     public String toString() {
         StringBuilder userMessage = new StringBuilder();
         userMessage.append("\nEmail   : ").append(email)
-                   .append("\nGender  : ").append(gender)
                    .append("\nDOB     : ").append(dateOfBirth)
                    .append("\nAge     : ").append(age)
                    .append("\nPhNo    : ").append(phoneNumber);

@@ -1,0 +1,12 @@
+2022-11-02 15:32:38,114 INFO com.ideas2it.view.UserView [main] This email Id is alredy exist
+2022-11-02 16:03:39,539 INFO com.ideas2it.view.UserView [main] This email Id is alredy exist
+2022-11-02 16:06:42,121 INFO com.ideas2it.view.UserView [main] This email Id is alredy exist
+2022-11-02 16:09:46,382 INFO com.ideas2it.view.UserView [main] This email Id is alredy exist
+2022-11-02 16:22:06,879 INFO com.ideas2it.view.UserView [main] Account is not Created
+2022-11-02 16:27:58,976 INFO com.ideas2it.view.UserView [main] Account is not Created
+2022-11-02 16:36:51,845 INFO com.ideas2it.view.UserView [main] Account is not Created
+2022-11-02 16:51:04,705 INFO com.ideas2it.view.UserView [main] Account is not Created
+2022-11-02 17:22:01,624 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
+2022-11-02 18:02:44,790 INFO com.ideas2it.view.ProfileView [main] You entered wrong option
+2022-11-02 19:55:36,081 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 
+2022-11-02 19:56:07,901 INFO com.ideas2it.view.UserView [main] There is no account with this mailID 

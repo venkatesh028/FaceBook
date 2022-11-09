@@ -1,13 +1,13 @@
 package com.ideas2it.view;
 
-import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 import com.ideas2it.constant.Constants;
-import com.ideas2it.controller.UserController;
-import com.ideas2it.controller.ProfileController;
 import com.ideas2it.logger.CustomLogger;
+import com.ideas2it.controller.ProfileController;
+import com.ideas2it.controller.UserController;
 import com.ideas2it.model.User;
 
 /**
@@ -20,7 +20,8 @@ public class SettingView {
     private UserController userController;
     private Scanner scanner;
     private ProfileController profileController;  
-    private CustomLogger logger;
+    private CustomLogger logger; 
+    
 
     public SettingView() {
         this.userController = new UserController();
@@ -30,22 +31,21 @@ public class SettingView {
     }
      
     /**
-     * Delete the account of the user 
+     * Deletes the account of the user 
      *
      * @param userId - userId of the user
      */
-    private void deleteAccount(String userId, String profileId) {
-        userController.delete(userId);
-        profileController.delete(profileId);
+    private void deleteAccount(String userId) {
+        userController.delete(userId);                    
     }
     
     /**
-     * Shows the personal information of the user
+     * Shows the personal information of the user based on the userId
      * 
-     * @param userId - userId of the user
+     * @param userId - Id of the user
      */
     private void showPersonalInfo(String userId) {
-        System.out.println(userController.showPersonalInfo(userId));            
+        System.out.println(userController.getUser(userId));            
     }
     
     /**
@@ -55,11 +55,11 @@ public class SettingView {
      */
     private void updatePersonalInfo(String userId) {        
         int selectedOption;
-        boolean update = true;
-        User user = userController.getById(userId);
+        boolean isContinue = true;
+        User user = userController.getUser(userId);
         String updateMenu = generateUpdateMenu();
         
-        while(update) {
+        while(isContinue) {
             System.out.println(updateMenu);
             selectedOption = getOption();
 
@@ -74,12 +74,8 @@ public class SettingView {
 
                     if (userController.isValidEmail(email)) {
                         if (!userController.isEmailExist(email)) {
-                            if (userController.updateLoginCredentials(user.getEmail(), email) == null) {
-                                user.setEmail(email);
-                                isValid = true;
-                            } else {
-                                logger.warn("Something went wrong not updated ");
-                            }
+                            user.setEmail(email);
+                            isValid = true;
                         } else {
                             logger.warn("Email Already exist");
                         }                
@@ -128,7 +124,7 @@ public class SettingView {
                     String phoneNumber = scanner.nextLine();
 
                     if (userController.isValidPhoneNumber(phoneNumber)) {  
-                        user.setPhoneNumber(phoneNumber); 
+                        user.setPhoneNumber(Long.parseLong(phoneNumber)); 
                         isValidNumber = true;
                     } else {
                         logger.info("Enter in format (+91-6...)");
@@ -137,66 +133,76 @@ public class SettingView {
                 break;
 
             case Constants.EXIT_UPDATE:
-                userController.update(userId, user);
-                update = false;
+                userController.update(user);
+                isContinue = false;
                 break;
      
             default:
-                userController.update(userId, user);            
+                userController.update(user);            
             }
-        }
+        } 
     }
     
     /**
-     * Update the password of the user by getting new password 
+     * Updates the password of the user by getting new password 
      * from the user
      * 
-     * @param userId - userId id of the user
+     * @param userId - id of the user
      */
     private void updatePassword(String userId) {
-        User user = userController.getById(userId);
+        User user = userController.getUser(userId);
         String oldPassword;
         String newPassword;
         boolean isPasswordValid = false;
-        System.out.println("Enter your old Password : ");
+        System.out.print("Enter your old Password : ");
         oldPassword = scanner.nextLine();
         
-        if (userController.isPasswordMatches(userId, oldPassword)) {
-            while (!isPasswordValid) {
-                System.out.println("Enter the new password : ");
-                newPassword = scanner.nextLine();     
-            
-                if (userController.isValidPassword(newPassword)) {
-                    user.setPassword(newPassword);
-                    isPasswordValid = true;
-                } else { 
-                    logger.info("Invalid your password must contain (a-ZA-Z0-9) and Any Special Character within 8-20\n");  
-                }            
-            }
+        if (userController.isPasswordMatches(user.getEmail(),oldPassword)) {
+            System.out.print("Enter New Password : ");
+            newPassword = getPassword();
+            user.setPassword(newPassword);            
         } else {
-            logger.info("Try to enter the correct Password\n");
+            System.out.println("Invalid password");
         }
-        userController.update(userId, user);        
+        userController.update(user);    
     }
     
     /**
-     * Change the visbility of the profile from public to private and private to public
+     * Changes the visbility of the profile from public to private and private to public
      *
      * @param userId  id of the user 
      */
-    private void changeVisibility(String profileId) {
-        StringBuilder visibilityMessage = new StringBuilder();
-        visibilityMessage.append(Constants.PRIVATE).append(" --> Private ");
+    private void changeVisibility(String userId) {
+        boolean isGoBack = false;
+        int option;
+        StringBuilder visibilityInstruction = new StringBuilder();
+        visibilityInstruction.append("\nEnter ").append(Constants.SET_PUBLIC)
+                             .append(" --> To set in Public ")
+                             .append("\nEnter ").append(Constants.SET_PRIVATE)
+                             .append(" --> To set in private ")
+                             .append("\nEnter ").append(Constants.GO_BACK)
+                             .append(" --> To Go back ");
+        while (!isGoBack) {
+            System.out.println(visibilityInstruction);
+            option = getOption();
 
-        System.out.print(visibilityMessage);
-        System.out.print("Selecte the visibility : ");
-        int type = getOption();  
-        
-        if (Constants.PRIVATE == type) {
-            profileController.changeVisibility(profileId, true);
-        } else {
-            profileController.changeVisibility(profileId, false);
-        }   
+            switch (option) {
+            case Constants.SET_PUBLIC:
+                profileController.setPublic(userId);
+                break;
+
+            case Constants.SET_PRIVATE:
+                profileController.setPrivate(userId);
+                break;
+
+            case Constants.GO_BACK:
+                isGoBack = true;
+                break;
+
+            default:
+                System.out.println("You Entered Wrong option"); 
+            }
+        }
     }
     
     /**
@@ -204,9 +210,8 @@ public class SettingView {
      *
      * @param userId userid of the user
      */
-    public void displaySettingPage(String profileId) {
+    public void displaySettingPage(String userId) {
         int selectedOption;
-        String userId = profileController.getUserId(profileId);
         boolean settingPage = true;
         String settingMenu = generateSettingMenu();
 
@@ -225,22 +230,23 @@ public class SettingView {
                 break;
 
             case Constants.DELETE_ACCOUNT:
-                deleteAccount(userId, profileId);
-                break;
+                deleteAccount(userId);
+                break;  
 
             case Constants.UPDATE_PASSWORD:
                 updatePassword(userId);
                 break;
 
             case Constants.VISIBILITY:
-                changeVisibility(profileId);
+                
+                changeVisibility(userId);
                 break;
 
             case Constants.EXIT_SETTING:
                 settingPage = false; 
                 break;
             }
-        }
+        } 
     }  
      
     /**
@@ -311,5 +317,31 @@ public class SettingView {
                    .append(Constants.EXIT_SETTING)
                    .append(" -->To View Exit");
         return settingMenu.toString();
+    } 
+ 
+    /**
+     * Gets the password of the user
+     * And validate it
+     * 
+     * @return password  password of the user if it is valid
+     */
+    private String getPassword() { 
+        boolean isValid = false;
+        String password = "";
+        StringBuilder formatMessage = new StringBuilder();
+        formatMessage.append("Invalid Password.")
+                     .append("\npassword must contain (a-ZA-Z0-9)")
+                     .append(" and Any Special Character range must be 8-20)");
+         
+        while (!isValid) {
+            password = scanner.nextLine();
+            
+            if (userController.isValidPassword(password)) {
+                isValid = true;
+            } else {
+                System.out.println(formatMessage);    
+            }            
+        }  
+        return password;        
     }
 }

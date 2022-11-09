@@ -1,14 +1,15 @@
 package com.ideas2it.service;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import com.ideas2it.dao.NotificationDao;
 import com.ideas2it.dao.daoImpl.NotificationDaoImpl;
 import com.ideas2it.model.Notification;
 
 /**
- * Add the requests of the user and shows to the user
+ * Implements the create, update, get and delete operations for the Notification
  * 
  * @version 1.0 05-OCT-2022
  * @author  Venkatesh TM
@@ -21,40 +22,51 @@ public class NotificationService {
     }
     
     /** 
-     * Add the requests of the particular user with requested user details
+     * creates the notification 
      *
-     * @param userName      userName of the user for who the request is given
-     * @param requestedUser the user who gave the request
+     * @param  notification - details of the notification
+     * @return isCreated  - true or false based on result;
      */     
-    public boolean addNotification(String userName, Notification notification) {
-        return notificationDao.addNotification(userName, notification);
+    public boolean create(Notification notification) {
+        String id;
+        boolean isCreated;
+        id = UUID.randomUUID().toString();
+        notification.setId(id);
+        isCreated = notificationDao.create(notification) > 0;
+        return isCreated;
     }
     
     /**
-     * Get the requests of the particular user
+     * Gets the notifications of the particular user
      * 
-     * @param  userName userName of the user
-     * @return requests all the requests based on the user
+     * @param  userId - id of the user
+     * @return listOfNotifications all the notifications based on the user
      */
-    public Set<Notification> getNotifications(String userName) {
-        return notificationDao.getNotifications(userName);
+    public List<Notification> getNotifications(String userId) {
+        return notificationDao.getNotifications(userId);
     }
     
     /**
-     * Clears the request notification based on the responce
+     * Updates the notification 
      * 
-     * @param userName          - username to who the request is given
-     * @param requestedUserName - name of the person who gave the request
+     * @param id - id of the notification
+     * @return isUpdated - true or false based on the result
+     */     
+    public boolean update(String id) {
+        boolean isUpdated;
+        isUpdated = notificationDao.update(id) > 0;
+        return isUpdated;
+    }
+    
+    /**
+     * Clears the notification based on the id
+     * 
+     * @param id - id of the notification
+     * @param isDeleted - true or false based on the result
      */
-    public boolean clearNotification(String userName, String requestedUserName) {
-        Set<Notification> notifications = getNotifications(userName);
-        
-        for (Notification notification : notifications) {
-            if (notification.getUserName().equals(requestedUserName)) {
-                notifications.remove(notification);
-                break;
-            }   
-        }
+    public boolean clearNotification(String id) {
+        boolean isDeleted;
+        isDeleted = notificationDao.delete(id) > 0;
         return true;        
     }
 }

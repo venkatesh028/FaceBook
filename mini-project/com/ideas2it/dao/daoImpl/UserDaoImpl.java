@@ -1,8 +1,16 @@
 package com.ideas2it.dao.daoImpl;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Date;
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDate;
 
+import com.ideas2it.logger.CustomLogger;
+import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 import com.ideas2it.dao.UserDao;
@@ -10,107 +18,315 @@ import com.ideas2it.dao.UserDao;
 /**
  * Perform the creation and delete operation for the user account 
  * 
- * @version 1.0 22-SEP-2022
+ * @version 1.2 30-OCT-2022
  * @author  Venkatesh TM
  */
 public class UserDaoImpl implements UserDao {
-    private Map<String, User> users;
-    private Map<String, String> loginCredentials;
-    private User user;
-    private static  UserDaoImpl userDaoImpl;
-
-    private UserDaoImpl() {
-        this.users = new HashMap<>();
-        this.loginCredentials = new HashMap<>();
+    private CustomLogger logger;
+    Connection connection;      
+    PreparedStatement statement;
+     
+    
+    public UserDaoImpl() {
+        this.logger = new CustomLogger(UserDaoImpl.class);
     }
-
-   /**
-    * Creating the obj for the UserDaoImpl only for one time 
-    *
-    * @return userDao userDaoImpl is the object of the userDao
-    */
-    public static synchronized UserDaoImpl getInsatance() {
-        if (userDaoImpl == null) {
-            userDaoImpl = new UserDaoImpl();
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int create(User user) {
+        int userCreated = 0;
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO user(id, email, password, date_of_birth,")
+             .append(" age, created_date_time) ")
+             .append("VALUES(?,?,?,?,?,now());");
+        
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(query.toString());
+            statement.setString(1,user.getId());
+            statement.setString(2,user.getEmail());
+            statement.setString(3,user.getPassword());
+            statement.setDate(4,Date.valueOf(user.getDateOfBirth()));
+            statement.setInt(5,user.getAge());
+            userCreated = statement.executeUpdate(); 
+            statement.close();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {            
+            DatabaseConnection.closeConnection();
         }
-        return userDaoImpl;
-    }	
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User create(User user) {        
-        loginCredentials.put(user.getEmail(), user.getUserId());
-        return users.put(user.getUserId(), user);        
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean delete(String userId) {
-        users.remove(userId);
-        return true;    
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, User> getUsers() {
-        return users;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User getById(String userId) {
-        return users.get(userId);
-    }
+        return userCreated;
+    } 
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Profile getProfile(String userId) {
-        return users.get(userId).getProfile();
-    }
+    public int update(User user) {
+        int userUpdated = 0;
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE user SET email = ?, password = ?, ")
+             .append("date_of_birth = ?, age = ?, phone_number = ?, ")
+             .append("updated_date_time = now() WHERE id = ?;");
+        
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(query.toString());
+            statement.setString(1,user.getEmail());
+            statement.setString(2,user.getPassword());
+            statement.setDate(3,Date.valueOf(user.getDateOfBirth()));
+            statement.setInt(4,user.getAge());
+            statement.setLong(5,user.getPhoneNumber());
+            statement.setString(6,user.getId());
+            userUpdated = statement.executeUpdate();
+            statement.close();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection();
+        }
+        return userUpdated;    
+    }  
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int delete(String id) {
+        int noOfRowDeleted = 0;
+        String query;
+        query = "DELETE FROM user WHERE id = ?;";
 
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setString(1,id);
+            noOfRowDeleted = statement.executeUpdate();
+            statement.close();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection();
+        }
+        return noOfRowDeleted;
+    }
+        
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int updateEmail(String id, String newEmail) {
+        int noOfRowsUpdated = 0;
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE user SET email = ?, update_date_time = now() ")
+             .append("WHERE id = ?;");
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(query.toString());
+            statement.setString(1,newEmail);
+            statement.setString(2,id);
+            noOfRowsUpdated = statement.executeUpdate();
+            statement.close();            
+        } catch (SQLException sqlException) { 
+            logger.error(sqlException.getMessage());
+        }finally {
+            DatabaseConnection.closeConnection();
+        }
+        return noOfRowsUpdated;
+    }  
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int updatePassword(String id, String password) {
+        int noOfRowsUpdated = 0;
+        String query;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            query = "UPDATE user SET password = ?, update_date_time = now() WHERE id = ?;";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,password);
+            statement.setString(2,id);
+            noOfRowsUpdated = statement.executeUpdate();   
+            statement.close();         
+        } catch (SQLException sqlException) { 
+            logger.error(sqlException.getMessage());
+        }finally {
+            DatabaseConnection.closeConnection();
+        }
+        return noOfRowsUpdated;
+    }
+       
     /**
      * {@inheritDoc}
      */
     @Override 
-    public Map<String, String> getLoginCredentials() {
-        return loginCredentials;    
-    }
+    public int updateDateOfBirthAndAge(String id, LocalDate dateOfBirth, int age) {
+        int noOfRowsUpdated = 0;
+        String query = "UPDATE user SET date_of_birth = ?, age = ?, updated_date_time = now() WHERE id = ?;";
 
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(query);
+            statement.setDate(1,Date.valueOf(dateOfBirth));
+            statement.setInt(2,age);
+            statement.setString(3,id);
+            noOfRowsUpdated = statement.executeUpdate(); 
+            statement.close();
+        } catch (SQLException sqlException) { 
+            logger.error(sqlException.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection();
+        }
+        return noOfRowsUpdated;
+    }    
+    
     /**
      * {@inheritDoc}
      */
-    @Override 
-    public User update(String userId, User user) {        
-        return users.put(userId, user);   
-    }
+    @Override
+    public int updatePhoneNumber(String id, long phoneNumber) {
+        int noOfRowsUpdated = 0;
+        String query;
+        query = "UPDATE user SET phone_number = ?, updated_date_time = now() WHERE id = ?;";
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override   
-    public String getUserName(String userId) {
-        user = users.get(userId);
-        return user.getProfile().getUserName();
+        try {
+            connection = DatabaseConnection.getConnection();            
+            statement = connection.prepareStatement(query);
+            statement.setLong(1,phoneNumber);
+            statement.setString(2,id);
+            noOfRowsUpdated = statement.executeUpdate();     
+            statement.close();        
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection();
+        }
+        return noOfRowsUpdated;
     }
     
     /**
      * {@inheritDoc}
      */
-    @Override   
-    public String updateLoginCredentials(String oldEmail, String newEmail) {
-        String userId;
-        userId = loginCredentials.remove(oldEmail);        
-        return loginCredentials.put(newEmail, userId);        
+    @Override
+    public User getUser(String id) {
+        ResultSet resultSet;
+        User user = null;
+        String query;
+        query = "SELECT * FROM user where id = ? ;";
+
+        try {
+            connection = DatabaseConnection.getConnection();            
+            statement = connection.prepareStatement(query);
+            statement.setString(1,id);
+            resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {     
+                user = new User();        
+                user.setId(resultSet.getString("id"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setDateOfBirth((resultSet.getDate("date_of_birth").toLocalDate()));
+                user.setAge(resultSet.getInt("age"));
+                user.setPhoneNumber(resultSet.getLong("phone_number"));
+            }     
+            statement.close();         
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection();
+        }
+        return user;
     }
-   
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getExistingEmails() {
+        ResultSet resultSet;
+        String query;
+        List<String> existingEmail = new ArrayList<>();
+        query = "SELECT email FROM user;";
+
+        try {
+            connection = DatabaseConnection.getConnection();            
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                existingEmail.add(resultSet.getString("email"));   
+            }
+            statement.close();
+        } catch (SQLException sqlException) {
+            logger.error("Error in connection");
+        } finally {
+            DatabaseConnection.closeConnection();
+        }
+        return existingEmail;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override    
+    public String getPassword(String email) {
+        ResultSet resultSet;
+        String password = null;
+        String query;
+        query = "SELECT password FROM user WHERE email = ?;";
+
+        try {
+            connection = DatabaseConnection.getConnection();            
+            statement = connection.prepareStatement(query);
+            statement.setString(1,email);
+            resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                password = resultSet.getString("password");
+            } 
+            statement.close();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            try {
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {};
+        }
+        return password;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getId(String email) {
+        ResultSet resultSet;
+        String id = null;
+        String query;
+        query = "SELECT id FROM user WHERE email = ?;";
+
+        try {
+            connection = DatabaseConnection.getConnection();            
+            statement = connection.prepareStatement(query);
+            statement.setString(1,email);
+            resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                id = resultSet.getString("id");
+            }
+            statement.close();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection();
+        }
+        return id;
+    }
 }

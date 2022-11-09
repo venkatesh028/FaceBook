@@ -9,9 +9,11 @@ import java.util.HashSet;
 import com.ideas2it.dao.ProfileDao;
 import com.ideas2it.dao.daoImpl.ProfileDaoImpl;
 import com.ideas2it.model.Profile;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.constant.Constants;
 
 /** 
- * Perform the Create, update, delete taks for the user profile
+ * Implements the logic of Create, update, delete operation for the user profile
  * 
  * @version 1.0 22-SEP-2022
  * @author  Venkatesh TM
@@ -21,116 +23,108 @@ public class ProfileService {
     private ProfileDao profileDao;    
 
     public ProfileService() {
-        this.profileDao = ProfileDaoImpl.getInstance();
+        this.profileDao = new ProfileDaoImpl();
     }
     
     /**
-     * Create the profileId for the profile and set that
+     * Creates the profileId for the profile and set that
      * and add profile to the database 
      * 
      * @param  profile - profile contain the details of the profile 
-     * @return profileId - profileId of the profile
+     * @return isCreated -  true or false based on the result
      */
-    public Profile create(Profile profile) {
-        String profileId;
-        
-        profileId = UUID.randomUUID().toString();
-        profile.setProfileId(profileId);
-        return profileDao.add(profile);    
+    public boolean create(Profile profile) {
+        String id;   
+        boolean isCreated;    
+        id = UUID.randomUUID().toString();
+        profile.setId(id);
+        isCreated = (profileDao.create(profile) > 0)? true:false;
+        return isCreated;    
     }
 
     /**
-     * get the profile of the user 
+     * Gets the profile of the user 
      *
-     * @param  profileId - profileId of the user
-     * @return profile profile details of the user
+     * @param  userId - id of the user
+     * @return profile - profile details of the user
      */
-    public Profile getProfile(String profileId) {
-        return profileDao.getProfile(profileId);
+    public Profile getProfile(String userId) {
+        Profile profile = profileDao.getProfile(userId);
+        return profile;
     }
     
     /**
-     * Update the username of the user
-     *
-     * @param  profileId   profileId of the user
-     * @param  newUserName new username of the user
-     * @return boolean     true after the userName update
+     * Updates the userName and bio of the profile
+     * 
+     * @param profile - details of the profile
+     * @return boolean - true or false based on the result
      */
-    public boolean updateUserName(String profileId, String newUserName) {
-        profile = profileDao.getProfile(profileId);
-        profile.setUserName(newUserName);
-        profileDao.update(profile);
-        return true;     
+    public boolean update(Profile profile) {
+        boolean isUpdated;
+        isUpdated = (profileDao.update(profile) > 0 );
+        return isUpdated; 
     }
     
-    /**
-     * Update bio of the user  
+    /** 
+     * Increase the friend's count based on the user profile
      * 
-     * @param  profileId - profileId of the user
-     * @param  bio     bio of the user 
-     * @return boolean true after update
+     * @param userId - id of the user
+     * @return isUpdated - true or false based on the result
      */
-    public boolean updateBio(String profileId, String bio) {
-        profile = profileDao.getProfile(profileId);
-        profile.setBio(bio);
-        return true;    
-    } 
-    
-    /**
-     * Get the username of the user
+    public boolean increaseFriendCount(String userId) {
+        boolean isUpdated;
+        int friendCount;
+       
+        Profile profile = getProfile(userId);        
+        friendCount = profile.getFriendsCount(); 
+        profile.setFriendsCount(friendCount + 1);
+        isUpdated = profileDao.update(profile) > 0;
+        return isUpdated;
+    }
+
+    /** 
+     * Decrease the friend's count based on the user profile
      * 
-     * @param  profileId    profileId  of the user
-     * @return userName username of the user 
+     * @param userId - id of the user
+     * @return isUpdated - true or false based on the result
      */
-    public String getUserName(String profileId) {
-        Profile profile = profileDao.getProfile(profileId);
-        return profile.getUserName();
+    public boolean decreaseFriendCount(String userId) {
+        boolean isUpdated;
+        int friendCount;
+        Profile profile = getProfile(userId);
+        friendCount = profile.getFriendsCount(); 
+        profile.setFriendsCount(friendCount - 1);
+        isUpdated = profileDao.update(profile) > 0;
+        return isUpdated;
     }
 
     /**
-     * Gets the userprofile based on the username
+     * Deletes the profile based on the profileId
      *
-     * @param  userName     username searched by the user
-     * @return usersProfile userprofile based on the userName
-     */ 
-    public Profile getUserProfile(String userName) { 
-        List<Profile> profiles = new ArrayList<>(profileDao.getProfiles());
-        
-        for (Profile profile : profiles) {
-            if (profile.getUserName().equals(userName)) {
-                return profile;
-            }
+     * @param  userId - id of the user which need to be deleted 
+     * @return profile   - profile which got deleted 
+     */
+    public boolean delete(String userId) {
+        boolean isDeleted;
+        isDeleted = (profileDao.delete(userId) > 0);
+        return isDeleted;
+    }  
+    
+    /**
+     * Gets the profile based on the username
+     *  
+     * @param  userName - username of the user
+     * @return profile - details of the user
+     */
+    public Profile getUserProfileByUserName(String userName) throws CustomException {
+        Profile profile = profileDao.getUserProfileByUserName(userName);
+
+        if (null != profile) {
+            
+        } else {
+            throw new CustomException(Constants.ERROR_02);
         }
-        return null;  
-    }
-    
-    /**
-     * Chagne the visibility of the user from the public or private 
-     * Based on the user request
-     *
-     * @param  profileId   profileId  of the particular user
-     * @param  boolean true or false based on the user selection
-     * @return boolean true after changing the visibility
-     */
-    public boolean changeVisibility(String profileId, boolean isPrivate) {
-        profile = profileDao.getProfile(profileId );
-        profile.setPrivate(isPrivate);
-        profileDao.update(profile);
-        return true;
-    }
-    
-    /**
-     * Add friend name to the particular user 
-     * 
-     * @param  profileId      profileId  of the user to who the name going to get add
-     * @parma  friendName requested user name 
-     * @return boolean    true after adding the name
-     */
-    public boolean addFriend(String profileId , String friendName) {
-        profile = profileDao.getProfile(profileId );
-        profile.setFriend(friendName);
-        profileDao.update(profile);
-        return true;
+        return profile;
     }
 
     /**
@@ -140,77 +134,27 @@ public class ProfileService {
      * @return boolean  true or false based on the result
      */
     public boolean isUserNameExist(String userName) {
-        Set<String> existingData =  new HashSet<>();
-        List<Profile> profiles;
-        profiles = profileDao.getProfiles();
-
-        for (Profile profile : profiles) {
-            existingData.add(profile.getUserName());        
-        }
-        return existingData.contains(userName);
+        List<String> existingUserNames = profileDao.getExistingUserNames();
+        return existingUserNames.contains(userName);
     }
-    
-    /**
-     * Gets the profile id based on the userId
-     * 
-     * @param  userId - userid of the user 
-     * @return profileId - profile id of the user based on the userId
-     */
-    public String getProfileId(String userId) {
-        List<Profile> profiles = new ArrayList<>(profileDao.getProfiles());
-        String profileId = null;
 
-        for (Profile profile : profiles) {
-            if (profile.getUserId().equals(userId)) {
-                profileId = profile.getProfileId();
-            }
-        } 
-        return profileId; 
-    } 
-    
-    /**
-     * Gets the profileId based on the username 
-     * 
-     * @param  userName  - userName of the profile 
-     * @return profileId - profileId of the profile
-     */
-    public String getProfileIdByUserName(String userName) {
-        List<Profile> profiles = new ArrayList<>(profileDao.getProfiles());
-        String profileId = null;
-
-        for (Profile profile : profiles) {
-            if (profile.getUserName().equals(userName)) {
-                profileId = profile.getProfileId();
-            }
-        } 
-        return profileId; 
-    } 
-      
-    /**
-     * Gets the userId of the profile based on the profile id
-     * 
-     * @param  profileId - profileId of the user
-     * @return userId    - userId of the profile based on the profileId 
-     */
-    public String getUserId(String profileId) {
-        List<Profile> profiles = new ArrayList<>(profileDao.getProfiles());
-        String userId = null;
-
-        for (Profile profile : profiles) {
-            if (profile.getProfileId().equals(profileId)) {
-                userId = profile.getUserId();
-            }
-        } 
-        return userId;    
+   /**
+    * Sets the profile as public 
+    * 
+    * @param  userId - id of the user
+    * @return boolean - true or false based on the response
+    */
+    public boolean setPublic(String userId) {
+        return profileDao.setPublic(userId) > 0;
     }
-    
+
     /**
-     * Deletes the profile based on the profileId
-     *
-     * @param  profileId - id of the profile which need to be deleted 
-     * @return profile   - profile which got deleted 
+     * Sets the profile as private
+     * 
+     * @param  userId - id of the user
+     * @return boolean - true or false based on the response
      */
-    public Profile delete(String profileId) {
-        return profileDao.delete(profileId) ;
-    }   
+    public boolean setPrivate(String userId) {
+        return profileDao.setPrivate(userId) > 0;
+    }
 }

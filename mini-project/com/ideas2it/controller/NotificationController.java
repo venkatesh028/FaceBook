@@ -4,8 +4,10 @@ import java.util.Set;
 import com.ideas2it.service.NotificationService;
 import com.ideas2it.model.Notification;
 
+import java.util.List;
+
 /**
- * Add the requests of the user and shows to the user
+ * Implements the create, update, get and delete operations for the Notification
  * 
  * @version 1.0 05-OCT-2022
  * @author  Venkatesh TM
@@ -16,34 +18,44 @@ public class NotificationController {
     public NotificationController() {
         this.notificationService = new NotificationService();
     }
-   
+    
     /** 
-     * Add the requests of the particular user with requested user details
+     * Creates the notification 
      *
-     * @param userName      userName of the user for who the request is given
-     * @param requestedUser the user who gave the request
-     */ 
-    public boolean addNotification(String userName, Notification notification) {         
-        return notificationService.addNotification(userName, notification);    
-    } 
+     * @param  notification - details of the notification
+     * @return boolean  - true or false based on response;
+     */     
+    public boolean create(Notification notification) {
+        return notificationService.create(notification);
+    }
     
     /**
-     * Get the requests of the particular user
+     * Updates the notification 
      * 
-     * @param  userName userName of the user
-     * @return requests all the requests based on the user
-     */
-    public Set<Notification> getNotifications(String userName) {
-        return notificationService.getNotifications(userName);
+     * @param id - id of the notification
+     * @return boolean - true or false based on the result
+     */ 
+    public boolean update(String requestId) {
+        return notificationService.update(requestId);
     }
     
     /**
-     * Clear the request of the user based on the userName
-     *
-     * @param  userName username of the user whose request need to removed
-     * @return boolean  true or false based on the result
+     * Clears the notification based on the responce
+     * 
+     * @param userName          - username to who the request is given
+     * @param requestedUserName - name of the person who gave the request
      */
-    public boolean clearNotification(String userName, String requestedUserName) {
-        return notificationService.clearNotification(userName, requestedUserName);
-    }
+    public boolean clearNotification(String id) {
+        return notificationService.clearNotification(id);
+    }  
+    
+    /**
+     * Gets the notifications of the particular user
+     * 
+     * @param id - id of the notification
+     * @param isDeleted - true or false based on the result
+     */
+    public List<Notification> getNotifications(String userId) {
+        return notificationService.getNotifications(userId);
+    }      
 }

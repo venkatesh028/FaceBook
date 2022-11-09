@@ -1,13 +1,16 @@
 package com.ideas2it.view;
 
-import java.util.Scanner;
 import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.List;
 
-import com.ideas2it.controller.ProfileController;
-import com.ideas2it.controller.PostController;
-import com.ideas2it.controller.UserController;
 import com.ideas2it.constant.Constants;
+import com.ideas2it.controller.PostController;
+import com.ideas2it.controller.ProfileController;
+import com.ideas2it.controller.FriendController;
 import com.ideas2it.logger.CustomLogger;
+import com.ideas2it.model.Profile;
+import com.ideas2it.model.Post;
 
 /**
  * Shows the profile page to the user based on the user action
@@ -19,24 +22,25 @@ import com.ideas2it.logger.CustomLogger;
 public class ProfileView {
     private ProfileController profileController;
     private PostController postController;
-    private UserController userController;
     private Scanner scanner;  
-    private CustomLogger logger;                                  
+    private CustomLogger logger; 
+    private FriendController friendController;                                 
      
     public ProfileView() {
         this.profileController = new ProfileController();
         this.postController = new PostController();
-        this.userController = new UserController();
         this.scanner = new Scanner(System.in);
         this.logger = new CustomLogger(ProfileView.class);
+        this.friendController = new FriendController();
     }
     
     /**
-     * Shows the update page 
+     * Shows the update profile option to update the username and bio of the profile 
      *
-     * @param userId
+     * @param userId - id of the user
      */
-    private void updateProfile(String profileId) {
+    private void updateProfile(String userId) {
+        Profile profile = profileController.getProfile(userId);
         int selectedUpdate;
         boolean updatePage = true;
         String updateMenu = generateProfileUpdateMenu();
@@ -55,7 +59,8 @@ public class ProfileView {
                     newUserName = scanner.nextLine();
                     
                     if (!profileController.isUserNameExist(newUserName)) {
-                        profileController.updateUserName(profileId, newUserName);
+                        profile.setUserName(newUserName);
+                        profileController.update(profile);
                         userNameValid = true;
                     } else {  
                         logger.info("UserName is already exist Enter a new one");
@@ -66,7 +71,8 @@ public class ProfileView {
             case Constants.UPDATE_BIO:
                 System.out.print("Enter your Bio :");
                 String bio = scanner.nextLine();
-                profileController.updateBio(profileId, bio);            
+                profile.setBio(bio);
+                profileController.update(profile);            
                 break;
 
             case Constants.EXIT_UPDATEPAGE:
@@ -77,9 +83,7 @@ public class ProfileView {
                 updatePage = false;
                 break;
             }
-        }
-
-        
+        }         
     }
 
     /**
@@ -87,63 +91,86 @@ public class ProfileView {
      * 
      * @param userId userId of the user
      */
-    private void showProfile(String profileId) {
-        System.out.println(profileController.getProfile(profileId));
+    private void showProfile(String userId) {
+       System.out.println(profileController.getProfile(userId));
     }
 
     /**
-     * Shows the post by the username
+     * Shows the post of the user based on the id
      * 
-     * @param userId userId of the user
+     * @param userId - Id of the user
      */    
-    private void showPostByUserName(String profileId) {
-        String userName = profileController.getUserName(profileId);
-        System.out.println(postController.getPostByUserName(userName)); 
+    private void showMyPost(String userId) {  
+        List<Post> listOfPost = postController.getPostOfParticularUser(userId); 
+         
+        if (null != listOfPost) {
+            System.out.println(listOfPost);
+        } else {
+            System.out.println("No Post Uploaded yet");            
+        }           
     }
     
     /**
      * Delete the post based on the id
-     *
      */
     private void deletePost() {
         String postId;
         System.out.print("Enter the PostId : ");
         postId = scanner.nextLine();
 
-        if (postController.deletePost(postId)) {
+        if (postController.delete(postId)) {
             System.out.println("Post Deleted ..");
         } else {
             logger.info("Something went wrong..");
+        }
+    }
+    
+    private void showFriends(String userId) {
+        List<String> friends = friendController.getFriends(userId);
+        
+        if (null != friends) {
+            System.out.println(friends);
+            
+        } else {
+           System.out.println("No Friends added yet");   
         }
     }
 
     /**
      * Shows the profilepage of the user
      * 
-     * @param userId userId of the user
+     * @param userId - id of the user
      */
-    public void displayProfilePage(String profileId) {
+    public void displayProfilePage(String userId) {
         int selectedOption; 
         boolean profilePage = true;
         String profileMenu = generateProfileMenu();               
 
         while (profilePage) {   
-            showProfile(profileId); 
-            showPostByUserName(profileId);
+            showProfile(userId); 
+            showMyPost(userId);
             System.out.println(profileMenu);
             selectedOption = getOption();
 
             switch (selectedOption) { 
             case Constants.UPDATE_PROFILE:
-                updateProfile(profileId);
+                updateProfile(userId);
                 break;
 
+            case Constants.UPDATE_POST:
+                updatePost();
+                break;
+                
             case Constants.DELETE_POST:
                 deletePost();
                 break;
-            
+
+            case Constants.VIEW_FRIENDS:
+                showFriends(userId);
+                break;
+
             case Constants.EXIT_PROFILEPAGE:
-                profilePage = false;
+                profilePage = false;                
                 break;
 
             default:
@@ -152,6 +179,23 @@ public class ProfileView {
         }  
     }
     
+    /**
+     * Updates the post by getting the details like postId and content
+     */
+    private void updatePost() {
+        String postId;
+        String content;
+        System.out.println("Enter the Post ID : ");
+        postId = scanner.nextLine();
+        System.out.println("Enter the updates in content");
+        content = scanner.nextLine();        
+        if (postController.update(postId, content)) {
+            System.out.println("Post Updated");
+        } else {
+            System.out.println("Not updated");
+        }    
+    }
+
     /**
      * Get the input from the user
      *
@@ -180,7 +224,11 @@ public class ProfileView {
 
         profileMenu.append("\nEnter ").append(Constants.UPDATE_PROFILE)
                    .append(" --> To update Profile").append("\nEnter ")
-                   .append(Constants.DELETE_POST).append("--> To delete the post ")    
+                   .append(Constants.DELETE_POST).append("--> To delete the post ") 
+                   .append("\nEnter ").append(Constants.UPDATE_POST)
+                   .append(" --> To Update the post")
+                   .append("\nEnter ").append(Constants.VIEW_FRIENDS)
+                   .append(" --> To View Friends ")
                    .append("\nEnter ").append(Constants.EXIT_PROFILEPAGE)
                    .append(" --> To Exit");
 

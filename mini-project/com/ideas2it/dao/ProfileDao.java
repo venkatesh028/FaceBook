@@ -1,23 +1,41 @@
 package com.ideas2it.dao;
 
 import java.util.List;
+
 import com.ideas2it.model.Profile;
 
 /**
- * Performs create, get, update, delete funtionality of the profile
+ * It is interface for the profile dao impl it contains the method for
+ * create, update, delete, get operations for profile
  *
- * @version 1.0 15-OCT-2022
+ * @version 1.1 31-OCT-2022
  * @author Venkatesh TM
  */
 public interface ProfileDao {  
     
     /** 
-     * Add profile to the database
+     * create profile to the database
      * 
      * @param  profile - profile of the user contain the profile details
-     * @return profile - return null if the profile is created
+     * @return noOfRowsAffected - based on the profile creation
      */
-    public Profile add(Profile profile);
+    public int create(Profile profile);
+
+    /**
+     * Deletes the profile of the user based on the profile id
+     * 
+     * @param profileId - profile id whose profile need to be deleted 
+     * @return noOfRowsDeleted - based on the deletion response
+     */
+    public int delete(String userId);
+
+    /**
+     * Updates the profile details of the user
+     * 
+     * @param profile - profile with updated details 
+     * @return noOfRowsUpdated - based on the updation
+     */
+    public int update(Profile profile);    
     
     /**
      * Gets the profile of based on the profile id
@@ -25,29 +43,36 @@ public interface ProfileDao {
      * @param profileId - profile id of that user
      * @return profile - profile details
      */
-    public Profile getProfile(String profileId); 
+    public Profile getProfile(String userId);     
     
     /**
-     * Updates the profile details of the user
+     * Gets the profile based on the profile id
      * 
-     * @param profile - profile with updated details 
-     * @param profile - if id is there old details of the user else null
+     * @param userName - userName of the user
+     * @return profile - profile of the user
      */
-    public Profile update(Profile profile);
+    public Profile getUserProfileByUserName(String userName);  
+    
+    /** 
+     * Gets the list of username of the users 
+     *
+     * @return userNames list of existing usernames
+     */
+    public List<String> getExistingUserNames();  
     
     /**
-     * Gets the all of profiles 
+     * Sets the profile as public
      * 
-     * @return listOfProfiles - all the profiles
+     * @param  userId - id of the user
+     * @return noOfRowsUpdated - based on the updation
      */
-    public List<Profile> getProfiles();
-    
+    public int setPublic(String userId); 
+
     /**
-     * Deletes the profile of the user based on the profile id
+     * Sets the profile as private
      * 
-     * @param profileId - profile id whose profile need to be deleted 
-     * @param profile   - deleted profile 
+     * @param  userId - id of the user
+     * @return noOfRowsUpdated - based on the updation
      */
-    public Profile delete(String profileId);
-   
+    public int setPrivate(String userId) ;
 }

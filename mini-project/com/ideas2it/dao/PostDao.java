@@ -2,10 +2,10 @@ package com.ideas2it.dao;
 
 import java.util.List;
 import com.ideas2it.model.Post;
-import com.ideas2it.model.Like;
 
-/**
- * Perform add, update and get function for the post
+/** 
+ * It is interface for the Post dao impl it contains the method for
+ * create, update, delete, get operations for post
  * 
  * @version 1.0 22-SEP-2022
  * @author Venkatesh TM
@@ -13,34 +13,60 @@ import com.ideas2it.model.Like;
 public interface PostDao {
 
     /**
-     * Add the post 
+     * Create the post 
      * 
      * @param  post    - entire details of the post
-     * @return boolean - true if the post is added
+     * @return noOfRowsAffected - number of the rows based on the creation
      */
-    public boolean addPost(Post post);    
+    public int create(Post post);  
+
+    /** 
+     * Update the post this update include the like and comment
+     *
+     * @param  id - id of the post need to be updated
+     * @param  content - content of the post need to be updated
+     * @return noOfRowsUpdated - number of the rows based on the updation
+     */
+    public int update(String id, String content);      
+
+    /**
+     * Updates the like count
+     * 
+     * @param id - id of the post
+     * @param likeCount - count of the post
+     * @return noOfRowsUpdated - number of the rows based on the updation
+     */
+    public int updateLikeCount(String id, int likeCount);
+    
+    /**
+     * Updates the comment count
+     * 
+     * @param id - id of the post
+     * @param commentCount - count of the comments
+     * @return noOfRowsUpdated - number of the rows based on the updation
+     */
+    public int updateCommentCount(String id, int commentCount);
+
+    /** 
+     * Delete the post based on the id 
+     *
+     * @param  id - id os the post need to be deleted
+     * @return noOfRowsDeleted -  number of the rows based on the deletion
+     */
+    public int delete(String id); 
 
     /**
      * Get all the post in the list
      * 
      * @return userPost list of post uploaded
      */
-    public List<Post> getUserPost(); 
+    public List<Post> getUserPosts();      
     
-    /** 
-     * Delete the post based on the index 
+    /**
+     * Gets the post of the particular user based on the id 
      *
-     * @param  index  position of the post in the list
-     * @return bolean true after deleting the post
+     * @param  userId    - id of the user
+     * @return postOfParticualrUser - posts of the particular user
      */
-    public boolean deletePost(int index);    
-    
-    /** 
-     * Update the post this update include the like and comment
-     *
-     * @param  userPost list of the post 
-     * @return boolean  true after updating
-     */
-    public boolean updatePost(List<Post> userPost);
-    
+    public List<Post> getPostOfParticularUser(String userId);  
 }

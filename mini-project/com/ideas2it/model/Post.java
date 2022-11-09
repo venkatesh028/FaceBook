@@ -18,70 +18,77 @@ import com.ideas2it.model.Comment;
  * @author Venkatesh TM
  */
 public class Post {
-    private String postId;
-    private String postedBy;
-    private String quote;
-    private List<Like> likes = new ArrayList<>();
-    private List<Comment> comments = new ArrayList<>();
+    private String id;
+    private String postedUserId;
+    private String postedUserName;
+    private String content;
     private int likeCount;
- 
-    public Post(String postId, String postedBy, String quote) {
-        this.postId = postId;
-        this.postedBy = postedBy;
-        this.quote = quote;  
+    private int commentCount;
+    
+    
+    public Post() {}
+
+    public Post(String id, String postedUserId, String content) {
+        this.id = id;
+        this.postedUserId = postedUserId;
+        this.content = content;  
+    }
+
+    public Post(String id, String postedUserName, String content, int likeCount, int commentCount) {
+        this.id = id;
+        this.postedUserName = postedUserName;
+        this.content = content;
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;        
     }
     
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setPostId(String id) {
+        this.id = id;
     }
     
-    public void setPostedBy(String postedBy) {
-        this.postedBy = postedBy;    
+    public void setPostedUserId(String postedUserId) {
+        this.postedUserId = postedUserId;    
     }  
     
-    public void setQuote(String quote) {
-        this.quote = quote;
+    public void setContent(String content) {
+        this.content = content;
     }
     
-    public void setLike(Like like) {
-        this.likes.add(like);
+    public void setPostedUserName(String postedUserName) {
+        this.postedUserName = postedUserName;
     }
     
-    public void setComment(Comment comment) {
-        this.comments.add(comment);
+    public String getId() {
+        return id;
     }
     
-    public List<Like> getLikedUsers() {
-        return likes;
+    public String getContent() {
+        return content;
     }
-    
-    public String getPostId() {
-        return postId;
-    }
-    
-    public List<Comment> getComments() {
-        return comments;
-    }
-    
+
     public int getCommentCount() {
-        return getComments().size();
+        return commentCount;
     }
     
     public  int getLikeCount() {
-        return likeCount = getLikedUsers().size();        
+        return likeCount;        
     }
     
-    public String getPostedBy() {
-        return postedBy;
+    public String getPostedUserId() {
+        return postedUserId;
+    }
+    
+    public String getPostedUserName() {
+        return postedUserName;
     }
     
     public String toString() {
         StringBuilder post = new StringBuilder();
-        post.append("\npost Id  : ").append(postId)
-            .append("\npostedBy : ").append(postedBy)
-            .append("\nquotes   : ").append(quote)
-            .append("\nLikes    : ").append(getLikeCount())
-            .append("\tComments : ").append(getCommentCount());
+        post.append("\nPostId : ").append(id)
+            .append("\npostedUserName : ").append(postedUserName)
+            .append("\ncontents   : ").append(content)
+            .append("\nLikes    : ").append(likeCount)
+            .append("\tComments : ").append(commentCount);
 
         return post.toString();
     }
