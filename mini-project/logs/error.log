@@ -1,5 +1,0 @@
-2022-11-09 15:54:32,587 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
-2022-11-09 15:54:38,012 ERROR com.ideas2it.controller.PostController [main] There is No Post Available
-2022-11-09 15:54:52,798 ERROR com.ideas2it.view.SearchPage [main] Enter Only Number not String
-
-2022-11-09 15:54:57,483 ERROR com.ideas2it.controller.ProfileController [main] Profile Not Exist

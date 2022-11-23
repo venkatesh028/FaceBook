@@ -1,4 +1,0 @@
-2022-11-05 12:30:53,310 ERROR com.ideas2it.dao.daoImpl.NotificationDaoImpl [main] No value specified for parameter 3
-2022-11-05 13:45:00,898 ERROR com.ideas2it.dao.daoImpl.NotificationDaoImpl [main] Unknown column 'friend_request.userId' in 'where clause'
-2022-11-05 18:21:03,569 ERROR com.ideas2it.dao.daoImpl.FriendDaoImpl [main] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id, user_id, friend_id, created_date_time VALUES('285ef5b2-0fef-4bd8-8b88-42afa3' at line 1
-2022-11-05 18:21:03,608 ERROR com.ideas2it.dao.daoImpl.FriendDaoImpl [main] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id, user_id, friend_id, created_date_time VALUES('84b4b18f-01b7-469c-83a2-e8e70e' at line 1
