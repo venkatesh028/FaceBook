@@ -1,8 +1,10 @@
- package com.ideas2it.controller;
+package com.ideas2it.controller;
 
+import com.ideas2it.constant.Constants;
 import com.ideas2it.model.Profile;
 import com.ideas2it.model.User;
 import com.ideas2it.service.UserService;
+import com.ideas2it.constant.Messages;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,119 +16,121 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 /**
- * It perform the create, update, delete, view and validation oeration of the user
+ * It perform the create, update, delete, view and validation operation of the user
  *
  * @version 2.0 14-NOV-2022
  * @author Venkatesh TM
  */
 public class UserController extends HttpServlet {
     UserService userService = new UserService();
-    
-    protected  void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    protected  void doGet(HttpServletRequest request,
+                          HttpServletResponse response)
+               throws ServletException, IOException {
         String path = request.getServletPath();
-        
+
         switch (path) {
-            case "/logout":
-                HttpSession session = request.getSession();
-                session.removeAttribute("userId");
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
-                requestDispatcher.forward(request, response);
-                break;
-            
+        case "/logout":
+            logout(request, response);
+            break;
         }
-        
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response) 
+              throws ServletException, IOException {
         String path = request.getServletPath();
-        String email;
-        String password;
-        LocalDate dateOfBirth;
-        int age;
-        String message;
-        String userName;
-        Profile profile = null;
-        User user = null;
 
         switch (path) {
+        case "/login":
+            login(request, response);
+            break;
 
-            case "/login":
-                email = request.getParameter("email");
-                password = request.getParameter("password");
+        case "/register":
+            registerUser(request, response);
+            break;
+        }
+    }
 
-                if (isValidCredentials(email, password)) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("userId", getUserId(email));
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed");
-                    requestDispatcher.forward(request, response);
+    /**
+     * Allows the user to login when the email and password is Valid
+     *
+     */
+    private void login(HttpServletRequest request,
+                       HttpServletResponse response)
+            throws ServletException, IOException {
+        String message;
+
+        if (isValidCredentials(request.getParameter("email"),
+                request.getParameter("password"))) {
+            HttpSession session = request.getSession();
+            session.setAttribute("userId", getUserId(request.getParameter("email")));
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed");
+            requestDispatcher.forward(request, response);
+        } else {
+            message = "Sorry Email Id or Password is wrong";
+            request.setAttribute("Message", message);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
+            requestDispatcher.forward(request, response);
+        }
+    }
+
+    private void logout(HttpServletRequest request,
+                        HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.removeAttribute("userId");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
+        requestDispatcher.forward(request, response);
+    }
+
+    private void registerUser(HttpServletRequest request,
+                              HttpServletResponse response)
+            throws ServletException, IOException {
+        String message;
+
+        if (!isEmailExist(request.getParameter("email"))) {
+            if (calculateAge(LocalDate.parse(request.getParameter("DOB"))) > Constants.AGE) {
+                if (!isUserNameExist(request.getParameter("userName"))) {
+                    create(request, response);
                 } else {
-                    message = "Sorry Email Id or Password is wrong";
-                    request.setAttribute("Message", message);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
-                    requestDispatcher.forward(request, response);
+                    message = Messages.USERNAME_ALREADY_EXIST;
+                    goBackToRegisterPage(request, response, message);
                 }
-                break;
-
-            case "/logout":
-                HttpSession session = request.getSession();
-                session.removeAttribute("userId");
-                RequestDispatcher logout = request.getRequestDispatcher("login.jsp");
-                logout.forward(request, response);
-                break;
-
-            case "/register":
-                email = request.getParameter("email");
-                password = request.getParameter("password");
-                dateOfBirth = LocalDate.parse(request.getParameter("DOB"));
-                age = calculateAge(dateOfBirth);
-                userName = request.getParameter("userName");
-
-                if (!isEmailExist(email)) {
-                    if (age > 18){
-                        if (!isUserNameExist(userName)) {
-                            user = new User();
-                            profile = new Profile();
-                            profile.setUserName(userName);
-                            user.setEmail(email);
-                            user.setPassword(password);
-                            user.setDateOfBirth(dateOfBirth);
-                            user.setAge(age);
-                            create(user, profile);
-                            message = "Account Created SuccessFully";
-                            request.setAttribute("Message", message);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
-                            requestDispatcher.forward(request, response);
-                        } else {
-                            message = "Sorry the username is already Exist";
-                            request.setAttribute("Message", message);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("register.jsp");
-                            requestDispatcher.forward(request, response);
-                        }
-                    } else {
-                        message = "Sorry Your Age is Below 18";
-                        request.setAttribute("Message", message);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("register.jsp");
-                        requestDispatcher.forward(request, response);
-                    }
-                } else {
-                    message = "Oohs This Email is Already Exist";
-                    request.setAttribute("Message", message);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("register.jsp");
-                    requestDispatcher.forward(request, response);
-                }
+            } else {
+                message = Messages.INVALID_AGE;
+                goBackToRegisterPage(request, response, message);
+            }
+        } else {
+            message = Messages.EMAIL_ALREADY_EXIST;
+            goBackToRegisterPage(request, response, message);
         }
     }
 
     /**
      * Create new account for the user
      *
-     * @param  user     details of the user
-     * @return boolean  true if account is created successfully else false
+     * @param  request
+     * @param  response
      */
-    private boolean create(User user, Profile profile){
-        return userService.create(user, profile);
+    private void create(HttpServletRequest request,
+                        HttpServletResponse response)
+                  throws ServletException, IOException {
+        LocalDate dateOfBirth = LocalDate.parse(request.getParameter("DOB"));
+        User user = new User(request.getParameter("email"), request.getParameter("password"),
+                             dateOfBirth, calculateAge(dateOfBirth));
+        Profile profile = new Profile(request.getParameter("userName"));
+        userService.create(user, profile);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
+        requestDispatcher.forward(request, response);
     }
 
+    private void goBackToRegisterPage(HttpServletRequest request, HttpServletResponse response,
+                                      String message) throws ServletException, IOException {
+        request.setAttribute("Message", message);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("register.jsp");
+        requestDispatcher.forward(request, response);
+    }
     private boolean isValidCredentials(String email, String password) {
         return userService.isValidCredentials(email, password);
     }
@@ -134,7 +138,7 @@ public class UserController extends HttpServlet {
     /**
      * Gets the userId of the user
      *
-     * @param email email of the user
+     * @param email - email of the user
      * @return userId - userId of the user
      */
     private String getUserId(String email) {
@@ -144,7 +148,7 @@ public class UserController extends HttpServlet {
     /**
      * Check is that email is exist
      *
-     * @param  email   email of the user
+     * @param  email  email of the user
      * @return boolean true if the account is exist else false
      */
     public boolean isEmailExist(String email) {
@@ -160,7 +164,7 @@ public class UserController extends HttpServlet {
     public int calculateAge(LocalDate dateOfBirth) {
         return userService.calculateAge(dateOfBirth);
     }
-    
+
     public boolean isUserNameExist(String userName) {
         return userService.isUserNameExist(userName);
     }

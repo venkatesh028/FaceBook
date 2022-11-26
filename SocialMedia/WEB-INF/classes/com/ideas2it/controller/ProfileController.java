@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ideas2it.constant.Messages;
 import com.ideas2it.service.ProfileService;
 import com.ideas2it.model.Profile;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
+
 
 /**
  * Implemtens create, get, update and delete operation for the profile
@@ -31,58 +33,79 @@ public class ProfileController extends HttpServlet {
     
     protected  void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String path = request.getServletPath();
-        HttpSession session = request.getSession();
+
         String message;
         RequestDispatcher requestDispatcher =null;
 
         switch (path) {
+        case "/viewProfile":
+            viewProfile(request, response);
+            break;
 
-            case "/viewProfile":
-                request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
-                requestDispatcher = request.getRequestDispatcher("profile.jsp");
-                requestDispatcher.forward(request, response);
-                break;
+        case "/search":
+            searchProfile(request, response);
+            break;
 
-            case "/search":
-                request.setAttribute("profile", getProfileByUserName(request.getParameter("userName")));
-                requestDispatcher = request.getRequestDispatcher("search.jsp");
-                requestDispatcher.forward(request, response);
+        case "/updateProfile":
+            getProfile(request, response);
+            break;
 
-            case "/updateProfile":
-                request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
+        case "/update":
+            updateProfile(request, response);
+            break;
+        }
+    }
+
+    private void updateProfile(HttpServletRequest request,
+                               HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        RequestDispatcher requestDispatcher;
+        String userName = request.getParameter("userName");
+        Profile profile = getProfile((String)session.getAttribute("userId"));
+        String message;
+
+        if (!userName.equals(profile.getUserName())) {
+            if (!isUserNameExist(userName)){
+                update(request, response);
+            }else {
+                message = Messages.USERNAME_ALREADY_EXIST;
+                request.setAttribute("Message", message);
+                request.setAttribute("profile", getProfile((String) session.getAttribute("userId")));
                 requestDispatcher = request.getRequestDispatcher("update-profile.jsp");
                 requestDispatcher.forward(request, response);
-                break;
-
-            case "/update":
-                String userName = request.getParameter("userName");
-                String bio = request.getParameter("bio");
-                Profile profile;
-                profile = getProfile((String)session.getAttribute("userId"));
-                
-                if (userName.equals(profile.getUserName())){
-                    profile.setBio(bio);
-                    update(profile);
-                    request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
-                    requestDispatcher = request.getRequestDispatcher("profile.jsp");
-                    requestDispatcher.forward(request, response);  
-                } else {
-                    if (!isUserNameExist(userName)) {
-                        profile.setUserName(userName);
-                        profile.setBio(bio);
-                        update(profile);
-                        request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
-                        requestDispatcher = request.getRequestDispatcher("profile.jsp");
-                        requestDispatcher.forward(request, response);  
-                    } else {
-                        message = "Ops This username is already exist";
-                        request.setAttribute("Message", message);
-                        request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
-                        requestDispatcher = request.getRequestDispatcher("update-profile.jsp");
-                        requestDispatcher.forward(request, response);                            
-                    }
-                }
+            }
+        } else {
+            update(request, response);
         }
+    }
+    private void getProfile(HttpServletRequest request,
+                            HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        RequestDispatcher requestDispatcher;
+        request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
+        requestDispatcher = request.getRequestDispatcher("update-profile.jsp");
+        requestDispatcher.forward(request, response);
+    }
+
+    private void searchProfile(HttpServletRequest request,
+                               HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher requestDispatcher;
+        request.setAttribute("profile", getProfileByUserName(request.getParameter("userName")));
+        requestDispatcher = request.getRequestDispatcher("search.jsp");
+        requestDispatcher.forward(request, response);
+    }
+
+    private void viewProfile(HttpServletRequest request,
+                             HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        RequestDispatcher requestDispatcher;
+        request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
+        requestDispatcher = request.getRequestDispatcher("profile.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     /**
@@ -108,11 +131,20 @@ public class ProfileController extends HttpServlet {
     /**
      * Updates the profile
      * 
-     * @param profile - details of the profile
-     * @return boolean - true or false based on the response
+     * @param request
+     * @param response
      */
-    public boolean update(Profile profile) {
-        return profileService.update(profile);
+    private void update(HttpServletRequest request,
+                        HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        RequestDispatcher requestDispatcher;
+        Profile profile = getProfile((String) session.getAttribute("userId"));
+        profile.setUserName(request.getParameter("userName"));
+        profile.setBio(request.getParameter("bio"));
+        profileService.update(profile);
+        requestDispatcher = request.getRequestDispatcher("profile.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     /**
@@ -148,8 +180,8 @@ public class ProfileController extends HttpServlet {
      * @param  userName username given by the user
      * @return boolean  true if the name is not exist else false
      */
-    public boolean isUserNameExist(String username) {
-        return profileService.isUserNameExist(username);
+    public boolean isUserNameExist(String userName) {
+        return profileService.isUserNameExist(userName);
     }
       
     /**
