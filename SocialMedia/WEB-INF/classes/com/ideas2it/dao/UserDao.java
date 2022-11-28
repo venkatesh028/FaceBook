@@ -37,16 +37,7 @@ public interface UserDao {
      * @param user - details of the user
      * @return noOfRowsUpdated - number of rows updated
      */
-    public int update(User user);
-
-    /**
-     * Updates the eamil of the user
-     * 
-     * @param  id - id of the user
-     * @param  newEmail - email of the user
-     * @return noOfRowsUpdated - number of rows updated 
-     */
-    public int updateEmail(String id, String newEmail);
+    public int update(User user); 
     
     /**
      * Updates the password of the user
@@ -55,26 +46,7 @@ public interface UserDao {
      * @param password - password of the user
      * @return noOfRowsUpdated - number of rows updated
      */
-    public int updatePassword(String id, String password);
-    
-    /**
-     * Updates the dateofbirth and age of the user
-     * 
-     * @param id - id of the user
-     * @param dateOfBirth - dateofbirth of the user
-     * @param age   - age of the user
-     * @return noOfRowsUpdated - number of rows updated
-     */
-    public int updateDateOfBirthAndAge(String id, LocalDate dateOfBirth, int age);
-    
-    /**
-     * Updates the phone number of the user
-     * 
-     * @param  id - id of the user
-     * @param  phoneNumber - phone number of the user
-     * @return noOfRowsUpdated - number of rows updated
-     */
-    public int updatePhoneNumber(String id, long phoneNumber);
+    public int updatePassword(String id, String password); 
     
     /**
      * Gets the user based on the id

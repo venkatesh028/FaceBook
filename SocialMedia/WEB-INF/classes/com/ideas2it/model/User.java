@@ -1,8 +1,7 @@
 package com.ideas2it.model;
 
 import java.time.LocalDate;
-
-import com.ideas2it.model.Profile;
+import java.util.List;
 
 /**
  * Contain the attributes of the User
@@ -21,13 +20,17 @@ public class User {
     private LocalDate dateOfBirth;
     private int    age;
     private long phoneNumber;
+    private Profile profile;
+    private List<Post> listOfPosts;
+    private List<User> friends;
     
     public User() {}
 
-    public User(String id, String email, String password) {
-        this.id = id;
+    public User(String email, String password, LocalDate dateOfBirth, int age) {
         this.email = email;
         this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.age = age;
     }
     
     public void setId(String id) {

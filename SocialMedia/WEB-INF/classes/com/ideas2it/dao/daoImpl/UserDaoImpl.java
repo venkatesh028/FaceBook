@@ -111,32 +111,7 @@ public class UserDaoImpl implements UserDao {
             DatabaseConnection.closeConnection();
         }
         return noOfRowDeleted;
-    }
-        
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int updateEmail(String id, String newEmail) {
-        int noOfRowsUpdated = 0;
-        StringBuilder query = new StringBuilder();
-        query.append("UPDATE user SET email = ?, update_date_time = now() ")
-             .append("WHERE id = ?;");
-
-        try {
-            connection = DatabaseConnection.getConnection();
-            statement = connection.prepareStatement(query.toString());
-            statement.setString(1,newEmail);
-            statement.setString(2,id);
-            noOfRowsUpdated = statement.executeUpdate();
-            statement.close();            
-        } catch (SQLException sqlException) { 
-            logger.error(sqlException.getMessage());
-        }finally {
-            DatabaseConnection.closeConnection();
-        }
-        return noOfRowsUpdated;
-    }  
+    } 
     
     /**
      * {@inheritDoc}
@@ -160,55 +135,7 @@ public class UserDaoImpl implements UserDao {
             DatabaseConnection.closeConnection();
         }
         return noOfRowsUpdated;
-    }
-       
-    /**
-     * {@inheritDoc}
-     */
-    @Override 
-    public int updateDateOfBirthAndAge(String id, LocalDate dateOfBirth, int age) {
-        int noOfRowsUpdated = 0;
-        String query = "UPDATE user SET date_of_birth = ?, age = ?, updated_date_time = now() WHERE id = ?;";
-
-        try {
-            connection = DatabaseConnection.getConnection();
-            statement = connection.prepareStatement(query);
-            statement.setDate(1,Date.valueOf(dateOfBirth));
-            statement.setInt(2,age);
-            statement.setString(3,id);
-            noOfRowsUpdated = statement.executeUpdate(); 
-            statement.close();
-        } catch (SQLException sqlException) { 
-            logger.error(sqlException.getMessage());
-        } finally {
-            DatabaseConnection.closeConnection();
-        }
-        return noOfRowsUpdated;
-    }    
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int updatePhoneNumber(String id, long phoneNumber) {
-        int noOfRowsUpdated = 0;
-        String query;
-        query = "UPDATE user SET phone_number = ?, updated_date_time = now() WHERE id = ?;";
-
-        try {
-            connection = DatabaseConnection.getConnection();            
-            statement = connection.prepareStatement(query);
-            statement.setLong(1,phoneNumber);
-            statement.setString(2,id);
-            noOfRowsUpdated = statement.executeUpdate();     
-            statement.close();        
-        } catch (SQLException sqlException) {
-            logger.error(sqlException.getMessage());
-        } finally {
-            DatabaseConnection.closeConnection();
-        }
-        return noOfRowsUpdated;
-    }
+    }   
     
     /**
      * {@inheritDoc}

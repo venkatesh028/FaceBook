@@ -4,7 +4,7 @@ package com.ideas2it.constant;
  * Contain the Format of the email, Password and contain all the constant values
  *
  * @version 1.0 
- * @author Venkaetsh Tm
+ * @author Venkaetsh TM
  */
 public class Constants {
     public final static String EMAIL_FORMAT = "^[a-zA-Z0-9][a-zA-Z0-9.]{3,30}@[a-zA-Z0-9]+\\.[a-zA-Z0-9.]{3,}$";
@@ -80,4 +80,6 @@ public class Constants {
     public final static String ERROR_02 = "Profile Not Exist";
     public final static String ERROR_03 = "There is No Post Available";
     public final static String ERRORR_04 = "There is No Friend";
+   
+    public final static int AGE = 17;
 }

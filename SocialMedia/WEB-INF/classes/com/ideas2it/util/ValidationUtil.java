@@ -76,4 +76,8 @@ public class ValidationUtil {
     public boolean isValidUserName(String userName) { 
         return userName.matches(Constants.USERNAME_FORMAT);
     }
+    
+    public String encryptThePassword(String password) {
+        return encryptedPassword;    
+    }
 }

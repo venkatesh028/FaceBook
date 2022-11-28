@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 /**
  * Implements the create, update, get and delete operations for the Notification
  * 
@@ -26,12 +29,9 @@ public class NotificationController extends HttpServlet {
 
     
     protected void doGet(HttpServletRequest request,
-        HttpServletResponse response) trows ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("notification.jsp");
-        HttpSession session = request.getSession(); 
-        request.setAttribute("listOfNotifications", 
-            getNotifications((String)session.getAttribute("userId")));  
-        requestDispatcher.forward(request, response);         
+                         HttpServletResponse response)
+              throws ServletException, IOException {
+        getNotifications(request, response);     
     }
     
     /** 
@@ -67,10 +67,17 @@ public class NotificationController extends HttpServlet {
     /**
      * Gets the notifications of the particular user
      * 
-     * @param id - id of the notification
-     * @param isDeleted - true or false based on the result
+     * @param request
+     * @param response
      */
-    public List<Notification> getNotifications(String userId) {
-        return notificationService.getNotifications(userId);
+    public void getNotifications(HttpServletRequest request,
+                                 HttpServletResponse response)
+           throws ServletException, IOException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("notification.jsp");
+        HttpSession session = request.getSession();
+        List<Notification> listOfNotifications = null;
+        listOfNotifications = notificationService.getNotifications((String)session.getAttribute("userId")); 
+        request.setAttribute("listOfNotifications",listOfNotifications);
+        requestDispatcher.forward(request, response);        
     }      
 }

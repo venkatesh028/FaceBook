@@ -39,7 +39,6 @@ public class UserService {
     public boolean create(User user, Profile profile) {
         String id;
         boolean isCreated;
-
         id = UUID.randomUUID().toString();
         user.setId(id);
         profile.setUserId(id);  

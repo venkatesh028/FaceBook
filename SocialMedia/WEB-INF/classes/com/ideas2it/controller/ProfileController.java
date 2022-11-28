@@ -31,7 +31,9 @@ public class ProfileController extends HttpServlet {
         this.logger = new CustomLogger(ProfileController.class);
     }
     
-    protected  void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected  void doGet(HttpServletRequest request,
+                          HttpServletResponse response)
+               throws ServletException, IOException{
         String path = request.getServletPath();
 
         String message;
@@ -79,6 +81,7 @@ public class ProfileController extends HttpServlet {
             update(request, response);
         }
     }
+
     private void getProfile(HttpServletRequest request,
                             HttpServletResponse response)
             throws ServletException, IOException {

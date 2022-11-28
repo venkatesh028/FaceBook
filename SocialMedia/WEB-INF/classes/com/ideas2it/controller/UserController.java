@@ -117,20 +117,23 @@ public class UserController extends HttpServlet {
                         HttpServletResponse response)
                   throws ServletException, IOException {
         LocalDate dateOfBirth = LocalDate.parse(request.getParameter("DOB"));
-        User user = new User(request.getParameter("email"), request.getParameter("password"),
-                             dateOfBirth, calculateAge(dateOfBirth));
+        
+        User user = new User(request.getParameter("email"), request.getParameter("password"), dateOfBirth, calculateAge(dateOfBirth));
         Profile profile = new Profile(request.getParameter("userName"));
         userService.create(user, profile);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
         requestDispatcher.forward(request, response);
     }
 
-    private void goBackToRegisterPage(HttpServletRequest request, HttpServletResponse response,
-                                      String message) throws ServletException, IOException {
+    private void goBackToRegisterPage(HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      String message)
+            throws ServletException, IOException {
         request.setAttribute("Message", message);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("register.jsp");
         requestDispatcher.forward(request, response);
     }
+
     private boolean isValidCredentials(String email, String password) {
         return userService.isValidCredentials(email, password);
     }
