@@ -3,6 +3,15 @@ package com.ideas2it.controller;
 import com.ideas2it.service.FriendRequestService;
 import com.ideas2it.model.FriendRequest;
 
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
 /**
  * It implements the logic of create, update, delete, get operations for the friend request
  *
@@ -14,6 +23,20 @@ public class FriendRequestController {
 
     public FriendRequestController() {
         friendRequestService = new FriendRequestService();    
+    }
+    
+    protected void doGet(HttpServletRequest request, 
+                         HttpServletResponse response)
+              throws ServletException, IOException {
+        String path = request.getServletPath();
+        
+        switch (path) {
+        case "/getfriends";
+            getFriends(request, response);
+            break;
+            
+        }
+        
     }
     
     /**
@@ -55,4 +78,14 @@ public class FriendRequestController {
     public FriendRequest get(String requestId) {
         return friendRequestService.get(requestId);
     }
+    
+    public void getFriends(HttpServletRequest request,
+                           HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        RequestDispatcher requestDispatcher = request.getRequesetDispatcher("friends.jsp"); 
+        request.setAttribute("friends", friendRequestService.getFriends((String) session.getAttribute("userId")));   
+        requestDispatcher.forward(request, response);         
+    }    
+    
 }

@@ -123,6 +123,16 @@
     <servlet-name>viewComments</servlet-name>
     <url-pattern>/viewComments</url-pattern>
   </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>friends</servlet-name>
+    <servlet-class>com.ideas2it.controller.FriendRequestController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>friends</servlet-name>
+    <url-pattern>/getfriends</url-pattern>
+  </servlet-mapping>
    
   <welcome-file-list>  
    <welcome-file>login.jsp</welcome-file>  

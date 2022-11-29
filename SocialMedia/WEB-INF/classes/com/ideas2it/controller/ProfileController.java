@@ -57,7 +57,13 @@ public class ProfileController extends HttpServlet {
             break;
         }
     }
-
+    
+    /**
+     * Updates the profile details 
+     *  
+     * @param request 
+     * @param response 
+     */
     private void updateProfile(HttpServletRequest request,
                                HttpServletResponse response)
             throws ServletException, IOException {
@@ -81,7 +87,13 @@ public class ProfileController extends HttpServlet {
             update(request, response);
         }
     }
-
+    
+    /**
+     * Gets the profile of the user 
+     * 
+     * @param request 
+     * @param response 
+     */
     private void getProfile(HttpServletRequest request,
                             HttpServletResponse response)
             throws ServletException, IOException {
@@ -91,7 +103,13 @@ public class ProfileController extends HttpServlet {
         requestDispatcher = request.getRequestDispatcher("update-profile.jsp");
         requestDispatcher.forward(request, response);
     }
-
+    
+    /**
+     * Search the profile based on the username 
+     * 
+     * @param request 
+     * @param response 
+     */
     private void searchProfile(HttpServletRequest request,
                                HttpServletResponse response)
             throws ServletException, IOException {
@@ -100,7 +118,13 @@ public class ProfileController extends HttpServlet {
         requestDispatcher = request.getRequestDispatcher("search.jsp");
         requestDispatcher.forward(request, response);
     }
-
+    
+    /**
+     * Shows the profile details of the user 
+     *
+     * @param request 
+     * @parma response 
+     */
     private void viewProfile(HttpServletRequest request,
                              HttpServletResponse response)
             throws ServletException, IOException {

@@ -55,6 +55,8 @@ public class UserController extends HttpServlet {
     /**
      * Allows the user to login when the email and password is Valid
      *
+     * @param request
+     * @param response
      */
     private void login(HttpServletRequest request,
                        HttpServletResponse response)
@@ -74,7 +76,13 @@ public class UserController extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
     }
-
+    
+    /**
+     * Logouts the user and remove the session value
+     * 
+     * @param request
+     * @param response
+     */
     private void logout(HttpServletRequest request,
                         HttpServletResponse response)
             throws ServletException, IOException {
@@ -83,7 +91,13 @@ public class UserController extends HttpServlet {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
         requestDispatcher.forward(request, response);
     }
-
+    
+    /**
+     * Registers the user information 
+     * 
+     * @param request
+     * @parma response
+     */
     private void registerUser(HttpServletRequest request,
                               HttpServletResponse response)
             throws ServletException, IOException {
@@ -124,7 +138,13 @@ public class UserController extends HttpServlet {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
         requestDispatcher.forward(request, response);
     }
-
+    
+    /**
+     * Takes you to the register page with the message 
+     * 
+     * @param request
+     * @param response
+     */
     private void goBackToRegisterPage(HttpServletRequest request,
                                       HttpServletResponse response,
                                       String message)
@@ -133,7 +153,13 @@ public class UserController extends HttpServlet {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("register.jsp");
         requestDispatcher.forward(request, response);
     }
-
+    
+    /**
+     * Checks the given credentials are valid 
+     * 
+     * @param email - email id of the user 
+     * @param password - password of the user 
+     */
     private boolean isValidCredentials(String email, String password) {
         return userService.isValidCredentials(email, password);
     }
@@ -167,7 +193,13 @@ public class UserController extends HttpServlet {
     public int calculateAge(LocalDate dateOfBirth) {
         return userService.calculateAge(dateOfBirth);
     }
-
+    
+    /**
+     * Checks the given username is exist 
+     * 
+     * @param userName - userName given by the user 
+     * @return boolean  - true or false based on the result
+     */ 
     public boolean isUserNameExist(String userName) {
         return userService.isUserNameExist(userName);
     }

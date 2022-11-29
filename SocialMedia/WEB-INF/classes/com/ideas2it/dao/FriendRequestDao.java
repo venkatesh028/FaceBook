@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.connection.DatabaseConnection;
@@ -41,4 +42,12 @@ public interface FriendRequestDao {
      * @return friendRequest - details of the friendRequest 
      */
     public FriendRequest get(String requestId);
+    
+    /**
+     * Gets the Friends for the user
+     * 
+     * @param userId - id of the user 
+     * @return friends - list of friends
+     */
+    public Set<String> getFriends(String userId);
 }

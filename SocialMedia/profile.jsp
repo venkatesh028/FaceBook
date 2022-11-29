@@ -25,7 +25,7 @@
             <td class="info">
                 <h1>${profile.getUserName()}</h1>
                 <h1>${profile.getBio()}</h1>
-                <h1>Friends :${profile.getFriendsCount()}</h1>
+                <a href="getfriends"><h1>Friends :${profile.getFriendsCount()}</h1></a>
             </td>
             <td class="edit">
               <form action = "updateProfile">

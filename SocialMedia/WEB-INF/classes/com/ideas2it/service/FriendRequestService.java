@@ -1,5 +1,8 @@
 package com.ideas2it.service;
 
+import java.util.Set;
+import java.util.HashSet;
+
 import com.ideas2it.model.FriendRequest;
 import com.ideas2it.model.Notification;
 import com.ideas2it.dao.daoImpl.FriendRequestDaoImpl;
@@ -76,4 +79,15 @@ public class FriendRequestService {
     public FriendRequest get(String requestId) {
         return friendRequestDao.get(requestId);  
     }
+   
+    public List<String> getFriends(String userId) {
+        Set<String> friends = friendRequestDao.getFriends(userId);
+       
+        if (null != friends) {
+            friends.remove(userId);
+        } 
+        
+        return friendRequestDao.getFriendsName(friends);                        
+    }
+  
 }

@@ -62,7 +62,7 @@ public class PostDaoImpl implements PostDao {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE post SET ")
-             .append("query = content = ?, updated_date_time = now() ")
+             .append("content = ?, updated_date_time = now() ")
              .append("WHERE id = ?;");
 
         try {
