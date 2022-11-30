@@ -3,7 +3,6 @@ package com.ideas2it.controller;
 import com.ideas2it.service.FriendRequestService;
 import com.ideas2it.model.FriendRequest;
 
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +17,7 @@ import java.io.IOException;
  * @version 1.0 03-Nov-2022
  * @author Venkatesh TM
  */
-public class FriendRequestController {
+public class FriendRequestController extends HttpServlet{
     FriendRequestService friendRequestService;
 
     public FriendRequestController() {
@@ -31,7 +30,7 @@ public class FriendRequestController {
         String path = request.getServletPath();
         
         switch (path) {
-        case "/getfriends";
+        case "/getfriends":
             getFriends(request, response);
             break;
             
@@ -50,23 +49,17 @@ public class FriendRequestController {
     }
     
     /**
-     * Updates the friendRequest
-     *
-     * @param friendRequest - details of the friendRequest 
-     * @return boolean  - true or false based on the response
+     * Updates the request status 
+     * 
+     * @param request
+     * @param response
      */
-    public boolean update(FriendRequest friendRequest) {
-        return friendRequestService.update(friendRequest);
-    }
-    
-    /**
-     * Deletes the friendRequest
-     *
-     * @param friendRequest - details of the friendRequest 
-     * @return boolean  - true or false based on the response
-     */
-    public boolean delete(FriendRequest friendRequest) {
-        return friendRequestService.delete(friendRequest);
+    public void updateTheRequest(HttpServletRequest request,
+                                 HttpServletResponse response)
+           throws ServletException, IOException { 
+
+        friendRequestService.update(request.getParameter("requestId"),
+                                    request.getParameter("requestStatus"));
     }
     
     /**
@@ -83,9 +76,8 @@ public class FriendRequestController {
                            HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        RequestDispatcher requestDispatcher = request.getRequesetDispatcher("friends.jsp"); 
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("friends.jsp"); 
         request.setAttribute("friends", friendRequestService.getFriends((String) session.getAttribute("userId")));   
         requestDispatcher.forward(request, response);         
-    }    
-    
+    }        
 }

@@ -71,29 +71,12 @@ public class ProfileService {
      * @param userId - id of the user
      * @return isUpdated - true or false based on the result
      */
-    public boolean increaseFriendCount(String userId) {
+    public boolean updateFriendCount(String userId, int friendsCount) {
         boolean isUpdated;
         int friendCount;
        
         Profile profile = getProfile(userId);        
-        friendCount = profile.getFriendsCount(); 
-        profile.setFriendsCount(friendCount + 1);
-        isUpdated = profileDao.update(profile) > 0;
-        return isUpdated;
-    }
-
-    /** 
-     * Decrease the friend's count based on the user profile
-     * 
-     * @param userId - id of the user
-     * @return isUpdated - true or false based on the result
-     */
-    public boolean decreaseFriendCount(String userId) {
-        boolean isUpdated;
-        int friendCount;
-        Profile profile = getProfile(userId);
-        friendCount = profile.getFriendsCount(); 
-        profile.setFriendsCount(friendCount - 1);
+        profile.setFriendsCount(friendsCount);
         isUpdated = profileDao.update(profile) > 0;
         return isUpdated;
     }

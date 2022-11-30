@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.connection.DatabaseConnection;
@@ -111,28 +111,29 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
             DatabaseConnection.closeConnection();
         }
         return friendRequest;
-    }    
-    
-    public Set<String> getFriends(String userId) {
+    } 
+   
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getFriends(String userId) {
         ResultSet resultSet;
-        Set<String> friends = null;
-        StringBuilder query = new StringBuilder();
-        query.append("SELECT user_id, requested_user_id FROM ")
-             .append("friend_request WHERE user_id = ? OR ")
-             .append("requested_user_id = ? AND status = 'accepted';");
+        List<String> friends = null;
+        String query = "SELECT username AS friends FROM profile WHERE profile.user_id IN (SELECT (CASE WHEN user_id = ? THEN requested_user_id WHEN requested_user_id = ? THEN user_Id END) FROM friend_request WHERE request_status = 'accepted');"; 
         
         try {
             connection = DatabaseConnection.getConnection();
-            statement = connection.prepareStatement(query.toString());
+            statement = connection.prepareStatement(query);
             statement.setString(1, userId);
             statement.setString(2, userId); 
-            resultSet = statement.executeQuery();
-           
-            if (resultSet.next()) {
-                friends = new HashSet<>();
-                friends.add(resultSet.getString("user_id"));
-                friends.add(resultSet.getString("requested_user_id");
+            resultSet = statement.executeQuery();            
+            friends = new ArrayList<>();
+
+            while(resultSet.next()) {
+                friends.add(resultSet.getString("friends"));             
             }
+            logger.info(friends.toString());
             statement.close();
         } catch (SQLException sqlException) { 
             logger.error(sqlException.getMessage());
@@ -140,30 +141,5 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
             DatabaseConnection.closeConnection();
         }
         return friends;        
-    }
-    
-    public List<String> getFriendsName(Set<String> friends) {
-        ResultSet resultSet;
-        List<String> friendsName = null;
-        String query = "SELECT username FROM profile WHERE profile.user_id IN (?)";
-        
-        try { 
-            connection = DatabaseConnection.getConnection();
-            statement = connection.prepareStatement(query);
-            Array array = statement.getConnection().createArrayOf("VARCHAR", friendsName.toArray() );
-            statement.setArray(1, array);
-            resultSet = statement.executeQuery();
-            
-            if (resultSet.next()) {
-               friendsName = new ArrayList<>();
-               friendsName.add(resultSet.getString("username"));
-            }
-            statement.close();
-        } catch (SQLException sqlException) {
-            logger.error(sqlException.getMessage());
-        } finally {
-            DatabaseConnection.closeConnection();
-        }
-        return friendsName;
-    }
+    }  
 }

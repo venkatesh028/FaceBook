@@ -1,7 +1,7 @@
 package com.ideas2it.service;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.ideas2it.model.FriendRequest;
 import com.ideas2it.model.Notification;
@@ -19,10 +19,12 @@ public class FriendRequestService {
      
     FriendRequestDao friendRequestDao;
     NotificationService notificationService;
+    ProfileService profileService;
 
     public FriendRequestService() {
         friendRequestDao = new FriendRequestDaoImpl();
         notificationService = new NotificationService();
+        profileService = new ProfileService();
     }
     
     /**
@@ -49,12 +51,17 @@ public class FriendRequestService {
     /**
      * Updates the friendRequest
      *
-     * @param friendRequest - updated details of the friendRequest
+     * @param requestId - id of the friendRequest 
+     * @param requestStatus - status for the friendRequest 
      * @return isUpdated - true or false based on the response
      */
-    public boolean update(FriendRequest friendRequest) {
-        boolean isUpdated;
+    public boolean update(String requestId, String requestStatus) {
+        boolean isUpdated; 
+        FriendRequest friendRequest = get(requestId);
+        friendRequest.setStatus(requestStatus);
         isUpdated = friendRequestDao.update(friendRequest) > 0;
+        profileService.updateFriendCount(friendRequest.getUserId(), getFriends(friendRequest.getUserId()).size()); 
+        profileService.updateFriendCount(friendRequest.getRequestedUserId(), getFriends(friendRequest.getRequestedUserId()).size());
         return isUpdated;
     } 
     
@@ -81,13 +88,7 @@ public class FriendRequestService {
     }
    
     public List<String> getFriends(String userId) {
-        Set<String> friends = friendRequestDao.getFriends(userId);
-       
-        if (null != friends) {
-            friends.remove(userId);
-        } 
-        
-        return friendRequestDao.getFriendsName(friends);                        
+        return friendRequestDao.getFriends(userId);                     
     }
   
 }

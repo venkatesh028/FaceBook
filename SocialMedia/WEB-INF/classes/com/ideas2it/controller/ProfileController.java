@@ -171,6 +171,7 @@ public class ProfileController extends HttpServlet {
         profile.setBio(request.getParameter("bio"));
         profileService.update(profile);
         requestDispatcher = request.getRequestDispatcher("profile.jsp");
+        request.setAttribute("profile", getProfile((String) session.getAttribute("userId")));
         requestDispatcher.forward(request, response);
     }
 

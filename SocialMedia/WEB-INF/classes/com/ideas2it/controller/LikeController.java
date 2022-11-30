@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ideas2it.logger.CustomLogger;
+
 /**
  * Implements the logic of  add and get operations for the like
  *
@@ -22,25 +24,20 @@ import javax.servlet.http.HttpSession;
 public class LikeController extends HttpServlet {
     
     LikeService likeService;
-  
+    private CustomLogger logger;
+
     public LikeController() {
-        likeService = new LikeService();    
+        likeService = new LikeService();
+        logger = new CustomLogger(LikeController.class);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
 
         switch (path) {
-
-            case "/addLike":
-                HttpSession session = request.getSession();
-                Like like = new Like();
-                like.setLikdeUserId((String) session.getAttribute("userId"));
-                like.setPostId(request.getParameter("postId"));
-                addLike(like);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed");
-                requestDispatcher.forward(request, response);
-                break;
+        case "/addLike":
+            addLike(request, response);
+            break;
         }
     }
   
@@ -56,8 +53,16 @@ public class LikeController extends HttpServlet {
      * @param like - details of the like
      * @return boolean - true or false based on the response
      */
-    public boolean addLike(Like like) { 
-        return likeService.addLike(like);
+    public void addLike(HttpServletRequest request,
+                        HttpServletResponse response)
+           throws ServletException, IOException { 
+        HttpSession session = request.getSession();
+        Like like = new Like();
+        like.setLikdeUserId((String) session.getAttribute("userId"));
+        like.setPostId(request.getParameter("postId"));
+        likeService.addLike(like);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed");
+        requestDispatcher.forward(request, response);
     }
     
     /**
