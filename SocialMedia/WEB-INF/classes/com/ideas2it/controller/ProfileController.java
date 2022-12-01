@@ -25,9 +25,11 @@ import com.ideas2it.logger.CustomLogger;
 public class ProfileController extends HttpServlet {
     ProfileService profileService;
     private CustomLogger logger;
+    private PostController postController;
 
     public ProfileController() {
         this.profileService = new ProfileService();
+        this.postController = new PostController();
         this.logger = new CustomLogger(ProfileController.class);
     }
     
@@ -131,6 +133,7 @@ public class ProfileController extends HttpServlet {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher;
         request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
+        request.setAttribute("listOfPosts",postController.getPostOfParticularUser((String)session.getAttribute("userId")));
         requestDispatcher = request.getRequestDispatcher("profile.jsp");
         requestDispatcher.forward(request, response);
     }

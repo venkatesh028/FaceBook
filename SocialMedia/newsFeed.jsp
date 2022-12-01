@@ -3,6 +3,20 @@
 <head>
 <title>ideasBook</title>
 <link rel="stylesheet" href="css/navStyle.css">
+
+<style>
+
+body{
+background-color: #efefef;
+}
+
+.topnav{
+background-color: #1877f2
+}
+
+
+
+</style>
 </head>
 <body>
 <div class="topnav">
@@ -44,7 +58,6 @@
                     <td>
                         <form action="viewComments">
                             <input type="hidden" name="postId" value = ${post.id}>
-                            <input type="hidden" name="commentedUserId" value = ${commentedUserId}>
                             <input type="submit" value="Comment">
                         </form>
                          <form action="viewComments" method="get">

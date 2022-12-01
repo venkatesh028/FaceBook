@@ -118,20 +118,16 @@ public class PostController extends HttpServlet {
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
      */
-    public void getPostOfParticularUser(HttpServletRequest request,
-                                        HttpServletResponse response)
+    public List<Post> getPostOfParticularUser(String userId)
            throws ServletException, IOException {
-        List<Post> listOfPosts = null; 
-        HttpSession session = request.getSession(); 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("profile.jsp");
+        List<Post> listOfPosts = null;  
 
         try {
-            listOfPosts = postService.getPostOfParticularUser((String) session.getAttribute("userId"));
-            request.setAttribute("listOfPosts", listOfPosts);
-            requestDispatcher.include(request, response);
+            listOfPosts = postService.getPostOfParticularUser(userId);
         } catch (CustomException customException) {
             logger.error(customException.getMessage());
         }
+        return listOfPosts;
     } 
 
     /**
