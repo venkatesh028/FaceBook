@@ -38,9 +38,6 @@ public class ProfileController extends HttpServlet {
                throws ServletException, IOException{
         String path = request.getServletPath();
 
-        String message;
-        RequestDispatcher requestDispatcher =null;
-
         switch (path) {
         case "/viewProfile":
             viewProfile(request, response);
@@ -56,6 +53,18 @@ public class ProfileController extends HttpServlet {
 
         case "/update":
             updateProfile(request, response);
+            break;
+        }
+    }
+    
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+              throws ServletException, IOException {
+        String path = request.getServletPath();
+        
+        switch (path) {
+        case "/viewProfile":
+            viewProfile(request, response);
             break;
         }
     }
@@ -173,8 +182,7 @@ public class ProfileController extends HttpServlet {
         profile.setUserName(request.getParameter("userName"));
         profile.setBio(request.getParameter("bio"));
         profileService.update(profile);
-        requestDispatcher = request.getRequestDispatcher("profile.jsp");
-        request.setAttribute("profile", getProfile((String) session.getAttribute("userId")));
+        requestDispatcher = request.getRequestDispatcher("viewProfile");
         requestDispatcher.forward(request, response);
     }
 

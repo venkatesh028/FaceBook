@@ -34,7 +34,6 @@ public class PostController extends HttpServlet {
                           HttpServletResponse response)
               throws ServletException, IOException {
         String path = request.getServletPath();
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed.jsp");
 
         switch (path) {
         case "/newsFeed":      
@@ -51,14 +50,22 @@ public class PostController extends HttpServlet {
                          HttpServletResponse response)
               throws ServletException, IOException {
         String path = request.getServletPath();
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed.jsp");  
 
         switch (path) {
         case "/newsFeed":    
             getUserPosts(request, response);           
             break;
+        
+        case "/edit-post":
+            getPost(request, response);
+            break;
+        
+        case "/update-post":
+            update(request, response);
+            break;            
 
-        case "/postOfParticularUser":
+        case "/delete-post":
+            delete(request, response);
             break;
         }        
     }
@@ -88,8 +95,12 @@ public class PostController extends HttpServlet {
      * @param content - content updated by the user
      * @return boolean - true or false based on the response
      */
-    public boolean update(String postId, String content) { 
-        return postService.update(postId, content);
+    public void update(HttpServletRequest request,
+                          HttpServletResponse response)
+           throws ServletException, IOException {  
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewProfile");
+        postService.update(request.getParameter("postId"), request.getParameter("content"));
+        requestDispatcher.forward(request, response);
     }
 
     /**
@@ -118,8 +129,7 @@ public class PostController extends HttpServlet {
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
      */
-    public List<Post> getPostOfParticularUser(String userId)
-           throws ServletException, IOException {
+    public List<Post> getPostOfParticularUser(String userId) {
         List<Post> listOfPosts = null;  
 
         try {
@@ -136,8 +146,20 @@ public class PostController extends HttpServlet {
      * @param  postId - id of the post
      * @return bolean - true or false based 
      */
-    public boolean delete(String postId) {
-        return postService.delete(postId);
+    private void delete(HttpServletRequest request,
+                        HttpServletResponse response)
+            throws ServletException, IOException {        
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewProfile");
+        postService.delete(request.getParameter("postId"));
+        requestDispatcher.forward(request, response);
+    }
+    
+    private void getPost(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute("post", postService.getPost(request.getParameter("postId")));
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("addPost.jsp");
+        requestDispatcher.forward(request, response);
     }       
 }
  

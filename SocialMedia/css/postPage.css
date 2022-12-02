@@ -3,13 +3,13 @@
     padding: 0px 0px;
 }
 
+
 body{
-   background-color: blue;
+background-color: #efefef;
 }
 
-
 .topnav {
-  background-color: #333;
+  background-color: red;
   overflow: hidden;
 }
 
@@ -26,8 +26,6 @@ body{
   background-color: #ddd;
   color: black;
 }
-
-
 
 .postframe {
   margin: auto;

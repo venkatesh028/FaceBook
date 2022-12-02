@@ -84,7 +84,34 @@
     <servlet-name>addPost</servlet-name>
     <url-pattern>/addPost</url-pattern>
   </servlet-mapping>
+   
+  <servlet> 
+      <servlet-name>editPost</servlet-name>
+      <servlet-class>com.ideas2it.controller.PostController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>editPost</servlet-name>
+      <url-pattern>/edit-post</url-pattern>
+  </servlet-mapping>
 
+  <servlet> 
+      <servlet-name>updatePost</servlet-name>
+      <servlet-class>com.ideas2it.controller.PostController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>updatePost</servlet-name>
+      <url-pattern>/update-post</url-pattern>
+  </servlet-mapping>
+  
+
+  <servlet>
+    <servlet-name>deletePost</servlet-name>
+    <servlet-class>com.ideas2it.controller.PostController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deletePost</servlet-name>
+    <url-pattern>/delete-post</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>addLike</servlet-name>
@@ -95,6 +122,11 @@
     <url-pattern>/addLike</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>addLike</servlet-name>
+    <url-pattern>/profileAddLike</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <servlet-name>likedUser</servlet-name>
     <servlet-class>com.ideas2it.controller.LikeController</servlet-class>
@@ -102,6 +134,11 @@
   <servlet-mapping>
     <servlet-name>likedUser</servlet-name>
     <url-pattern>/likedUsers</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>likedUser</servlet-name>
+    <url-pattern>/profilePage-likedUsers</url-pattern>
   </servlet-mapping>
 
 
@@ -124,6 +161,11 @@
     <url-pattern>/viewComments</url-pattern>
   </servlet-mapping>
 
+
+  <servlet-mapping>
+    <servlet-name>viewComments</servlet-name>
+    <url-pattern>/profilePage-viewComments</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>friends</servlet-name>

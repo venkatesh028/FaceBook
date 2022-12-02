@@ -120,5 +120,15 @@ public class PostService {
             throw new CustomException(Constants.ERROR_03);
         }      
         return userPosts;
-    } 
+    }
+ 
+    /**
+     * Gets the post based on the id 
+     * 
+     * @param id - id of the post 
+     * @return post - post based on the id
+     */
+    public Post getPost(String id) {
+        return postDao.getPost(id);
+    }
 }

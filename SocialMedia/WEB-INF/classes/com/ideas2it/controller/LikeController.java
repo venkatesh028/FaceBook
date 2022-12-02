@@ -31,39 +31,44 @@ public class LikeController extends HttpServlet {
         logger = new CustomLogger(LikeController.class);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+              throws ServletException, IOException {
+
         String path = request.getServletPath();
-
-        switch (path) {
-        case "/addLike":
-            addLike(request, response);
-            break;
-        }
-    }
-  
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("likedUsers", getLikedUserNames(request.getParameter("postId")));
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("likedUsersPage.jsp"); 
-        requestDispatcher.forward(request, response);       
-    }
-
-    /**
-     * Adds like
-     * 
-     * @param like - details of the like
-     * @return boolean - true or false based on the response
-     */
-    public void addLike(HttpServletRequest request,
-                        HttpServletResponse response)
-           throws ServletException, IOException { 
         HttpSession session = request.getSession();
         Like like = new Like();
         like.setLikdeUserId((String) session.getAttribute("userId"));
         like.setPostId(request.getParameter("postId"));
         likeService.addLike(like);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed");
+
+        RequestDispatcher requestDispatcher = null;
+
+        if (path == "/profileAddLike") {
+            requestDispatcher = request.getRequestDispatcher("viewProfile");            
+        } else { 
+            requestDispatcher = request.getRequestDispatcher("newsFeed");
+        }   
         requestDispatcher.forward(request, response);
     }
+  
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = request.getServletPath();
+       
+        if (path == "/likedUsers") {
+            request.setAttribute("root", "newsFeed");
+    
+        } else {
+             request.setAttribute("root","profilePage");
+        }
+
+        request.setAttribute("likedUsers", getLikedUserNames(request.getParameter("postId")));        
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("likedUsersPage.jsp");
+         
+        requestDispatcher.forward(request, response);       
+    }
+
+
     
     /**
      * Gets the liked user names

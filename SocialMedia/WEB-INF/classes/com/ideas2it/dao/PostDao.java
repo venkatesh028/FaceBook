@@ -69,4 +69,13 @@ public interface PostDao {
      * @return postOfParticualrUser - posts of the particular user
      */
     public List<Post> getPostOfParticularUser(String userId);  
+     
+    /**
+     * Gets the post based on the id 
+     * 
+     * @param id - id of the post 
+     * @return post - post based on the id
+     */
+    public Post getPost(String id);
+    
 }

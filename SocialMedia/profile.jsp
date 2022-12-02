@@ -16,7 +16,6 @@
     background: #1877f2;
     width: 100%;
     overflow: hidden;
-
 } 
 
 .navList{
@@ -50,6 +49,7 @@ body{
 .profileFrame{
     text-align:center;
     margin:5px;
+    border : 2px solid black;
 }
 
 .EditButton {
@@ -71,22 +71,21 @@ body{
   opacity:1;
 }
 
-h1{
-   display:inline;
-}
 
 .postContainer {
-    margin-left: 40px;
+    border: 2px solid black;
 }
 
 .post {
     display: inline-block;
     margin: 5px;
     background-color: grey;
+    width: 24%;
+    height: 40%;
 }
 
 .post .content{
-    margin-top: 20px;
+    margin-top: 50px;
     margin-left:5px;
     margin-right:5px;
     border: 2px solid black;
@@ -139,6 +138,49 @@ h1{
 }
 
 
+
+
+
+.btn {
+  background-color: #2196f314;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  padding:1px;
+  margin-bottom: 0px;
+}
+
+.dropdown {
+  position: absolute;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  background-color: white;
+  position: absolute;
+  min-width: 50px;
+  z-index: 1;
+}
+
+.dropdown-content a:hover {background-color: #ddd}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.btn:hover, .dropdown:hover .btn {
+  background-color: #0b7dda;
+}
+
+
+
+.edit{
+    display: none;
+}
+
 </style>
 </head>
 
@@ -156,10 +198,10 @@ h1{
 </nav>  
 
 <div class="profileFrame">    
-<img src="iconforprofile.png"><br>
-<h1>${profile.getUserName()}</h1><br>
-<h1>${profile.getBio()}</h1><br>
-<a href="getfriends"><h1>Friends :${profile.getFriendsCount()}</h1></a><br>
+<img src="iconforprofile.png">
+<h1>${profile.getUserName()}</h1>
+<h1>${profile.getBio()}</h1>
+<a href="getfriends"><h1>Friends :${profile.getFriendsCount()}</h1></a>
 <form action = "updateProfile">
 <button type="submit" class="EditButton">Edit</button>
 </form>
@@ -170,37 +212,58 @@ h1{
 
 <c:choose>
     <c:when test="${listOfPosts ne null}">
-        <c:forEach items="${listOfPosts}" var = "post">
+
+  <c:forEach items="${listOfPosts}" var = "post">
             <div class="post">
-                <div class="userName">
-                <h1>${post.postedUserName}</h1>
+      
+                <div class="dropdown">               
+                  <button class="btn" style="border-left:1px solid #0d8bf2">
+                  <i class="fa fa-caret-down"></i>
+                  &#9999
+                  </button>
+                  <div class="dropdown-content">
+
+                      <form action="edit-post" method="get">
+                          <input type="hidden" name="postId" value = ${post.id}>
+                          <input type="submit" value="Edit">
+                      </form>
+
+                      <form action="delete-post" method="get">
+                          <input type="hidden" name="postId" value = ${post.id}>
+                          <input type="submit" value="Delete">
+                      </form>
+                  </div>
                 </div>
-            <div class="content">
-            <p><b>${post.content}</p>
-            </div>
+
+                <div class="content">
+                <p><b>${post.content}</b></p>
+                </div>
+
             <div class="likediv">
-            <form action="addLike" method="post">
+            <form action="profileAddLike" method="post">
                 <input type="hidden" name="postId" value = ${post.id}>
                 <button type="submit" class="likebutton">Like</button>
             </form>
-            <form action="likedUsers" method="get">
+            <form action="profilePage-likedUsers" method="get">
                 <input type="hidden" name="postId" value = ${post.id}>
                 <button type="submit class="count">${post.likeCount}</button>
             </form>
             </div>
 
             <div class="commentdiv">
-            <form action="viewComments" method="get">
+            <form action="profilePage-viewComments" method="get">
                 <input type="hidden" name="postId" value = ${post.id}>
                 <button type="submit" class="commentbutton">Comment</button>
             </form>
-            <form action="viewComments" method="get">
+            <form action="profilePage-viewComments" method="get">
                 <input type="hidden" name="postId" value = ${post.id}>
                 <button type="submit" class="count">${post.commentCount}</button>
             </form>
             </div>
+
             </div>
         </c:forEach>
+
      </c:when>
      <c:otherwise>
      <div class="noPostMessage">     
@@ -210,6 +273,17 @@ h1{
 </c:choose>
 
 </div>
+
+<div class="dropdown">
+    
+</div>
+
+
+
+
+
+<script>
+</script>
 
 </body>
 </html>

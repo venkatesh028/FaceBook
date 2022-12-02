@@ -4,9 +4,23 @@
 <title>ideasBook</title>
 </head>
 <body>
+
+
+<c:choose>
+<c:when test="${root == 'profile'}">
+<div class="topnav">
+<a href="viewProfile" method="get">Back</a>
+</div>
+</c:when>
+<c:otherwise>
 <div class="topnav">
 <a href="newsFeed" method="get">Back</a>
 </div>
+</c:otherwise>
+</c:choose>
+
+
+
 <form action="addComment" method="Post">
 <input type="hidden" name="postId" value=${postId}>
 <input type="text" name="content">

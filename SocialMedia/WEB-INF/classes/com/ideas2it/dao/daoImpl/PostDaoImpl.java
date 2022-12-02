@@ -223,5 +223,36 @@ public class PostDaoImpl implements PostDao {
         }
         return noOfRowsDeleted;
     } 
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Post getPost(String id) {
+        String query;
+        ResultSet resultSet;
+        Post post = null;
+        query = "SELECT id, user_id, content FROM post WHERE id = ?;";
+         
+        try {
+            connection = DatabaseConnection.getConnection();            
+            statement = connection.prepareStatement(query);
+            statement.setString(1, id);
+            resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                post = new Post();  
+                post.setPostId(resultSet.getString("id"));
+                post.setPostedUserId(resultSet.getString("user_id"));
+                post.setContent(resultSet.getString("content")); 
+            } 
+            statement.close();          
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection();
+        }  
+        return post;    
+    }
   
 }

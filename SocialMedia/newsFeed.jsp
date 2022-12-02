@@ -10,29 +10,111 @@ body{
 background-color: #efefef;
 }
 
-.topnav{
-background-color: #1877f2
+.topNav {
+    background: #1877f2;
+    width: 100%;
+    overflow: hidden;
+
+} 
+
+*{
+    margin:0px;
+    padding: 0px 0px;
 }
 
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.logout{
+    float:right;
+}
+
+.feed {
+  margin: auto;
+  margin-top: 20px;
+  width: 50%;
+  border: 3px;
+  padding: 10px;
+}
+
+.post{
+  border: 3px solid black;
+  margin:15px;
+}
+
+.userName{ 
+    border:2px;
+    padding: 2px;
+}
+
+.content{
+    margin-top:5px;
+    margin-left:10px;
+    margin-right:10px;
+    text-align: center;
+    border:2px solid blue;
+    padding:10px;
+}
+
+h3{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+table{
+   width:100%;   
+}
+
+td{
+    text-align: center;
+}
+  
+input[type=submit]{
+  background-color: blue;
+  border: 2px solid black;
+  border-radius:10px;
+  color: white;
+  padding: 16px 36px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 
 
 </style>
 </head>
+
 <body>
-<div class="topnav">
+<nav class="topNav">
   <ul class="navList">
   <il><a href="newsFeed" method="post">NewsFeed</a></il>
   <il><a href="addPost.jsp">AddPost</a></il>
   <il><a href="viewProfile">Profile</a></il>
   <il><a href="">Notification</a></il> 
   <il><a href="search.jsp">Search</a></il>
-  <il><a href="setting">Setting</a></il>
+  <il><a href="setting.jsp">Setting</a></il>
   <il class="logout"><a href="logout">Logout</a></il>
   </ul>
-</div>
+</nav>
 
 <div class="feed">
-    <c:forEach items="${listOfPosts}" var = "post">  
+    <c:forEach items="${listOfPosts}" var="post">  
         <div class="post">
             <div class="userName">
                 <h3>${post.postedUserName}</h3>

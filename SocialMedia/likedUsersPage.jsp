@@ -5,9 +5,21 @@
     <link rel="stylesheet" href="css/likedUsersPage.css">
 </head>
 <body>
+
+<c:choose>
+<c:when test="${root == 'profilePage'}">
+<div class="topnav">
+<a href="viewProfile" method="get">Back</a>
+</div>
+</c:when>
+<c:otherwise>
 <div class="topnav">
 <a href="newsFeed" method="get">Back</a>
 </div>
+</c:otherwise>
+</c:choose>
+
+
 <div class="likedUsersFrame">
     <c:choose>
     <c:when test="${likedUsers ne null}">

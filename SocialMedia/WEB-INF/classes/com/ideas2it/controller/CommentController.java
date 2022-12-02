@@ -32,6 +32,13 @@ public class CommentController extends HttpServlet {
     
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String path = request.getServletPath();
+         
+        if (path == "/viewComments") {
+            request.setAttribute("root", "newsFeed");
+        } else {
+            request.setAttribute("root", "profile");
+        }
         request.setAttribute("listOfComments", getComments(request.getParameter("postId")));
         request.setAttribute("postId", request.getParameter("postId"));
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewComments.jsp"); 
