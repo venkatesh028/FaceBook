@@ -3,9 +3,7 @@
 <head>
 <title>ideasBook</title>
 
-
 <style>
-
 *{
     margin:0px;
     padding: 0px 0px;   
@@ -20,9 +18,7 @@
 
 .navList{
  margin :0px;
-}
-
-
+} 
 
 body{
     background: #efefef;
@@ -138,9 +134,6 @@ body{
 }
 
 
-
-
-
 .btn {
   background-color: #2196f314;
   color: white;
@@ -175,8 +168,6 @@ body{
   background-color: #0b7dda;
 }
 
-
-
 .edit{
     display: none;
 }
@@ -184,6 +175,8 @@ body{
 </style>
 </head>
 
+<c:choose>
+<c:when  test="${sessionScope.userId != null}">
 
 <body>
 <nav class="topNav">
@@ -274,16 +267,12 @@ body{
 
 </div>
 
-<div class="dropdown">
-    
-</div>
-
-
-
-
-
-<script>
-</script>
-
 </body>
+
+</c:when>
+<c:otherwise>
+<c:redirect url = "login.jsp"/>
+</c:otherwise>
+</c:choose>
+
 </html>

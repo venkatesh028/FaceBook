@@ -67,8 +67,7 @@ public class UserController extends HttpServlet {
                 request.getParameter("password"))) {
             HttpSession session = request.getSession();
             session.setAttribute("userId", getUserId(request.getParameter("email")));
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed");
-            requestDispatcher.forward(request, response);
+            response.sendRedirect("newsFeed");
         } else {
             message = "Sorry Email Id or Password is wrong";
             request.setAttribute("Message", message);
@@ -88,8 +87,7 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("userId");
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
-        requestDispatcher.forward(request, response);
+        response.sendRedirect("login.jsp");
     }
     
     /**

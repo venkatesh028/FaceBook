@@ -62,6 +62,10 @@ input[type=submit]{
 }
 </style>
 </head>
+
+<c:choose>
+<c:when  test="${sessionScope.userId != null}">
+
 <body>
 
 <c:choose>
@@ -94,4 +98,11 @@ input[type=submit]{
 
 </c:choose>
 </body>
+
+
+</c:when>
+<c:otherwise>
+<c:redirect url = "login.jsp"/>
+</c:otherwise>
+</c:choose>
 </html>

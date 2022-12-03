@@ -57,7 +57,7 @@
     <url-pattern>/updateProfile</url-pattern>
   </servlet-mapping>
   
-    <servlet>
+  <servlet>
     <servlet-name>update-profile</servlet-name>
     <servlet-class>com.ideas2it.controller.ProfileController</servlet-class>
   </servlet>
@@ -89,6 +89,7 @@
       <servlet-name>editPost</servlet-name>
       <servlet-class>com.ideas2it.controller.PostController</servlet-class>
   </servlet>
+
   <servlet-mapping>
       <servlet-name>editPost</servlet-name>
       <url-pattern>/edit-post</url-pattern>
@@ -98,16 +99,17 @@
       <servlet-name>updatePost</servlet-name>
       <servlet-class>com.ideas2it.controller.PostController</servlet-class>
   </servlet>
+
   <servlet-mapping>
       <servlet-name>updatePost</servlet-name>
       <url-pattern>/update-post</url-pattern>
-  </servlet-mapping>
-  
+  </servlet-mapping>  
 
   <servlet>
     <servlet-name>deletePost</servlet-name>
     <servlet-class>com.ideas2it.controller.PostController</servlet-class>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>deletePost</servlet-name>
     <url-pattern>/delete-post</url-pattern>
@@ -117,6 +119,7 @@
     <servlet-name>addLike</servlet-name>
     <servlet-class>com.ideas2it.controller.LikeController</servlet-class>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>addLike</servlet-name>
     <url-pattern>/addLike</url-pattern>
@@ -168,9 +171,30 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>editComment</servlet-name>
+    <servlet-class>com.ideas2it.controller.CommentController</servlet-class>
+  </servlet>
+   
+  <servlet-mapping>
+  <servlet-name>editComment</servlet-name>
+  <url-pattern>/edit-comment</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>deleteComment</servlet-name>
+    <servlet-class>com.ideas2it.controller.CommentController</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+  <servlet-name>deleteComment</servlet-name>
+  <url-pattern>/delete-comment</url-pattern>
+  </servlet-mapping>   
+
+  <servlet>
     <servlet-name>friends</servlet-name>
     <servlet-class>com.ideas2it.controller.FriendRequestController</servlet-class>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>friends</servlet-name>
     <url-pattern>/getfriends</url-pattern>

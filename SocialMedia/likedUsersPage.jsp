@@ -4,6 +4,10 @@
     <title>ideasBook</title>
     <link rel="stylesheet" href="css/likedUsersPage.css">
 </head>
+
+<c:choose>
+<c:when  test="${sessionScope.userId != null}">
+
 <body>
 
 <c:choose>
@@ -44,4 +48,11 @@
     </c:choose>       
 </div>
 </body>
+
+</c:when>
+<c:otherwise>
+<c:redirect url = "login.jsp"/>
+</c:otherwise>
+</c:choose>
+
 </html>

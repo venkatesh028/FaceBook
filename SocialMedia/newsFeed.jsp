@@ -113,6 +113,9 @@ input[type=submit]{
   </ul>
 </nav>
 
+<c:choose>
+<c:when  test="${sessionScope.userId != null}">
+
 <div class="feed">
     <c:forEach items="${listOfPosts}" var="post">  
         <div class="post">
@@ -153,5 +156,12 @@ input[type=submit]{
         </div>  
     </c:forEach>
 </div>
+</c:when>
+<c:otherwise>
+<c:redirect url = "login.jsp"/>
+</c:otherwise>
+</c:choose>
+
+
 </body>
 </html>

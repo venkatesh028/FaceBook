@@ -72,6 +72,10 @@ body{
 
 
 </head>
+
+<c:choose>
+<c:when  test="${sessionScope.userId != null}">
+
 <body>
 
 <div class="topnav">
@@ -107,4 +111,10 @@ body{
     </c:choose> 
 </div>
 </body>
+
+</c:when>
+<c:otherwise>
+<c:redirect url = "login.jsp"/>
+</c:otherwise>
+</c:choose>
 </html>

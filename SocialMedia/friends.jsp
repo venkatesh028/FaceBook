@@ -2,6 +2,10 @@
 <html>
 <head>
 </head>
+<c:choose>
+<c:when  test="${sessionScope.userId != null}">
+
+
 <body>
 <h1>Friends</h1>
 <c:choose>
@@ -16,4 +20,11 @@
 </c:choose>
 
 </body>
+
+</c:when>
+<c:otherwise>
+<c:redirect url = "login.jsp"/>
+</c:otherwise>
+</c:choose>
+
 </html>

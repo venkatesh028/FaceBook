@@ -142,7 +142,7 @@ public class CommentDaoImpl implements CommentDao {
         ResultSet resultSet;
         List<Comment> comments = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT post_comment.id, profile.username, post_comment.content ")
+        query.append("SELECT post_comment.id, post_comment.commented_user_id, profile.username, post_comment.content ")
              .append("FROM post_comment JOIN profile ")
              .append("ON profile.user_id = post_comment.commented_user_id ")
              .append("WHERE post_comment.post_id = ?;");
@@ -156,7 +156,8 @@ public class CommentDaoImpl implements CommentDao {
 
             while (resultSet.next()) {
                 Comment comment = new Comment();
-                comment.setId(resultSet.getString("id"));
+                comment.setId(resultSet.getString("id")); 
+                comment.setCommentedUserId(resultSet.getString("commented_user_id"));
                 comment.setCommentedUserName(resultSet.getString("username"));
                 comment.setContent(resultSet.getString("content"));
                 comments.add(comment);
@@ -178,7 +179,7 @@ public class CommentDaoImpl implements CommentDao {
         ResultSet resultSet;
         Comment comment = null;  
         String query;
-        query = "SELECT commented_user_id FROM post_comment WHERE id = ?;";
+        query = "SELECT id, content FROM post_comment WHERE id = ?;";
 
         try {
             connection = DatabaseConnection.getConnection();            
@@ -188,7 +189,8 @@ public class CommentDaoImpl implements CommentDao {
             comment = new Comment();
 
             if (resultSet.next()) {
-                comment.setCommentedUserId(resultSet.getString("commented_user_id"));
+                comment.setId(resultSet.getString("id"));
+                comment.setContent(resultSet.getString("content"));
             }
             statement.close();
         }  catch (SQLException sqlException) {

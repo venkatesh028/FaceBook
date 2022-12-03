@@ -68,6 +68,10 @@ a{
 </style>
 
 </head>
+
+<c:choose>
+<c:when  test="${sessionScope.userId != null}">
+
 <body>
 
 
@@ -85,6 +89,11 @@ a{
     <h1>${Message}</h1>
 </div> 
 
-
 </body>
+
+</c:when>
+<c:otherwise>
+<c:redirect url = "login.jsp"/>
+</c:otherwise>
+</c:choose>
 </html>
