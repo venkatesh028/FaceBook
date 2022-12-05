@@ -108,7 +108,7 @@ input[type=submit]{
   <il><a href="viewProfile">Profile</a></il>
   <il><a href="">Notification</a></il> 
   <il><a href="search.jsp">Search</a></il>
-  <il><a href="setting.jsp">Setting</a></il>
+  <il><a href="setting">Setting</a></il>
   <il class="logout"><a href="logout">Logout</a></il>
   </ul>
 </nav>

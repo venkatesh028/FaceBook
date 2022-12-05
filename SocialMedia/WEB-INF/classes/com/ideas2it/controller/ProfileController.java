@@ -229,17 +229,12 @@ public class ProfileController extends HttpServlet {
      * @param  userId - id of the user
      * @return boolean - true or false based on the response
      */
-    public boolean setPublic(String userId) {
-        return profileService.setPublic(userId);
+    public void updateVisibility(HttpServletRequest request,
+                                 HttpServletResponse response)
+           throws ServletException, IOException {
+        profileService.updateVisibility(request.getParameter("profileId"), request.getParameter("visibilityStatus"));
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("setting");
+        requestDispatcher.forward(request, response);       
     }
 
-    /**
-     * Sets the profile as private
-     * 
-     * @param  userId - id of the user
-     * @return boolean - true or false based on the response
-     */
-    public boolean setPrivate(String userId) {
-        return profileService.setPrivate(userId);
-    }
 } 

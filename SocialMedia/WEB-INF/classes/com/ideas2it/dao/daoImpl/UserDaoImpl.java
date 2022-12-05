@@ -144,23 +144,30 @@ public class UserDaoImpl implements UserDao {
     public User getUser(String id) {
         ResultSet resultSet;
         User user = null;
-        String query;
-        query = "SELECT * FROM user where id = ? ;";
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT user.id, user.email, user.date_of_birth, ")
+             .append("user.age, user.phone_number, profile.visibility ")
+             .append("FROM user JOIN profile ON user.id = profile.user_id ")
+             .append("WHERE user.id= ?;");
 
         try {
             connection = DatabaseConnection.getConnection();            
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1,id);
             resultSet = statement.executeQuery();
             
             if (resultSet.next()) {     
-                user = new User();        
+                user = new User();  
+                Profile profile = new Profile();      
                 user.setId(resultSet.getString("id"));
+                profile.setUserId(resultSet.getString("id"));
                 user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
                 user.setDateOfBirth((resultSet.getDate("date_of_birth").toLocalDate()));
                 user.setAge(resultSet.getInt("age"));
                 user.setPhoneNumber(resultSet.getLong("phone_number"));
+                profile.setVisibility(resultSet.getString("visibility"));
+                user.setProfile(profile);
+                logger.info(user.toString());
             }     
             statement.close();         
         } catch (SQLException sqlException) {

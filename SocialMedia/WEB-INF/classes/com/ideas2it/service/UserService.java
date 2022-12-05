@@ -151,4 +151,8 @@ public class UserService {
     public boolean isUserNameExist(String userName) {
         return profileService.isUserNameExist(userName);
     }
+    
+    public User getUser(String id) {
+        return userDao.getUser(id);
+    }
 }

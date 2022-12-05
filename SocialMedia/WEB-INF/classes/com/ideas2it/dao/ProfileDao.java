@@ -58,21 +58,5 @@ public interface ProfileDao {
      *
      * @return userNames list of existing usernames
      */
-    public List<String> getExistingUserNames();  
-    
-    /**
-     * Sets the profile as public
-     * 
-     * @param  userId - id of the user
-     * @return noOfRowsUpdated - based on the updation
-     */
-    public int setPublic(String userId); 
-
-    /**
-     * Sets the profile as private
-     * 
-     * @param  userId - id of the user
-     * @return noOfRowsUpdated - based on the updation
-     */
-    public int setPrivate(String userId) ;
+    public List<String> getExistingUserNames(); 
 }

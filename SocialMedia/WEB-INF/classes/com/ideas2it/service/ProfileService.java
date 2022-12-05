@@ -119,23 +119,9 @@ public class ProfileService {
         return existingUserNames.contains(userName);
     }
 
-   /**
-    * Sets the profile as public 
-    * 
-    * @param  userId - id of the user
-    * @return boolean - true or false based on the response
-    */
-    public boolean setPublic(String userId) {
-        return profileDao.setPublic(userId) > 0;
-    }
-
-    /**
-     * Sets the profile as private
-     * 
-     * @param  userId - id of the user
-     * @return boolean - true or false based on the response
-     */
-    public boolean setPrivate(String userId) {
-        return profileDao.setPrivate(userId) > 0;
+    public boolean updateVisibility(String userId, String visibility_status) {
+        Profile profile = getProfile(userId);
+        profile.setVisibility(visibility_status);
+        return update(profile);
     }
 }

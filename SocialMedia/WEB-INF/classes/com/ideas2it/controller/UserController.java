@@ -33,6 +33,10 @@ public class UserController extends HttpServlet {
         case "/logout":
             logout(request, response);
             break;
+        
+        case "/setting":
+            getUser(request, response);
+            break;
         }
     }
 
@@ -58,9 +62,9 @@ public class UserController extends HttpServlet {
      * @param request
      * @param response
      */
-    private void login(HttpServletRequest request,
-                       HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void login(HttpServletRequest request,
+                         HttpServletResponse response)
+              throws ServletException, IOException {
         String message;
 
         if (isValidCredentials(request.getParameter("email"),
@@ -82,9 +86,9 @@ public class UserController extends HttpServlet {
      * @param request
      * @param response
      */
-    private void logout(HttpServletRequest request,
-                        HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void logout(HttpServletRequest request,
+                          HttpServletResponse response)
+              throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("userId");
         response.sendRedirect("login.jsp");
@@ -96,9 +100,9 @@ public class UserController extends HttpServlet {
      * @param request
      * @parma response
      */
-    private void registerUser(HttpServletRequest request,
-                              HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void registerUser(HttpServletRequest request,
+                                HttpServletResponse response)
+              throws ServletException, IOException {
         String message;
 
         if (!isEmailExist(request.getParameter("email"))) {
@@ -125,9 +129,9 @@ public class UserController extends HttpServlet {
      * @param  request
      * @param  response
      */
-    private void create(HttpServletRequest request,
-                        HttpServletResponse response)
-                  throws ServletException, IOException {
+    protected void create(HttpServletRequest request,  
+                          HttpServletResponse response)
+              throws ServletException, IOException {
         LocalDate dateOfBirth = LocalDate.parse(request.getParameter("DOB"));
         
         User user = new User(request.getParameter("email"), request.getParameter("password"), dateOfBirth, calculateAge(dateOfBirth));
@@ -143,10 +147,10 @@ public class UserController extends HttpServlet {
      * @param request
      * @param response
      */
-    private void goBackToRegisterPage(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      String message)
-            throws ServletException, IOException {
+    protected void goBackToRegisterPage(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        String message)
+              throws ServletException, IOException {
         request.setAttribute("Message", message);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("register.jsp");
         requestDispatcher.forward(request, response);
@@ -201,4 +205,16 @@ public class UserController extends HttpServlet {
     public boolean isUserNameExist(String userName) {
         return userService.isUserNameExist(userName);
     }
+   
+    protected void getUser(HttpServletRequest request, 
+                           HttpServletResponse response)
+              throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = userService.getUser((String) session.getAttribute("userId"));
+        request.setAttribute("user", user);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("setting.jsp");
+        requestDispatcher.forward(request, response);
+    }
+    
+     
 }

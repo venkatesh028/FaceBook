@@ -98,7 +98,7 @@ public class ProfileDaoImpl implements ProfileDao {
         StringBuilder query = new StringBuilder();
         query.append("UPDATE profile SET ")
              .append("username = ?, bio = ?, friends_count = ?, ")
-             .append("updated_date_time = now() ")
+             .append("visibility = ? ")
              .append("WHERE user_id = ?;");
         
         try {
@@ -107,7 +107,8 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.setString(1, profile.getUserName());
             statement.setString(2, profile.getBio());
             statement.setInt(3, profile.getFriendsCount());
-            statement.setString(4, profile.getUserId());
+            statement.setString(4, profile.getVisibility());
+            statement.setString(5, profile.getUserId());
          
             noOfRowsUpdated = statement.executeUpdate();
             statement.close();
@@ -200,56 +201,5 @@ public class ProfileDaoImpl implements ProfileDao {
             DatabaseConnection.closeConnection();
         }
         return userNames;         
-    }
-   
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int setPublic(String userId) {
-        int noOfRowsUpdated = 0;
-        StringBuilder query = new StringBuilder();
-        query.append("UPDATE profile SET ")
-             .append("visibility = 'public', updated_date_time = now() ")
-             .append("WHERE user_id = ?;");
-        
-        try {
-            connection = DatabaseConnection.getConnection();
-            statement = connection.prepareStatement(query.toString());
-            statement.setString(1,userId);
-            noOfRowsUpdated = statement.executeUpdate();
-            statement.close();
-        } catch (SQLException sqlException) {
-            logger.error(sqlException.getMessage());
-        } finally {
-            DatabaseConnection.closeConnection();
-        }
-        return noOfRowsUpdated; 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int setPrivate(String userId) {
-        int noOfRowsUpdated = 0;
-        StringBuilder query = new StringBuilder();
-        query.append("UPDATE profile SET ")
-             .append("query = visibility = 'private', ")
-             .append("updated_date_time = now() ")
-             .append("WHERE user_id = ?;");
-
-        try {
-            connection = DatabaseConnection.getConnection();
-            statement = connection.prepareStatement(query.toString());
-            statement.setString(1,userId);
-            noOfRowsUpdated = statement.executeUpdate(); 
-            statement.close();
-        } catch (SQLException sqlException) {
-            logger.error(sqlException.getMessage());
-        } finally {
-            DatabaseConnection.closeConnection();
-        }
-        return noOfRowsUpdated; 
     }
 }

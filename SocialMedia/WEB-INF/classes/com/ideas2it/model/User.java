@@ -16,7 +16,6 @@ public class User {
     private String id;
     private String email;
     private String password;
-    private String gender;
     private LocalDate dateOfBirth;
     private int    age;
     private long phoneNumber;
@@ -44,10 +43,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public void setGender(String gender) { 
-        this.gender = gender;
-    }
    
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
@@ -59,6 +54,18 @@ public class User {
     
     public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+    
+    public void setListOfPosts(List<Post> listOfPosts) {
+        this.listOfPosts = listOfPosts;
+    }
+   
+    public void setFriends(List<User> friends) { 
+        this.friends = friends;
     }
 
     public String getId() {
@@ -72,11 +79,7 @@ public class User {
     public String getPassword() {
         return password;
     }
-   
-    public String getGender() {
-        return gender;
-    }
-    
+
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -88,7 +91,19 @@ public class User {
     public long getPhoneNumber() { 
         return phoneNumber;
     }
+
+    public Profile getProfile() {
+        return profile;
+    }
     
+    public List<Post> getListOfPosts() {
+        return listOfPosts;
+    }
+    
+    public List<User> getfriends() {
+        return friends;
+    }
+
     public String toString() {
         StringBuilder userMessage = new StringBuilder();
         userMessage.append("\nEmail   : ").append(email)
