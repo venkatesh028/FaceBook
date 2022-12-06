@@ -154,16 +154,15 @@
     <url-pattern>/addComment</url-pattern>
   </servlet-mapping>
 
-
   <servlet>
     <servlet-name>viewComments</servlet-name>
     <servlet-class>com.ideas2it.controller.CommentController</servlet-class>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>viewComments</servlet-name>
     <url-pattern>/viewComments</url-pattern>
   </servlet-mapping>
-
 
   <servlet-mapping>
     <servlet-name>viewComments</servlet-name>

@@ -34,7 +34,7 @@ public class CommentDaoImpl implements CommentDao {
     public int create(Comment comment) {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO post_comment")
+        query.append("INSERT INTO comment")
              .append("(id, post_id, commented_user_id, content, created_date_time) ")
              .append("VALUES(?,?,?,?,now());");
 
@@ -63,7 +63,7 @@ public class CommentDaoImpl implements CommentDao {
     public int update(String id, String content) {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE post_comment SET ")
+        query.append("UPDATE comment SET ")
              .append("content = ?, updated_date_time = now() ")
              .append("WHERE id = ?;");
 
@@ -89,7 +89,7 @@ public class CommentDaoImpl implements CommentDao {
     public int delete(String id) {
         int noOfRowsDeleted = 0;
         String query;
-        query = "DELETE FROM post_comment WHERE id = ?;";
+        query = "DELETE FROM comment WHERE id = ?;";
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -114,7 +114,7 @@ public class CommentDaoImpl implements CommentDao {
         ResultSet resultSet;
         StringBuilder query = new StringBuilder();
         query.append("SELECT COUNT(id) AS comments_count ")
-             .append("FROM post_comment WHERE post_id = ?;");
+             .append("FROM comment WHERE post_id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -142,10 +142,10 @@ public class CommentDaoImpl implements CommentDao {
         ResultSet resultSet;
         List<Comment> comments = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT post_comment.id, post_comment.commented_user_id, profile.username, post_comment.content ")
-             .append("FROM post_comment JOIN profile ")
-             .append("ON profile.user_id = post_comment.commented_user_id ")
-             .append("WHERE post_comment.post_id = ?;");
+        query.append("SELECT comment.id, comment.commented_user_id, profile.username, comment.content ")
+             .append("FROM comment JOIN profile ")
+             .append("ON profile.user_id = comment.commented_user_id ")
+             .append("WHERE comment.post_id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -179,7 +179,7 @@ public class CommentDaoImpl implements CommentDao {
         ResultSet resultSet;
         Comment comment = null;  
         String query;
-        query = "SELECT id, content FROM post_comment WHERE id = ?;";
+        query = "SELECT id, content FROM comment WHERE id = ?;";
 
         try {
             connection = DatabaseConnection.getConnection();            

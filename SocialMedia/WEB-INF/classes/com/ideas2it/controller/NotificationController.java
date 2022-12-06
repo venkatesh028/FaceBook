@@ -40,7 +40,7 @@ public class NotificationController extends HttpServlet {
      * @param  notification - details of the notification
      * @return boolean  - true or false based on response;
      */     
-    public boolean create(Notification notification) {
+    private boolean create(Notification notification) {
         return notificationService.create(notification);
     }
     
@@ -50,7 +50,7 @@ public class NotificationController extends HttpServlet {
      * @param id - id of the notification
      * @return boolean - true or false based on the result
      */ 
-    public boolean update(String requestId) {
+    private boolean update(String requestId) {
         return notificationService.update(requestId);
     }
     
@@ -60,7 +60,7 @@ public class NotificationController extends HttpServlet {
      * @param userName          - username to who the request is given
      * @param requestedUserName - name of the person who gave the request
      */
-    public boolean clearNotification(String id) {
+    private boolean clearNotification(String id) {
         return notificationService.clearNotification(id);
     }  
     
@@ -70,9 +70,9 @@ public class NotificationController extends HttpServlet {
      * @param request
      * @param response
      */
-    public void getNotifications(HttpServletRequest request,
-                                 HttpServletResponse response)
-           throws ServletException, IOException {
+    private void getNotifications(HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("notification.jsp");
         HttpSession session = request.getSession();
         List<Notification> listOfNotifications = null;

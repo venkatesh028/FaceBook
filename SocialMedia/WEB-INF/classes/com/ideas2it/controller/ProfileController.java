@@ -153,7 +153,7 @@ public class ProfileController extends HttpServlet {
      * @param  profile - profile contain the details of the profile 
      * @return boolean - true or false based on the response
      */
-    public boolean create(Profile profile) {
+    private boolean create(Profile profile) {
         return profileService.create(profile);
     }
     
@@ -163,7 +163,7 @@ public class ProfileController extends HttpServlet {
      * @param  userId -  userId of the user
      * @return Profile - profile of the user
      */
-    public Profile getProfile(String userId) {
+    private Profile getProfile(String userId) {
         return profileService.getProfile(userId);
     } 
     
@@ -192,7 +192,7 @@ public class ProfileController extends HttpServlet {
      * @param  userId - id of the user which need to be deleted 
      * @return boolean - true or false based on the response 
      */
-    public boolean delete(String userId) {
+    private boolean delete(String userId) {
         return profileService.delete(userId);
     }    
     
@@ -202,7 +202,7 @@ public class ProfileController extends HttpServlet {
      * @param  userName  - userName of the profile 
      * @return profile - profile of the profile
      */
-    public Profile getProfileByUserName(String userName) { 
+    private Profile getProfileByUserName(String userName) { 
         Profile profile = null;
          
         try {
@@ -219,7 +219,7 @@ public class ProfileController extends HttpServlet {
      * @param  userName username given by the user
      * @return boolean  true if the name is not exist else false
      */
-    public boolean isUserNameExist(String userName) {
+    private boolean isUserNameExist(String userName) {
         return profileService.isUserNameExist(userName);
     }
       
@@ -229,10 +229,11 @@ public class ProfileController extends HttpServlet {
      * @param  userId - id of the user
      * @return boolean - true or false based on the response
      */
-    public void updateVisibility(HttpServletRequest request,
-                                 HttpServletResponse response)
-           throws ServletException, IOException {
-        profileService.updateVisibility(request.getParameter("profileId"), request.getParameter("visibilityStatus"));
+    private void updateVisibility(HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws ServletException, IOException {
+        profileService.updateVisibility(request.getParameter("profileId"),
+                                        request.getParameter("visibilityStatus"));
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("setting");
         requestDispatcher.forward(request, response);       
     }

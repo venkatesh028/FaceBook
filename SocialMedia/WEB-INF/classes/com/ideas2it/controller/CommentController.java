@@ -31,29 +31,34 @@ public class CommentController extends HttpServlet {
     }
     
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+              throws IOException, ServletException {
         String path = request.getServletPath();
-         
-        if (path == "/viewComments") {
-            request.setAttribute("root", "newsFeed");
-        } else {
-            request.setAttribute("root", "profile");
-        }
-        request.setAttribute("listOfComments", getComments(request.getParameter("postId")));
-        request.setAttribute("postId", request.getParameter("postId"));
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewComments.jsp"); 
-        requestDispatcher.forward(request, response);        
-    }
+        
+        switch (path) {
+        case "/viewComments":
+            getComments(request, response, path);
+            break;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        Comment comment = new Comment();
-        HttpSession session = request.getSession();
-        comment.setCommentedUserId((String) session.getAttribute("userId"));
-        comment.setPostId(request.getParameter("postId"));
-        comment.setContent(request.getParameter("content"));
-        addComment(comment);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed"); 
-        requestDispatcher.forward(request, response);
+        case "/edit-comment":
+            break;
+        
+        case "/delete-commet":
+            break;
+        }      
+    }
+    
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+              throws IOException, ServletException {
+        String path = request.getServletPath();
+        
+        switch (path) {
+        case "/addComment":
+            addComment(request, response);
+            break;
+        }
     }    
     
     /**
@@ -62,10 +67,18 @@ public class CommentController extends HttpServlet {
      * @param  comment - Entire comment details
      * @return boolean - true or false based on the response
      */
-    private  boolean addComment(Comment comment) { 
-        return commentService.create(comment);
-    }
-    
+    private void addComment(HttpServletRequest request,
+                            HttpServletResponse response)
+            throws ServletException, IOException { 
+        Comment comment = new Comment();
+        HttpSession session = request.getSession();
+        comment.setCommentedUserId((String) session.getAttribute("userId"));
+        comment.setPostId(request.getParameter("postId"));
+        comment.setContent(request.getParameter("content"));
+        commentService.create(comment);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed"); 
+        requestDispatcher.forward(request, response);
+    }    
     
     /**
      * Updates the comment
@@ -74,7 +87,7 @@ public class CommentController extends HttpServlet {
      * @param  content - comment enetered by the user
      * @return boolean - true or false based on the response
      */
-    public boolean update(String id, String content) {
+    private boolean update(String id, String content) {
         return commentService.update(id, content);
     }
     
@@ -84,7 +97,7 @@ public class CommentController extends HttpServlet {
      * @param  comment - Entire comment details
      * @return boolean - true or false based on the response
      */
-    public boolean deleteComment(Comment comment) {   
+    private boolean deleteComment(Comment comment) {   
         return commentService.delete(comment);
     }
     
@@ -94,8 +107,14 @@ public class CommentController extends HttpServlet {
      * @param id - id of the comment
      * @return comment - entire details of the comment
      */
-    public Comment getComment(String id) {
-        return commentService.getComment(id);
+    private Comment getComment(HttpServletRequest request,
+                               HttpServletResponse response, String path)
+            throws ServletException, IOException {
+        request.setAttribute("root", "newsFeed");
+        request.setAttribute("listOfComments", commentService.getComment(request.getParameter("postId")));
+        request.setAttribute("postId", request.getParameter("postId"));
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewComments.jsp"); 
+        requestDispatcher.forward(request, response);          
     }
     
     /**
@@ -104,7 +123,7 @@ public class CommentController extends HttpServlet {
      * @param  postId - id of the post
      * @return lisComments - list of comments
      */
-    public List<Comment> getComments(String postId) {
+    private List<Comment> getComments(String postId) {
         return commentService.getComments(postId);
     }
 }

@@ -77,9 +77,9 @@ public class PostController extends HttpServlet {
      * @parma  content  - post of the user 
      * @return boolean -  true after adding the post
      */
-    public void addPost(HttpServletRequest request,
-                        HttpServletResponse response)
-           throws IOException, ServletException {
+    private void addPost(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws IOException, ServletException {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed");
         String userId = (String) session.getAttribute("userId");
@@ -95,9 +95,9 @@ public class PostController extends HttpServlet {
      * @param content - content updated by the user
      * @return boolean - true or false based on the response
      */
-    public void update(HttpServletRequest request,
-                          HttpServletResponse response)
-           throws ServletException, IOException {  
+    private void update(HttpServletRequest request,
+                        HttpServletResponse response)
+            throws ServletException, IOException {  
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewProfile");
         postService.update(request.getParameter("postId"), request.getParameter("content"));
         requestDispatcher.forward(request, response);
@@ -108,9 +108,9 @@ public class PostController extends HttpServlet {
      *
      * @return allPosts - all the post 
      */
-    public void getUserPosts(HttpServletRequest request,
-                             HttpServletResponse response)
-           throws ServletException, IOException {
+    private void getUserPosts(HttpServletRequest request,
+                              HttpServletResponse response)
+            throws ServletException, IOException {
         List<Post> listOfPosts = null;
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed.jsp");
 
@@ -129,7 +129,7 @@ public class PostController extends HttpServlet {
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
      */
-    public List<Post> getPostOfParticularUser(String userId) {
+    private List<Post> getPostOfParticularUser(String userId) {
         List<Post> listOfPosts = null;  
 
         try {

@@ -41,12 +41,37 @@ body{
 
 .container {
     margin: auto;
-    margin-top: 50px;
     text-align: center;
 }
 
 /* hide form */
+
+.buttons {
+    margin-top: 20px;
+    display : auto;
+    text-align: center;
+}
+
+.parent {
+    position :absolute;
+    width: 100%;
+    height: 100%;
+    top : 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+
 .open-personal-info{
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  width: 50%;
+}
+
+.change-password {
   background-color: #555;
   color: white;
   padding: 16px 20px;
@@ -79,6 +104,10 @@ body{
   border: none;
   background: #f1f1f1;
 }
+
+.editbutt {
+    width :100%;
+}
 </style>
 
 </head>
@@ -94,41 +123,86 @@ body{
   </ul>
 </nav>
 
-<div class = "container">
 
+<div class = "buttons">
 <button class = "open-personal-info" onclick = "openPersonalInfo()">View Personal Info</button>
+<button class = "change-password" onclick = "openPasswordForm()">Change Password</button>
+</div>
+<div class = "parent" id = "parent" style = "display :none">
 
 <div class = personal-info id = "myInfo">
-    <form action = "update-info" class = "form-info">
-    <lable>Email : </lable>
+    <div class = "container">
+    <button class = "editbutt" onclick = "edit()">Edit</button>
+    <form action = "update-info" class = "form-info" id = "form-info">
+    <lable>Email  </lable>
     <input type = "text" value = "${user.email}" name = "email">
-    <lable>DOB : </lable>
+    <lable>DOB  </lable>
     <input type = "date" value = "${user.dateOfBirth}" name = "dateOfBirth">
-    <lable>Phone No :</lable>
+    <lable>Phone No </lable>
     <input type = "number" value = "${user.phoneNumber}" name = "phoneNumber">
-    <button type = "submit" class = "savebutton">Update</button> 
+    <button type = "submit" class = "savebutton" id = "upadatebut">Update</button> 
     <button type="button" class="btn cancel" onclick="closePersonalInfo()">Close</button>
     </form>
+    </div>
 </div>
 
-<h1>Pesonal Details</h1>
-<h1>Update Password</h1>
-<h1>
+
+<div class = personal-info id = "myInfo">
+    <div class = "container">
+    <form action = "update-password" class = "form-password" id = "form-password">
+    <lable>old Password  </lable>
+    <input type = "text" name = "oldPassword">
+    <lable>New Password</lable>
+    <input type = "text" name = "newPassword">
+    <lable>Phone No </lable>
+    <input type = "number" value = "${user.phoneNumber}" name = "phoneNumber">
+    <button type = "submit" class = "savebutton" id = "upadatebut">Update</button> 
+    <button type="button" class="btn cancel" onclick="closePersonalInfo()">Close</button>
+    </form>
+    </div>
 </div>
 
 </div>
-
 
 
 
 <script>
 function openPersonalInfo() {
-  document.getElementById("myInfo").style.display = "block";
+    document.getElementById("myInfo").style.display = "block";
+    document.getElementById("parent").style.display = "block";
+
+    var form = document.getElementById("form-info");
+    var elements = form.elements;
+    for (var i = 0, len = elements.length; i < len; ++i) {
+        elements[i].readOnly = true;
+    }
+}
+
+function edit() {
+    var form = document.getElementById("form-info");
+    var elements = form.elements;
+    for (var i = 0, len = elements.length; i < len; ++i) {
+        elements[i].readOnly = false;
+    }
 }
 
 function closePersonalInfo() {
-  document.getElementById("myInfo").style.display = "none";
+    document.getElementById("myInfo").style.display = "none";
+    document.getElementById("parent").style.display = "none";
 }
+
+var personalInfoForm = getElemetById('myInfo');
+var parent = getElementById('parent');
+
+window.onclick = function(event) {
+    if (event.target == personalInfoForm) {
+        personalInfoFrom.display = "none";
+        parent.style.display = "none";
+    }
+}
+
+
+
 </script>
 </body>
 </html>

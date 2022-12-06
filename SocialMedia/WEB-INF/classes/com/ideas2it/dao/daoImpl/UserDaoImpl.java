@@ -23,8 +23,8 @@ import com.ideas2it.dao.UserDao;
  */
 public class UserDaoImpl implements UserDao {
     private CustomLogger logger;
-    Connection connection;      
-    PreparedStatement statement;
+    private Connection connection;      
+    private PreparedStatement statement;
      
     
     public UserDaoImpl() {

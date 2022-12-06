@@ -67,7 +67,7 @@ public class UserService {
      */
     public boolean delete(String userId) {
         int rowAffected = userDao.delete(userId);
-        boolean isDeleted = rowAffected > 0? true:false;
+        boolean isDeleted = rowAffected > 0 ? true : false;
         return isDeleted;
     }
 

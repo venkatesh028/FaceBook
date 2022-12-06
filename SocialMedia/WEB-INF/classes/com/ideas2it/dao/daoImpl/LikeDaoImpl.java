@@ -35,7 +35,7 @@ public class LikeDaoImpl implements LikeDao {
     public int create(Like like) {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO post_like ")
+        query.append("INSERT INTO reaction ")
              .append("(id, post_id, liked_user_id, created_date_time) ")
              .append("VALUES(?,?,?,now());");
 
@@ -62,7 +62,7 @@ public class LikeDaoImpl implements LikeDao {
     public int delete(String postId, String userId) {
         int noOfRowsDeleted = 0;
         String query;
-        query = "DELETE FROM post_like WHERE post_id = ? AND liked_user_id = ?;";
+        query = "DELETE FROM reaction WHERE post_id = ? AND liked_user_id = ?;";
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -88,7 +88,7 @@ public class LikeDaoImpl implements LikeDao {
         ResultSet resultSet;
         StringBuilder query = new StringBuilder();
         query.append("SELECT count(id) AS like_count ")
-             .append("FROM post_like WHERE post_id = ?;");
+             .append("FROM reaction WHERE post_id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -116,7 +116,7 @@ public class LikeDaoImpl implements LikeDao {
         List<String> likedUsersId = null;
         ResultSet resultSet;
         String query;
-        query = "SELECT liked_user_id FROM post_like WHERE post_id = ?;";
+        query = "SELECT liked_user_id FROM reaction WHERE post_id = ?;";
 
         try {
             connection = DatabaseConnection.getConnection();            
@@ -145,9 +145,9 @@ public class LikeDaoImpl implements LikeDao {
         List<String> likedUserNames = null;
         ResultSet resultSet;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT username FROM profile JOIN post_like ")
-             .append("ON post_like.liked_user_id = profile.user_id  ")
-             .append("WHERE post_like.post_id = ?;");
+        query.append("SELECT username FROM profile JOIN reaction ")
+             .append("ON reaction.liked_user_id = profile.user_id  ")
+             .append("WHERE reaction.post_id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();

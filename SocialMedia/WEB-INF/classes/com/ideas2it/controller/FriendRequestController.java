@@ -34,8 +34,7 @@ public class FriendRequestController extends HttpServlet{
             getFriends(request, response);
             break;
             
-        }
-        
+        }        
     }
     
     /**
@@ -44,7 +43,7 @@ public class FriendRequestController extends HttpServlet{
      * @param friendRequest - details of the friendRequest 
      * @return boolean  - true or false based on the response
      */
-    public boolean create(FriendRequest friendRequest) {
+    private boolean create(FriendRequest friendRequest) {
         return friendRequestService.create(friendRequest);
     }
     
@@ -54,9 +53,9 @@ public class FriendRequestController extends HttpServlet{
      * @param request
      * @param response
      */
-    public void updateTheRequest(HttpServletRequest request,
+    private void updateTheRequest(HttpServletRequest request,
                                  HttpServletResponse response)
-           throws ServletException, IOException { 
+            throws ServletException, IOException { 
 
         friendRequestService.update(request.getParameter("requestId"),
                                     request.getParameter("requestStatus"));
@@ -68,11 +67,11 @@ public class FriendRequestController extends HttpServlet{
      * @param requestId - id of the friendrequest
      * @return friendRequest - details of the friendRequest
      */
-    public FriendRequest get(String requestId) {
+    private FriendRequest get(String requestId) {
         return friendRequestService.get(requestId);
     }
     
-    public void getFriends(HttpServletRequest request,
+    private void getFriends(HttpServletRequest request,
                            HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();

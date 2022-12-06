@@ -86,7 +86,7 @@ public class UserController extends HttpServlet {
      * @param request
      * @param response
      */
-    protected void logout(HttpServletRequest request,
+    private void logout(HttpServletRequest request,
                           HttpServletResponse response)
               throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -100,7 +100,7 @@ public class UserController extends HttpServlet {
      * @param request
      * @parma response
      */
-    protected void registerUser(HttpServletRequest request,
+    private void registerUser(HttpServletRequest request,
                                 HttpServletResponse response)
               throws ServletException, IOException {
         String message;
@@ -129,7 +129,7 @@ public class UserController extends HttpServlet {
      * @param  request
      * @param  response
      */
-    protected void create(HttpServletRequest request,  
+    private void create(HttpServletRequest request,  
                           HttpServletResponse response)
               throws ServletException, IOException {
         LocalDate dateOfBirth = LocalDate.parse(request.getParameter("DOB"));
@@ -147,7 +147,7 @@ public class UserController extends HttpServlet {
      * @param request
      * @param response
      */
-    protected void goBackToRegisterPage(HttpServletRequest request,
+    private void goBackToRegisterPage(HttpServletRequest request,
                                         HttpServletResponse response,
                                         String message)
               throws ServletException, IOException {
@@ -182,7 +182,7 @@ public class UserController extends HttpServlet {
      * @param  email  email of the user
      * @return boolean true if the account is exist else false
      */
-    public boolean isEmailExist(String email) {
+    private boolean isEmailExist(String email) {
         return userService.isEmailExist(email);
     }
 
@@ -192,7 +192,7 @@ public class UserController extends HttpServlet {
      * @param  dateOfBirth dateOfBirth given by the user
      * @return age - age based on the dateOfBirth
      */
-    public int calculateAge(LocalDate dateOfBirth) {
+    private int calculateAge(LocalDate dateOfBirth) {
         return userService.calculateAge(dateOfBirth);
     }
     
@@ -202,19 +202,17 @@ public class UserController extends HttpServlet {
      * @param userName - userName given by the user 
      * @return boolean  - true or false based on the result
      */ 
-    public boolean isUserNameExist(String userName) {
+    private boolean isUserNameExist(String userName) {
         return userService.isUserNameExist(userName);
     }
    
-    protected void getUser(HttpServletRequest request, 
-                           HttpServletResponse response)
-              throws ServletException, IOException {
+    private void getUser(HttpServletRequest request, 
+                         HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = userService.getUser((String) session.getAttribute("userId"));
         request.setAttribute("user", user);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("setting.jsp");
         requestDispatcher.forward(request, response);
-    }
-    
-     
+    }    
 }

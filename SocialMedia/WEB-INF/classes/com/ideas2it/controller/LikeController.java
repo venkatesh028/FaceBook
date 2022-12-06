@@ -67,8 +67,6 @@ public class LikeController extends HttpServlet {
          
         requestDispatcher.forward(request, response);       
     }
-
-
     
     /**
      * Gets the liked user names
@@ -76,7 +74,7 @@ public class LikeController extends HttpServlet {
      * @param postId - id of the post
      * @return listOfLikedUser - list of liked user names
      */
-    public List<String> getLikedUserNames(String postId) {
+    private List<String> getLikedUserNames(String postId) {
         return likeService.getLikedUserNames(postId);
     } 
 }
