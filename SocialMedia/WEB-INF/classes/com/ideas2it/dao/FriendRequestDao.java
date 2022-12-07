@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.ideas2it.logger.CustomLogger;
-import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.FriendRequest;
+import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * It is interface for the friendrequest dao impl it contains the method for

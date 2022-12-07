@@ -2,16 +2,16 @@ package com.ideas2it.controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 
-import com.ideas2it.constant.Messages;
-import com.ideas2it.service.ProfileService;
 import com.ideas2it.model.Profile;
+import com.ideas2it.service.ProfileService;
+import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
@@ -34,8 +34,8 @@ public class ProfileController extends HttpServlet {
     }
     
     protected  void doGet(HttpServletRequest request,
-                          HttpServletResponse response)
-               throws ServletException, IOException{
+                          HttpServletResponse response) throws IOException,
+                                                         ServletException {
         String path = request.getServletPath();
 
         switch (path) {
@@ -58,8 +58,8 @@ public class ProfileController extends HttpServlet {
     }
     
     protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-              throws ServletException, IOException {
+                          HttpServletResponse response) throws IOException,
+                                                         ServletException {
         String path = request.getServletPath();
         
         switch (path) {
@@ -76,22 +76,21 @@ public class ProfileController extends HttpServlet {
      * @param response 
      */
     private void updateProfile(HttpServletRequest request,
-                               HttpServletResponse response)
-            throws ServletException, IOException {
+                               HttpServletResponse response) throws IOException,
+                                                              ServletException {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher;
         String userName = request.getParameter("userName");
-        Profile profile = getProfile((String)session.getAttribute("userId"));
-        String message;
+        Profile profile = getProfile((String) session.getAttribute("userId"));
 
         if (!userName.equals(profile.getUserName())) {
             if (!isUserNameExist(userName)){
                 update(request, response);
             }else {
-                message = Messages.USERNAME_ALREADY_EXIST;
-                request.setAttribute("Message", message);
-                request.setAttribute("profile", getProfile((String) session.getAttribute("userId")));
-                requestDispatcher = request.getRequestDispatcher("update-profile.jsp");
+                request.setAttribute("Message", Messages.USERNAME_ALREADY_EXIST);
+                request.setAttribute("profile", profile);
+                requestDispatcher = request
+                          .getRequestDispatcher("update-profile.jsp");
                 requestDispatcher.forward(request, response);
             }
         } else {
@@ -106,11 +105,12 @@ public class ProfileController extends HttpServlet {
      * @param response 
      */
     private void getProfile(HttpServletRequest request,
-                            HttpServletResponse response)
-            throws ServletException, IOException {
+                            HttpServletResponse response) throws IOException,
+                                                           ServletException {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher;
-        request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
+        request.setAttribute("profile", getProfile((String) session
+                                                    .getAttribute("userId")));
         requestDispatcher = request.getRequestDispatcher("update-profile.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -122,10 +122,11 @@ public class ProfileController extends HttpServlet {
      * @param response 
      */
     private void searchProfile(HttpServletRequest request,
-                               HttpServletResponse response)
-            throws ServletException, IOException {
+                               HttpServletResponse response) throws IOException,
+                                                              ServletException {
         RequestDispatcher requestDispatcher;
-        request.setAttribute("profile", getProfileByUserName(request.getParameter("userName")));
+        request.setAttribute("profile", getProfileByUserName(request
+                                                    .getParameter("userName")));
         requestDispatcher = request.getRequestDispatcher("search.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -137,12 +138,15 @@ public class ProfileController extends HttpServlet {
      * @parma response 
      */
     private void viewProfile(HttpServletRequest request,
-                             HttpServletResponse response)
-            throws ServletException, IOException {
+                             HttpServletResponse response) throws IOException,
+                                                            ServletException {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher;
-        request.setAttribute("profile",getProfile((String)session.getAttribute("userId")));
-        request.setAttribute("listOfPosts",postController.getPostOfParticularUser((String)session.getAttribute("userId")));
+        request.setAttribute("profile", getProfile((String) session
+                                                    .getAttribute("userId")));
+        request.setAttribute("listOfPosts", 
+                       postController.getPostOfParticularUser((String) session
+                                                    .getAttribute("userId")));
         requestDispatcher = request.getRequestDispatcher("profile.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -174,11 +178,12 @@ public class ProfileController extends HttpServlet {
      * @param response
      */
     private void update(HttpServletRequest request,
-                        HttpServletResponse response)
-            throws ServletException, IOException {
+                        HttpServletResponse response) throws IOException,
+                                                       ServletException {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher;
-        Profile profile = getProfile((String) session.getAttribute("userId"));
+        Profile profile = getProfile((String) session
+                                              .getAttribute("userId"));
         profile.setUserName(request.getParameter("userName"));
         profile.setBio(request.getParameter("bio"));
         profileService.update(profile);
@@ -206,7 +211,7 @@ public class ProfileController extends HttpServlet {
         Profile profile = null;
          
         try {
-            profile = profileService.getUserProfileByUserName(userName); 
+            profile = profileService.getUserProfileByUserName(userName);
         } catch (CustomException customException) { 
             logger.error(customException.getMessage());
         }
@@ -230,11 +235,12 @@ public class ProfileController extends HttpServlet {
      * @return boolean - true or false based on the response
      */
     private void updateVisibility(HttpServletRequest request,
-                                  HttpServletResponse response)
-            throws ServletException, IOException {
+                                  HttpServletResponse response) 
+                                       throws IOException, ServletException {
         profileService.updateVisibility(request.getParameter("profileId"),
                                         request.getParameter("visibilityStatus"));
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("setting");
+        RequestDispatcher requestDispatcher = request
+                                    .getRequestDispatcher("setting");
         requestDispatcher.forward(request, response);       
     }
 

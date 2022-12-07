@@ -32,12 +32,10 @@ public class PostService {
      * @parma  content   - post of the user 
      * @return boolean  - true or false based on the reponse
      */
-    public boolean create(String postedUserId, String content) {
-        Post post; 
-        String id;
+    public boolean create(String postedUserId, String content) { 
         boolean isCreated;
-        id = UUID.randomUUID().toString();
-        post = new Post(id, postedUserId, content);
+        String id = UUID.randomUUID().toString();
+        Post post = new Post(id, postedUserId, content);
         isCreated = (postDao.create(post) > 0) ;
         return isCreated;  
     }
@@ -87,7 +85,7 @@ public class PostService {
      * @return isDeleted - true or false based on the response
      */
     public boolean delete(String id) { 
-        boolean isDeleted = (postDao.delete(id) > 0) ? true :false;
+        boolean isDeleted = (postDao.delete(id) > 0) ? true : false;
         return isDeleted;
     }
 
@@ -112,9 +110,9 @@ public class PostService {
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
      */
-    public List<Post> getPostOfParticularUser(String userId) throws CustomException {
-        List<Post> userPosts;
-        userPosts = postDao.getPostOfParticularUser(userId);
+    public List<Post> getPostOfParticularUser(String userId) 
+                                              throws CustomException {
+        List<Post> userPosts = postDao.getPostOfParticularUser(userId);
         
         if (userPosts.isEmpty()) {
             throw new CustomException(Constants.ERROR_03);

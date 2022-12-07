@@ -1,19 +1,19 @@
 package com.ideas2it.dao.daoImpl;
 
+import java.sql.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
-import java.util.List;
-import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.ideas2it.logger.CustomLogger;
-import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 import com.ideas2it.dao.UserDao;
+import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Perform the creation and delete operation for the user account 
@@ -39,17 +39,17 @@ public class UserDaoImpl implements UserDao {
         int userCreated = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO user(id, email, password, date_of_birth,")
-             .append(" age, created_date_time) ")
-             .append("VALUES(?,?,?,?,?,now());");
+             .append(" age, created_date_time)")
+             .append(" VALUES(?, ?, ?, ?, ?, now());");
         
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,user.getId());
-            statement.setString(2,user.getEmail());
-            statement.setString(3,user.getPassword());
-            statement.setDate(4,Date.valueOf(user.getDateOfBirth()));
-            statement.setInt(5,user.getAge());
+            statement.setString(1, user.getId());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPassword());
+            statement.setDate(4, Date.valueOf(user.getDateOfBirth()));
+            statement.setInt(5, user.getAge());
             userCreated = statement.executeUpdate(); 
             statement.close();
         } catch (SQLException sqlException) {
@@ -67,19 +67,19 @@ public class UserDaoImpl implements UserDao {
     public int update(User user) {
         int userUpdated = 0;
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE user SET email = ?, password = ?, ")
-             .append("date_of_birth = ?, age = ?, phone_number = ?, ")
-             .append("updated_date_time = now() WHERE id = ?;");
+        query.append("UPDATE user SET email = ?, password = ?,")
+             .append(" date_of_birth = ?, age = ?, phone_number = ?,")
+             .append(" updated_date_time = now() WHERE id = ?;");
         
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,user.getEmail());
-            statement.setString(2,user.getPassword());
-            statement.setDate(3,Date.valueOf(user.getDateOfBirth()));
-            statement.setInt(4,user.getAge());
-            statement.setLong(5,user.getPhoneNumber());
-            statement.setString(6,user.getId());
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getPassword());
+            statement.setDate(3, Date.valueOf(user.getDateOfBirth()));
+            statement.setInt(4, user.getAge());
+            statement.setLong(5, user.getPhoneNumber());
+            statement.setString(6, user.getId());
             userUpdated = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -102,7 +102,7 @@ public class UserDaoImpl implements UserDao {
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1,id);
+            statement.setString(1, id);
             noOfRowDeleted = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -125,8 +125,8 @@ public class UserDaoImpl implements UserDao {
             connection = DatabaseConnection.getConnection();
             query = "UPDATE user SET password = ?, update_date_time = now() WHERE id = ?;";
             statement = connection.prepareStatement(query);
-            statement.setString(1,password);
-            statement.setString(2,id);
+            statement.setString(1, password);
+            statement.setString(2, id);
             noOfRowsUpdated = statement.executeUpdate();   
             statement.close();         
         } catch (SQLException sqlException) { 
@@ -145,26 +145,28 @@ public class UserDaoImpl implements UserDao {
         ResultSet resultSet;
         User user = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT user.id, user.email, user.date_of_birth, ")
-             .append("user.age, user.phone_number, profile.visibility ")
-             .append("FROM user JOIN profile ON user.id = profile.user_id ")
-             .append("WHERE user.id= ?;");
+        query.append("SELECT user.id, user.email, user.date_of_birth,")
+             .append(" user.age, user.phone_number, profile.visibility")
+             .append(" FROM user JOIN profile ON user.id = profile.user_id")
+             .append(" WHERE user.id= ?;");
 
         try {
             connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,id);
+            statement.setString(1, id);
             resultSet = statement.executeQuery();
             
             if (resultSet.next()) {     
                 user = new User();  
                 Profile profile = new Profile();      
-                user.setId(resultSet.getString("id"));
                 profile.setUserId(resultSet.getString("id"));
+
+                user.setId(resultSet.getString("id"));
                 user.setEmail(resultSet.getString("email"));
                 user.setDateOfBirth((resultSet.getDate("date_of_birth").toLocalDate()));
                 user.setAge(resultSet.getInt("age"));
                 user.setPhoneNumber(resultSet.getLong("phone_number"));
+
                 profile.setVisibility(resultSet.getString("visibility"));
                 user.setProfile(profile);
                 logger.info(user.toString());
@@ -218,7 +220,7 @@ public class UserDaoImpl implements UserDao {
         try {
             connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
-            statement.setString(1,email);
+            statement.setString(1, email);
             resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
@@ -246,7 +248,7 @@ public class UserDaoImpl implements UserDao {
         try {
             connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
-            statement.setString(1,email);
+            statement.setString(1, email);
             resultSet = statement.executeQuery();
             
             if (resultSet.next()) {

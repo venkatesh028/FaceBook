@@ -1,7 +1,7 @@
 package com.ideas2it.service;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.ideas2it.model.Like;
@@ -30,12 +30,9 @@ public class LikeService {
      * @return isCreated - true or false based on the response 
      */
     private boolean create(Like like) {
-        String id;
-        boolean isCreated; 
-        
-        id = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString();
         like.setId(id);
-        isCreated = (likeDao.create(like) > 0);
+        boolean isCreated = (likeDao.create(like) > 0);
         return isCreated;
     }
     
@@ -69,12 +66,12 @@ public class LikeService {
      * @return lisOfLikedUser - list odf liked usernames for that post
      */
     public List<String> getLikedUserNames(String postId) {
-        List<String> listOfLikedUsers= likeDao.getLikedUserNamesOfPost(postId);
+        List<String> listOfLikedUsers = likeDao
+                             .getLikedUserNamesOfPost(postId);
         
         if (!listOfLikedUsers.isEmpty()) {
             return listOfLikedUsers;
         }
-        
         return null;
     }
     
@@ -91,10 +88,12 @@ public class LikeService {
         
         if (!likedUsers.contains(like.getLikedUserId())) {
             isAdded = create(like);  
-            postService.updateLikeCount(like.getPostId(),getLikeCountOfPost(like.getPostId()));
+            postService.updateLikeCount(like.getPostId(), 
+                               getLikeCountOfPost(like.getPostId()));
         } else {
             delete(like.getPostId(), like.getLikedUserId()); 
-            postService.updateLikeCount(like.getPostId(),getLikeCountOfPost(like.getPostId()));   
+            postService.updateLikeCount(like.getPostId(),
+                               getLikeCountOfPost(like.getPostId()));   
         }
         return isAdded;
     }   

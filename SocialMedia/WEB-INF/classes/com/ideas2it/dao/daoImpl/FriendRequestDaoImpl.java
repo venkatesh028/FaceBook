@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.ideas2it.logger.CustomLogger;
-import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.FriendRequest;
 import com.ideas2it.dao.FriendRequestDao;
+import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Performs the Create, get, Update, delete operations for the FriendRequest 
@@ -35,15 +35,15 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO friend_request ")
-             .append("(id, user_id, requested_user_id, created_date_time) ")
-             .append("VALUES(?,?,?,now());");
+             .append("(id, user_id, requested_user_id, created_date_time)")
+             .append(" VALUES(?, ?, ?, now());");
 
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,friendRequest.getId());
-            statement.setString(2,friendRequest.getUserId());
-            statement.setString(3,friendRequest.getRequestedUserId());
+            statement.setString(1, friendRequest.getId());
+            statement.setString(2, friendRequest.getUserId());
+            statement.setString(3, friendRequest.getRequestedUserId());
             noOfRowsAffected = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -62,8 +62,8 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE friend_request SET ")
-             .append("request_status = ?, updated_date_time = now() ")
-             .append("WHERE id = ?;");
+             .append("request_status = ?, updated_date_time = now()")
+             .append(" WHERE id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -88,9 +88,8 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
         ResultSet resultSet;
         FriendRequest friendRequest = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT id, requested_user_id, request_status ")
-             .append("FROM friend_request ")
-             .append("WHERE id = ?;");
+        query.append("SELECT id, requested_user_id, request_status")
+             .append(" FROM friend_request WHERE id = ?;");
         
         try {
             connection = DatabaseConnection.getConnection();
@@ -101,8 +100,10 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
             if (resultSet.next()) {
                 friendRequest = new FriendRequest();
                 friendRequest.setId(resultSet.getString("id"));
-                friendRequest.setRequestedUserId(resultSet.getString("requested_user_id"));
-                friendRequest.setStatus(resultSet.getString("request_status"));
+                friendRequest.setRequestedUserId(resultSet
+                                     .getString("requested_user_id"));
+                friendRequest.setStatus(resultSet
+                                     .getString("request_status"));
             }
             statement.close();
         } catch (SQLException sqlException) {
@@ -120,11 +121,17 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
     public List<String> getFriends(String userId) {
         ResultSet resultSet;
         List<String> friends = null;
-        String query = "SELECT username AS friends FROM profile WHERE profile.user_id IN (SELECT (CASE WHEN user_id = ? THEN requested_user_id WHEN requested_user_id = ? THEN user_Id END) FROM friend_request WHERE request_status = 'accepted');"; 
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT username AS friends FROM profile")
+             .append(" WHERE profile.user_id IN")
+             .append(" (SELECT (CASE WHEN user_id = ? THEN")
+             .append(" requested_user_id WHEN requested_user_id = ?")
+             .append(" THEN user_Id END) FROM friend_request")
+             .append(" WHERE request_status = 'accepted');"); 
         
         try {
             connection = DatabaseConnection.getConnection();
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query.toString());
             statement.setString(1, userId);
             statement.setString(2, userId); 
             resultSet = statement.executeQuery();            

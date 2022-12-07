@@ -1,16 +1,16 @@
 package com.ideas2it.dao.daoImpl;
 
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.List;
 
-import com.ideas2it.logger.CustomLogger;
-import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.Profile;
 import com.ideas2it.dao.ProfileDao;
+import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Perform the creation, Read , update and Delete for the profile 
@@ -36,15 +36,15 @@ public class ProfileDaoImpl implements ProfileDao {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO profile")
-             .append("(id, user_id, username, created_date_time) ")
-             .append("VALUES(?,?,?,now());");
+             .append("(id, user_id, username, created_date_time)")
+             .append(" VALUES(?, ?, ?, now());");
 
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,profile.getId());
-            statement.setString(2,profile.getUserId());
-            statement.setString(3,profile.getUserName());
+            statement.setString(1, profile.getId());
+            statement.setString(2, profile.getUserId());
+            statement.setString(3, profile.getUserName());
             noOfRowsAffected = statement.executeUpdate();      
             statement.close();  
         } catch (SQLException sqlException) {
@@ -68,7 +68,7 @@ public class ProfileDaoImpl implements ProfileDao {
         try {
             connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
-            statement.setString(1,userId);
+            statement.setString(1, userId);
             resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
@@ -96,10 +96,10 @@ public class ProfileDaoImpl implements ProfileDao {
     public int update(Profile profile) {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE profile SET ")
-             .append("username = ?, bio = ?, friends_count = ?, ")
-             .append("visibility = ? ")
-             .append("WHERE user_id = ?;");
+        query.append("UPDATE profile SET")
+             .append(" username = ?, bio = ?, friends_count = ?,")
+             .append(" visibility = ?")
+             .append(" WHERE user_id = ?;");
         
         try {
             connection = DatabaseConnection.getConnection();
@@ -132,7 +132,7 @@ public class ProfileDaoImpl implements ProfileDao {
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1,userId);
+            statement.setString(1, userId);
             noOfRowsDeleted = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -156,7 +156,7 @@ public class ProfileDaoImpl implements ProfileDao {
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1,userName);
+            statement.setString(1, userName);
             resultSet = statement.executeQuery();
             
             if (resultSet.next()) { 

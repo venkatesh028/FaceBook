@@ -1,7 +1,8 @@
 package com.ideas2it.service;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import com.ideas2it.model.FriendRequest;
 import com.ideas2it.model.Notification;
@@ -9,14 +10,13 @@ import com.ideas2it.dao.daoImpl.FriendRequestDaoImpl;
 import com.ideas2it.dao.FriendRequestDao;
 
 /**
- * It Implements the logic of create, delete, update, and get operations for the friendrequest
+ * It Implements the logic of create, delete, update, 
+ * and get operations for the friend request
  *
  * @version 1.0 04-NOV-2022
  * @author Venkatesh TM
  */
-import java.util.UUID;
 public class FriendRequestService {
-     
     FriendRequestDao friendRequestDao;
     NotificationService notificationService;
     ProfileService profileService;
@@ -34,12 +34,10 @@ public class FriendRequestService {
      * @return isCreated - true or false based on the response
      */       
     public boolean create(FriendRequest friendRequest) {
-        String id;
-        boolean isCreated;
         Notification notification = new Notification();
-        id = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString();
         friendRequest.setId(id);
-        isCreated = friendRequestDao.create(friendRequest) > 0;
+        boolean isCreated = friendRequestDao.create(friendRequest) > 0;
         notification.setRequestId(id);
 
         if (isCreated) {
@@ -60,8 +58,10 @@ public class FriendRequestService {
         FriendRequest friendRequest = get(requestId);
         friendRequest.setStatus(requestStatus);
         isUpdated = friendRequestDao.update(friendRequest) > 0;
-        profileService.updateFriendCount(friendRequest.getUserId(), getFriends(friendRequest.getUserId()).size()); 
-        profileService.updateFriendCount(friendRequest.getRequestedUserId(), getFriends(friendRequest.getRequestedUserId()).size());
+        profileService.updateFriendCount(friendRequest.getUserId(), 
+                             getFriends(friendRequest.getUserId()).size());
+        profileService.updateFriendCount(friendRequest.getRequestedUserId(), 
+                             getFriends(friendRequest.getRequestedUserId()).size());
         return isUpdated;
     } 
     

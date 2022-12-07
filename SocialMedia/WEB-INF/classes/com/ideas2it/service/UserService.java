@@ -1,22 +1,23 @@
 package com.ideas2it.service;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.UUID;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-import com.ideas2it.dao.UserDao;
-import com.ideas2it.dao.daoImpl.UserDaoImpl;
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
-import com.ideas2it.exception.CustomException;
+import com.ideas2it.dao.UserDao;
+import com.ideas2it.dao.daoImpl.UserDaoImpl;
 import com.ideas2it.constant.Constants;
+import com.ideas2it.exception.CustomException;
 
 /**
- * It implements the logic of Update, delete, create, read and validation operation for the user
+ * It implements the logic of Update, delete, create, 
+ * read and validation operation for the user
  *
  * @version 1.0 22-SEP-2022
  * @author Venkatesh TM
@@ -27,7 +28,7 @@ public class UserService {
     
     public UserService() {
         userDao = new UserDaoImpl();  
-        profileService = new ProfileService();     
+        profileService = new ProfileService();   
     }
     
     /**
@@ -60,7 +61,7 @@ public class UserService {
     }
 
     /**
-     * Delete the account of the user based on the user request 
+     * Delete the account of the user based on the user request
      * 
      * @param  userId  userId of the user
      * @return boolean true after deleting the account
@@ -143,8 +144,7 @@ public class UserService {
      */
     public int calculateAge(LocalDate dateOfBirth) {        
         LocalDate currentDate = LocalDate.now();
-        Period age;
-        age = Period.between(dateOfBirth, currentDate);
+        Period age = Period.between(dateOfBirth, currentDate);
         return age.getYears();    
     }
    

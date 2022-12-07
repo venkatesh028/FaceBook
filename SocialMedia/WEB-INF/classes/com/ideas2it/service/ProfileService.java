@@ -1,16 +1,16 @@
 package com.ideas2it.service;
 
-import java.util.UUID;
-import java.util.List;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
+import com.ideas2it.model.Profile;
 import com.ideas2it.dao.ProfileDao;
 import com.ideas2it.dao.daoImpl.ProfileDaoImpl;
-import com.ideas2it.model.Profile;
-import com.ideas2it.exception.CustomException;
 import com.ideas2it.constant.Constants;
+import com.ideas2it.exception.CustomException;
 
 /** 
  * Implements the logic of Create, update, delete operation for the user profile
@@ -33,12 +33,11 @@ public class ProfileService {
      * @param  profile - profile contain the details of the profile 
      * @return isCreated -  true or false based on the result
      */
-    public boolean create(Profile profile) {
-        String id;   
+    public boolean create(Profile profile) { 
         boolean isCreated;    
-        id = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString();
         profile.setId(id);
-        isCreated = (profileDao.create(profile) > 0)? true:false;
+        isCreated = (profileDao.create(profile) > 0) ? true : false;
         return isCreated;    
     }
 
@@ -49,8 +48,7 @@ public class ProfileService {
      * @return profile - profile details of the user
      */
     public Profile getProfile(String userId) {
-        Profile profile = profileDao.getProfile(userId);
-        return profile;
+        return profileDao.getProfile(userId);
     }
     
     /**
@@ -60,8 +58,7 @@ public class ProfileService {
      * @return boolean - true or false based on the result
      */
     public boolean update(Profile profile) {
-        boolean isUpdated;
-        isUpdated = (profileDao.update(profile) > 0 );
+        boolean isUpdated = (profileDao.update(profile) > 0 );
         return isUpdated; 
     }
     
@@ -74,7 +71,6 @@ public class ProfileService {
     public boolean updateFriendCount(String userId, int friendsCount) {
         boolean isUpdated;
         int friendCount;
-       
         Profile profile = getProfile(userId);        
         profile.setFriendsCount(friendsCount);
         isUpdated = profileDao.update(profile) > 0;
@@ -89,7 +85,7 @@ public class ProfileService {
      */
     public boolean delete(String userId) {
         boolean isDeleted;
-        isDeleted = (profileDao.delete(userId) > 0);
+        isDeleted = (0 < profileDao.delete(userId));
         return isDeleted;
     }  
     
@@ -99,7 +95,8 @@ public class ProfileService {
      * @param  userName - username of the user
      * @return profile - details of the user
      */
-    public Profile getUserProfileByUserName(String userName) throws CustomException {
+    public Profile getUserProfileByUserName(String userName) 
+                                            throws CustomException {
         Profile profile = profileDao.getUserProfileByUserName(userName);
 
         if (null == profile) {

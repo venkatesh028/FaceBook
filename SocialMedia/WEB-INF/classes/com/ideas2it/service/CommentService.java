@@ -1,8 +1,8 @@
 package com.ideas2it.service;
 
-import java.util.UUID;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import com.ideas2it.model.Comment;
 import com.ideas2it.dao.CommentDao;
@@ -38,7 +38,8 @@ public class CommentService {
         isCreated = (commentDao.create(comment) > 0);
 
         if (isCreated) {
-            postService.updateCommentCount(comment.getPostId(),commentDao.getCommentsCount(comment.getPostId()));
+            postService.updateCommentCount(comment.getPostId(),
+                            commentDao.getCommentsCount(comment.getPostId()));
         }
         return isCreated;
     }
@@ -65,7 +66,8 @@ public class CommentService {
     public boolean delete(Comment comment) {
         boolean isDeleted;
         isDeleted = commentDao.delete(comment.getId()) > 0;
-        postService.updateCommentCount(comment.getPostId(),commentDao.getCommentsCount(comment.getPostId()));
+        postService.updateCommentCount(comment.getPostId(),
+                          commentDao.getCommentsCount(comment.getPostId()));
         return isDeleted;
     }  
     
@@ -76,8 +78,8 @@ public class CommentService {
      * @return comments - list of comments 
      */
     public List<Comment> getComments(String postId) {
-        List<Comment> listOfComments;
-        listOfComments = commentDao.getComments(postId);
+        List<Comment> listOfComments = commentDao.getComments(postId);
+
         if (listOfComments.isEmpty()) { 
             return null;
         }

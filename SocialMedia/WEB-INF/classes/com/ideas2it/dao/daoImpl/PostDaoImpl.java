@@ -1,16 +1,16 @@
 package com.ideas2it.dao.daoImpl;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.Post;
 import com.ideas2it.dao.PostDao;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Perform add, update and get function for the post
@@ -34,16 +34,16 @@ public class PostDaoImpl implements PostDao {
     public int create(Post post) {   
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO ")
-             .append("post(id, user_id, content, created_date_time) ")
-             .append("VALUES(?,?,?,now());");
+        query.append("INSERT INTO")
+             .append(" post(id, user_id, content, created_date_time)")
+             .append(" VALUES(?, ?, ?, now());");
 
         try {     
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString()); 
-            statement.setString(1,post.getId());
-            statement.setString(2,post.getPostedUserId());
-            statement.setString(3,post.getContent());
+            statement.setString(1, post.getId());
+            statement.setString(2, post.getPostedUserId());
+            statement.setString(3, post.getContent());
             noOfRowsAffected = statement.executeUpdate(); 
             statement.close();
         } catch (SQLException sqlException) {
@@ -61,9 +61,9 @@ public class PostDaoImpl implements PostDao {
     public int update(String id, String content) {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE post SET ")
-             .append("content = ?, updated_date_time = now() ")
-             .append("WHERE id = ?;");
+        query.append("UPDATE post SET")
+             .append(" content = ?, updated_date_time = now()")
+             .append(" WHERE id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -87,9 +87,9 @@ public class PostDaoImpl implements PostDao {
     public int updateLikeCount(String id, int likeCount) {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE post ")
-             .append("SET like_count = ?, updated_date_time = now() ")
-             .append("WHERE id = ?;");
+        query.append("UPDATE post")
+             .append(" SET like_count = ?, updated_date_time = now()")
+             .append(" WHERE id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -113,9 +113,9 @@ public class PostDaoImpl implements PostDao {
     public int updateCommentCount(String id, int commentCount) {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE post SET ")
-             .append("comment_count = ?, updated_date_time = now() ")
-             .append("WHERE id = ?;");
+        query.append("UPDATE post SET")
+             .append(" comment_count = ?, updated_date_time = now()")
+             .append(" WHERE id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -140,10 +140,11 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = null;
         ResultSet resultSet;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT post.id, profile.username as posted_user_name, ")
-             .append("post.content, post.like_count, post.comment_count ")
-             .append("FROM post JOIN profile ON profile.user_id = post.user_id ")
-             .append("WHERE profile.visibility = 'public';");
+        query.append("SELECT post.id, profile.username as posted_user_name,")
+             .append(" post.content, post.like_count, post.comment_count")
+             .append(" FROM post JOIN profile ON")
+             .append(" profile.user_id = post.user_id")
+             .append(" WHERE profile.visibility = 'public';");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -152,9 +153,11 @@ public class PostDaoImpl implements PostDao {
             posts = new ArrayList<>();
 
             while (resultSet.next()){
-                Post post = new Post(resultSet.getString("id"),resultSet.getString("posted_user_name")
-                                        ,resultSet.getString("content"),resultSet.getInt("like_count")
-                                        ,resultSet.getInt("comment_count"));
+                Post post = new Post(resultSet.getString("id"), 
+                                        resultSet.getString("posted_user_name"),
+                                        resultSet.getString("content"),
+                                        resultSet.getInt("like_count"),
+                                        resultSet.getInt("comment_count"));
                 posts.add(post);     
             }
             statement.close();  
@@ -173,23 +176,26 @@ public class PostDaoImpl implements PostDao {
     public List<Post> getPostOfParticularUser(String userId) {
         List<Post> postOfParticularUser = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT post.id, profile.username as posted_user_name, ")
-             .append("post.content, post.like_count, post.comment_count ")
-             .append("FROM post JOIN profile ON profile.user_id = post.user_id ")
-             .append("WHERE post.user_id = ?;");
+        query.append("SELECT post.id, profile.username as posted_user_name,")
+             .append(" post.content, post.like_count, post.comment_count")
+             .append(" FROM post JOIN profile ON")
+             .append(" profile.user_id = post.user_id")
+             .append(" WHERE post.user_id = ?;");
         ResultSet resultSet;
         
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,userId);
+            statement.setString(1, userId);
             resultSet = statement.executeQuery();            
             postOfParticularUser = new ArrayList<>();
 
             while (resultSet.next()){
-                Post post = new Post(resultSet.getString("id"),resultSet.getString("posted_user_name")
-                                   ,resultSet.getString("content"),resultSet.getInt("like_count")
-                                   ,resultSet.getInt("comment_count"));
+                Post post = new Post(resultSet.getString("id"),
+                                     resultSet.getString("posted_user_name"),
+                                     resultSet.getString("content"),
+                                     resultSet.getInt("like_count"),
+                                     resultSet.getInt("comment_count"));
                 postOfParticularUser.add(post);               
             } 
             statement.close(); 

@@ -3,16 +3,15 @@ package com.ideas2it.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.ideas2it.model.Like;
-import com.ideas2it.service.LikeService;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 
+import com.ideas2it.model.Like;
+import com.ideas2it.service.LikeService;
 import com.ideas2it.logger.CustomLogger;
 
 /**
@@ -32,8 +31,8 @@ public class LikeController extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-              throws ServletException, IOException {
+                          HttpServletResponse response) throws IOException,
+                                                         ServletException {
 
         String path = request.getServletPath();
         HttpSession session = request.getSession();
@@ -45,14 +44,16 @@ public class LikeController extends HttpServlet {
         RequestDispatcher requestDispatcher = null;
 
         if (path == "/profileAddLike") {
-            requestDispatcher = request.getRequestDispatcher("viewProfile");            
+            requestDispatcher = request.getRequestDispatcher("viewProfile");          
         } else { 
             requestDispatcher = request.getRequestDispatcher("newsFeed");
         }   
         requestDispatcher.forward(request, response);
     }
   
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response) throws IOException,
+                                                         ServletException {
         String path = request.getServletPath();
        
         if (path == "/likedUsers") {
@@ -62,8 +63,10 @@ public class LikeController extends HttpServlet {
              request.setAttribute("root","profilePage");
         }
 
-        request.setAttribute("likedUsers", getLikedUserNames(request.getParameter("postId")));        
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("likedUsersPage.jsp");
+        request.setAttribute("likedUsers", 
+                             getLikedUserNames(request.getParameter("postId")));
+        RequestDispatcher requestDispatcher = request
+                               .getRequestDispatcher("likedUsersPage.jsp");
          
         requestDispatcher.forward(request, response);       
     }

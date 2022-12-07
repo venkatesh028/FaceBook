@@ -1,19 +1,18 @@
 package com.ideas2it.controller;
 
+import java.io.IOException;
 import java.util.List;
 
-import com.ideas2it.model.Comment;
-import com.ideas2it.service.CommentService;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import com.ideas2it.logger.CustomLogger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 
+import com.ideas2it.model.Comment;
+import com.ideas2it.service.CommentService;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * It performs the add, update, delete and get operation for the comment
@@ -32,13 +31,13 @@ public class CommentController extends HttpServlet {
     
 
     protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-              throws IOException, ServletException {
+                         HttpServletResponse response) throws IOException,
+                                                        ServletException {
         String path = request.getServletPath();
         
         switch (path) {
         case "/viewComments":
-            getComments(request, response, path);
+            getComment(request, response, path);
             break;
 
         case "/edit-comment":
@@ -50,8 +49,8 @@ public class CommentController extends HttpServlet {
     }
     
     protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-              throws IOException, ServletException {
+                          HttpServletResponse response) throws IOException,
+                                                         ServletException {
         String path = request.getServletPath();
         
         switch (path) {
@@ -68,8 +67,8 @@ public class CommentController extends HttpServlet {
      * @return boolean - true or false based on the response
      */
     private void addComment(HttpServletRequest request,
-                            HttpServletResponse response)
-            throws ServletException, IOException { 
+                            HttpServletResponse response) throws IOException,
+                                                           ServletException {
         Comment comment = new Comment();
         HttpSession session = request.getSession();
         comment.setCommentedUserId((String) session.getAttribute("userId"));
@@ -107,13 +106,16 @@ public class CommentController extends HttpServlet {
      * @param id - id of the comment
      * @return comment - entire details of the comment
      */
-    private Comment getComment(HttpServletRequest request,
-                               HttpServletResponse response, String path)
-            throws ServletException, IOException {
+    private void getComment(HttpServletRequest request,
+                               HttpServletResponse response, 
+                               String path) throws IOException,
+                                             ServletException {
         request.setAttribute("root", "newsFeed");
-        request.setAttribute("listOfComments", commentService.getComment(request.getParameter("postId")));
+        request.setAttribute("listOfComments", commentService
+                             .getComment(request.getParameter("postId")));
         request.setAttribute("postId", request.getParameter("postId"));
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewComments.jsp"); 
+        RequestDispatcher requestDispatcher = request
+                             .getRequestDispatcher("viewComments.jsp"); 
         requestDispatcher.forward(request, response);          
     }
     

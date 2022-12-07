@@ -1,18 +1,18 @@
 package com.ideas2it.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-import com.ideas2it.service.NotificationService;
-import com.ideas2it.model.Notification;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import java.io.IOException;
+
+import com.ideas2it.model.Notification;
+import com.ideas2it.service.NotificationService;
 
 /**
  * Implements the create, update, get and delete operations for the Notification
@@ -29,8 +29,8 @@ public class NotificationController extends HttpServlet {
 
     
     protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-              throws ServletException, IOException {
+                         HttpServletResponse response) throws IOException,
+                                                        ServletException {
         getNotifications(request, response);     
     }
     
@@ -72,11 +72,13 @@ public class NotificationController extends HttpServlet {
      */
     private void getNotifications(HttpServletRequest request,
                                   HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("notification.jsp");
+                                       throws IOException, ServletException {
+        RequestDispatcher requestDispatcher = request
+                                    .getRequestDispatcher("notification.jsp");
         HttpSession session = request.getSession();
         List<Notification> listOfNotifications = null;
-        listOfNotifications = notificationService.getNotifications((String)session.getAttribute("userId")); 
+        listOfNotifications = notificationService
+                   .getNotifications((String) session.getAttribute("userId"));
         request.setAttribute("listOfNotifications",listOfNotifications);
         requestDispatcher.forward(request, response);        
     }      

@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.model.Comment;
-import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.dao.CommentDao;
+import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Performs a Create, Delete and read Operations for comment
@@ -35,16 +35,16 @@ public class CommentDaoImpl implements CommentDao {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO comment")
-             .append("(id, post_id, commented_user_id, content, created_date_time) ")
-             .append("VALUES(?,?,?,?,now());");
+             .append(" (id, post_id, commented_user_id, content,")
+             .append(" created_date_time) VALUES(?, ?, ?, ?, now());");
 
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,comment.getId());
-            statement.setString(2,comment.getPostId());
-            statement.setString(3,comment.getCommentedUserId());
-            statement.setString(4,comment.getContent());
+            statement.setString(1, comment.getId());
+            statement.setString(2, comment.getPostId());
+            statement.setString(3, comment.getCommentedUserId());
+            statement.setString(4, comment.getContent());
             noOfRowsAffected = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -63,15 +63,15 @@ public class CommentDaoImpl implements CommentDao {
     public int update(String id, String content) {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE comment SET ")
-             .append("content = ?, updated_date_time = now() ")
-             .append("WHERE id = ?;");
+        query.append("UPDATE comment SET")
+             .append(" content = ?, updated_date_time = now()")
+             .append(" WHERE id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,content);
-            statement.setString(2,id);
+            statement.setString(1, content);
+            statement.setString(2, id);
             noOfRowsUpdated = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -94,7 +94,7 @@ public class CommentDaoImpl implements CommentDao {
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1,id);
+            statement.setString(1, id);
             noOfRowsDeleted = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -113,8 +113,8 @@ public class CommentDaoImpl implements CommentDao {
         int commentsCount = 0;
         ResultSet resultSet;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT COUNT(id) AS comments_count ")
-             .append("FROM comment WHERE post_id = ?;");
+        query.append("SELECT COUNT(id) AS comments_count")
+             .append(" FROM comment WHERE post_id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -142,23 +142,25 @@ public class CommentDaoImpl implements CommentDao {
         ResultSet resultSet;
         List<Comment> comments = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT comment.id, comment.commented_user_id, profile.username, comment.content ")
-             .append("FROM comment JOIN profile ")
-             .append("ON profile.user_id = comment.commented_user_id ")
-             .append("WHERE comment.post_id = ?;");
+        query.append("SELECT comment.id, comment.commented_user_id,")
+             .append(" profile.username, comment.content FROM comment JOIN") 
+             .append(" profile ON profile.user_id = comment.commented_user_id")
+             .append(" WHERE comment.post_id = ?;");
 
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query.toString());
-            statement.setString(1,postId);
+            statement.setString(1, postId);
             resultSet = statement.executeQuery();
             comments = new ArrayList<>();
 
             while (resultSet.next()) {
                 Comment comment = new Comment();
                 comment.setId(resultSet.getString("id")); 
-                comment.setCommentedUserId(resultSet.getString("commented_user_id"));
-                comment.setCommentedUserName(resultSet.getString("username"));
+                comment.setCommentedUserId(resultSet
+                                  .getString("commented_user_id"));
+                comment.setCommentedUserName(resultSet
+                                  .getString("username"));
                 comment.setContent(resultSet.getString("content"));
                 comments.add(comment);
             }
@@ -184,7 +186,7 @@ public class CommentDaoImpl implements CommentDao {
         try {
             connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
-            statement.setString(1,id);
+            statement.setString(1, id);
             resultSet = statement.executeQuery();
             comment = new Comment();
 

@@ -1,15 +1,16 @@
 package com.ideas2it.service;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import com.ideas2it.model.Notification;
 import com.ideas2it.dao.NotificationDao;
 import com.ideas2it.dao.daoImpl.NotificationDaoImpl;
-import com.ideas2it.model.Notification;
 
 /**
- * Implements the create, update, get and delete operations for the Notification
+ * Implements the create, update, get 
+ * and delete operations for the Notification
  * 
  * @version 1.0 05-OCT-2022
  * @author  Venkatesh TM
@@ -53,8 +54,7 @@ public class NotificationService {
      * @return isUpdated - true or false based on the result
      */     
     public boolean update(String id) {
-        boolean isUpdated;
-        isUpdated = notificationDao.update(id) > 0;
+        boolean isUpdated = notificationDao.update(id) > 0;
         return isUpdated;
     }
     
