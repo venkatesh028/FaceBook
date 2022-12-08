@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.ideas2it.model.Comment;
 import com.ideas2it.dao.CommentDao;
+import com.ideas2it.exception.CustomException;
 import com.ideas2it.dao.daoImpl.CommentDaoImpl;
 
 /**
@@ -29,7 +30,7 @@ public class CommentService {
      * @param  comment - details of the comment
      * @return isCreated - true or false based on the response
      */
-    public boolean create(Comment comment) {
+    public boolean create(Comment comment) throws CustomException {
         String id;
         boolean isCreated;
         
@@ -63,7 +64,7 @@ public class CommentService {
      * @param id - id of the comment
      * @return isDeleted - true or false based on the response
      */
-    public boolean delete(Comment comment) {
+    public boolean delete(Comment comment) throws CustomException  {
         boolean isDeleted;
         isDeleted = commentDao.delete(comment.getId()) > 0;
         postService.updateCommentCount(comment.getPostId(),

@@ -37,7 +37,7 @@ public class UserService {
      * @param  user  details of the user
      * @return boolean true after adding the account 
      */
-    public boolean create(User user, Profile profile) {
+    public boolean create(User user, Profile profile) throws CustomException {
         String id;
         boolean isCreated;
         id = UUID.randomUUID().toString();
@@ -52,12 +52,10 @@ public class UserService {
      * Updates the user 
      *
      * @param user - details of the user
-     * @return isUpdated - true or false based on the result
+     * @return booelan - true or false based on the result
      */
-    public boolean update(User user) {
-        boolean isUpdated;
-        isUpdated = userDao.update(user) > 0;
-        return isUpdated;
+    public boolean update(User user) throws CustomException {
+        return ( 0 < userDao.update(user));
     }
 
     /**
@@ -66,10 +64,8 @@ public class UserService {
      * @param  userId  userId of the user
      * @return boolean true after deleting the account
      */
-    public boolean delete(String userId) {
-        int rowAffected = userDao.delete(userId);
-        boolean isDeleted = rowAffected > 0 ? true : false;
-        return isDeleted;
+    public boolean delete(String userId) throws CustomException {        
+        return ( 0 < userDao.delete(userId)); 
     }
 
     /** 
@@ -79,12 +75,7 @@ public class UserService {
      * @return user   user 
      */ 
     public User getById(String userId) throws CustomException {
-        User user = userDao.getUser(userId);
-
-        if (null == user) {
-            throw new CustomException(Constants.ERROR_01);
-        }
-        return user; 
+        return userDao.getUser(userId);
     }    
 
     /**
@@ -93,7 +84,7 @@ public class UserService {
      * @param  email  email entered by the user
      * @return userId Id of the user
      */
-    public String getUserId(String email) {
+    public String getUserId(String email) throws CustomException {
         return userDao.getId(email);
     }
 
@@ -103,7 +94,7 @@ public class UserService {
      * @param  email   email entered by the user
      * @return boolean true or false based on the result
      */ 
-    public boolean isEmailExist(String email) {
+    public boolean isEmailExist(String email) throws CustomException {
         List<String> existingEmail = userDao.getExistingEmails();
         return existingEmail.contains(email);
     }
@@ -115,25 +106,21 @@ public class UserService {
      * @param  password password entered by the user
      * @return boolean  True or false based on the result;
      */
-    public boolean isValidCredentials(String email, String password) { 
-        boolean isValid = false;
+    public boolean isValidCredentials(String email, String password) throws CustomException { 
         String validPassword = userDao.getPassword(email);
-        
-        if (null != validPassword) {
-            isValid = validPassword.equals(password); 
-        }
-        return isValid;       
+        return  validPassword.equals(password);       
     }
             
     /**
      * Check the entered password is correct
      * 
-     * @param  userId       userId of the user
+     * @param  email        email of the user
      * @param  oldPassword  password of the user 
      * @return boolean      true or false based on the result
      */
-    public boolean isPasswordMatches(String email, String oldPassword) {        
-        return userDao.getPassword(email).equals(oldPassword);
+    public boolean isPasswordMatches(String email, String oldPassword) throws CustomException {   
+        String validPassword = userDao.getPassword(email);   
+        return validPassword.equals(oldPassword);
     }
     
     /**
@@ -148,11 +135,7 @@ public class UserService {
         return age.getYears();    
     }
    
-    public boolean isUserNameExist(String userName) {
+    public boolean isUserNameExist(String userName) throws CustomException {
         return profileService.isUserNameExist(userName);
-    }
-    
-    public User getUser(String id) {
-        return userDao.getUser(id);
     }
 }

@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Profile;
 import com.ideas2it.service.ProfileService;
+import com.ideas2it.service.PostService;
 import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
@@ -36,36 +37,44 @@ public class ProfileController extends HttpServlet {
     protected  void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
                                                          ServletException {
-        String path = request.getServletPath();
+        try {
+            String path = request.getServletPath();
 
-        switch (path) {
-        case "/viewProfile":
-            viewProfile(request, response);
-            break;
+            switch (path) {
+            case "/viewProfile":
+                viewProfile(request, response);
+                break;
 
-        case "/search":
-            searchProfile(request, response);
-            break;
+            case "/search":
+                searchProfile(request, response);
+                break;
 
-        case "/updateProfile":
-            getProfile(request, response);
-            break;
+            case "/updateProfile":
+                getProfile(request, response);
+                break;
 
-        case "/update":
-            updateProfile(request, response);
-            break;
+            case "/update":
+                updateProfile(request, response);
+            }
+        } catch (ServletException | IOException exception) {
+            logger.error(exception.getMessage());
+            response.sendRedirect("errorPage.jsp");
         }
     }
     
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
                                                          ServletException {
-        String path = request.getServletPath();
+        try {
+            String path = request.getServletPath();
         
-        switch (path) {
-        case "/viewProfile":
-            viewProfile(request, response);
-            break;
+            switch (path) {
+            case "/viewProfile":
+                viewProfile(request, response);
+            }
+        } catch (ServletException | IOException exception) {
+            logger.error(exception.getMessage());
+            response.sendRedirect("error.jsp");
         }
     }
     
@@ -140,15 +149,20 @@ public class ProfileController extends HttpServlet {
     private void viewProfile(HttpServletRequest request,
                              HttpServletResponse response) throws IOException,
                                                             ServletException {
-        HttpSession session = request.getSession();
-        RequestDispatcher requestDispatcher;
-        request.setAttribute("profile", getProfile((String) session
+        try {
+            HttpSession session = request.getSession();
+            RequestDispatcher requestDispatcher;
+            request.setAttribute("profile", getProfile((String) session
                                                     .getAttribute("userId")));
-        request.setAttribute("listOfPosts", 
+            request.setAttribute("listOfPosts", 
                        postController.getPostOfParticularUser((String) session
                                                     .getAttribute("userId")));
-        requestDispatcher = request.getRequestDispatcher("profile.jsp");
-        requestDispatcher.forward(request, response);
+            requestDispatcher = request.getRequestDispatcher("profile.jsp");
+            requestDispatcher.forward(request, response);
+
+       } catch (CustomException customException) {
+           
+       }
     }
 
     /**

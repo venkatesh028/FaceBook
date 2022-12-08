@@ -32,7 +32,7 @@ public class PostService {
      * @parma  content   - post of the user 
      * @return boolean  - true or false based on the reponse
      */
-    public boolean create(String postedUserId, String content) { 
+    public boolean create(String postedUserId, String content) throws CustomException { 
         boolean isCreated;
         String id = UUID.randomUUID().toString();
         Post post = new Post(id, postedUserId, content);
@@ -48,7 +48,7 @@ public class PostService {
      * @param content - content uploaded by the user
      * @return isUpdated - true or false based on the response
      */
-    public boolean update(String id, String content) {
+    public boolean update(String id, String content)throws CustomException {
         boolean isUpdated = (postDao.update(id, content) > 0); 
         return isUpdated;        
     } 
@@ -60,7 +60,7 @@ public class PostService {
      * @param likeCount - count of the likes
      * @return isUpdated - true or false based on the response
      */
-    public boolean updateLikeCount(String postId, int likeCount) {
+    public boolean updateLikeCount(String postId, int likeCount) throws CustomException {
         boolean isUpdated = (postDao.updateLikeCount(postId,likeCount) > 0);
         return isUpdated;    
     } 
@@ -72,7 +72,7 @@ public class PostService {
      * @param commentCount - count of the comment
      * @return isUpdated - true or false based on the response
      */
-    public boolean updateCommentCount(String postId, int commentCount) {
+    public boolean updateCommentCount(String postId, int commentCount) throws CustomException {
         boolean isUpdated = (postDao.updateCommentCount(postId, commentCount) > 0);
         return isUpdated;
     }
@@ -84,7 +84,7 @@ public class PostService {
      * @param  id - Id of the post
      * @return isDeleted - true or false based on the response
      */
-    public boolean delete(String id) { 
+    public boolean delete(String id) throws CustomException { 
         boolean isDeleted = (postDao.delete(id) > 0) ? true : false;
         return isDeleted;
     }
@@ -110,13 +110,8 @@ public class PostService {
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
      */
-    public List<Post> getPostOfParticularUser(String userId) 
-                                              throws CustomException {
-        List<Post> userPosts = postDao.getPostOfParticularUser(userId);
-        
-        if (userPosts.isEmpty()) {
-            throw new CustomException(Constants.ERROR_03);
-        }      
+    public List<Post> getPostOfParticularUser(String userId) throws CustomException {
+        List<Post> userPosts = postDao.getPostOfParticularUser(userId);            
         return userPosts;
     }
  
@@ -126,7 +121,7 @@ public class PostService {
      * @param id - id of the post 
      * @return post - post based on the id
      */
-    public Post getPost(String id) {
+    public Post getPost(String id) throws CustomException {
         return postDao.getPost(id);
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 import com.ideas2it.connection.DatabaseConnection;
 import com.ideas2it.model.Post;
 import com.ideas2it.dao.PostDao;
+import com.ideas2it.constant.Messages;
+import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
 /**
@@ -31,7 +33,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override  
-    public int create(Post post) {   
+    public int create(Post post) throws CustomException {   
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO")
@@ -48,6 +50,7 @@ public class PostDaoImpl implements PostDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -58,7 +61,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override 
-    public int update(String id, String content) {
+    public int update(String id, String content) throws CustomException {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE post SET")
@@ -74,6 +77,7 @@ public class PostDaoImpl implements PostDao {
             statement.close();        
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -84,7 +88,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override 
-    public int updateLikeCount(String id, int likeCount) {
+    public int updateLikeCount(String id, int likeCount) throws CustomException {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE post")
@@ -100,6 +104,7 @@ public class PostDaoImpl implements PostDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -110,7 +115,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override 
-    public int updateCommentCount(String id, int commentCount) {
+    public int updateCommentCount(String id, int commentCount) throws CustomException {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE post SET")
@@ -126,6 +131,7 @@ public class PostDaoImpl implements PostDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -136,7 +142,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */    
     @Override
-    public List<Post> getUserPosts() {
+    public List<Post> getUserPosts() throws CustomException {
         List<Post> posts = null;
         ResultSet resultSet;
         StringBuilder query = new StringBuilder();
@@ -163,6 +169,7 @@ public class PostDaoImpl implements PostDao {
             statement.close();  
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally { 
             DatabaseConnection.closeConnection();
         } 
@@ -173,7 +180,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */    
     @Override
-    public List<Post> getPostOfParticularUser(String userId) {
+    public List<Post> getPostOfParticularUser(String userId) throws CustomException {
         List<Post> postOfParticularUser = null;
         StringBuilder query = new StringBuilder();
         query.append("SELECT post.id, profile.username as posted_user_name,")
@@ -201,6 +208,7 @@ public class PostDaoImpl implements PostDao {
             statement.close(); 
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         } 
@@ -211,7 +219,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override
-    public int delete(String id) { 
+    public int delete(String id) throws CustomException { 
         int noOfRowsDeleted = 0;
         String query;
         query = "DELETE FROM post WHERE id = ?;";
@@ -224,6 +232,7 @@ public class PostDaoImpl implements PostDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -234,7 +243,7 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override
-    public Post getPost(String id) {
+    public Post getPost(String id) throws CustomException {
         String query;
         ResultSet resultSet;
         Post post = null;
@@ -255,6 +264,7 @@ public class PostDaoImpl implements PostDao {
             statement.close();          
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }  

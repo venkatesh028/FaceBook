@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.ideas2it.model.Like;
 import com.ideas2it.dao.LikeDao;
 import com.ideas2it.dao.daoImpl.LikeDaoImpl;
+import com.ideas2it.exception.CustomException;
 
 /**
  * Implements the logic for Create,Update,Delete Operation of Like
@@ -81,7 +82,7 @@ public class LikeService {
      * @param like - details of the like 
      * @return isAdded - true or false based on the response
      */
-    public boolean addLike(Like like) {
+    public boolean addLike(Like like) throws CustomException {
         List<String> likedUsers;
         boolean isAdded = false;
         likedUsers = likeDao.getLikedUsersIdOfPost(like.getPostId());

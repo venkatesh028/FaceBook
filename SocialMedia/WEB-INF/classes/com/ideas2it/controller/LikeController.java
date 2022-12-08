@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Like;
 import com.ideas2it.service.LikeService;
+import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
 /**
@@ -33,7 +34,7 @@ public class LikeController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
                                                          ServletException {
-
+        try {
         String path = request.getServletPath();
         HttpSession session = request.getSession();
         Like like = new Like();
@@ -49,6 +50,8 @@ public class LikeController extends HttpServlet {
             requestDispatcher = request.getRequestDispatcher("newsFeed");
         }   
         requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+        }
     }
   
     protected void doGet(HttpServletRequest request,

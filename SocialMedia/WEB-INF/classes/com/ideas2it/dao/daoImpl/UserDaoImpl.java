@@ -13,6 +13,8 @@ import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 import com.ideas2it.dao.UserDao;
 import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.constant.Messages;
+import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
 /**
@@ -35,7 +37,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public int create(User user) {
+    public int create(User user) throws CustomException {
         int userCreated = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO user(id, email, password, date_of_birth,")
@@ -54,6 +56,7 @@ public class UserDaoImpl implements UserDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.USER_NOT_CREATED);
         } finally {            
             DatabaseConnection.closeConnection();
         }
@@ -64,7 +67,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public int update(User user) {
+    public int update(User user) throws CustomException {
         int userUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE user SET email = ?, password = ?,")
@@ -84,6 +87,7 @@ public class UserDaoImpl implements UserDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.USER_NOT_UPDATED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -94,7 +98,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public int delete(String id) {
+    public int delete(String id) throws CustomException {
         int noOfRowDeleted = 0;
         String query;
         query = "DELETE FROM user WHERE id = ?;";
@@ -107,6 +111,7 @@ public class UserDaoImpl implements UserDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.USER_NOT_DELETED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -117,7 +122,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public int updatePassword(String id, String password) {
+    public int updatePassword(String id, String password) throws CustomException {
         int noOfRowsUpdated = 0;
         String query;
 
@@ -131,6 +136,7 @@ public class UserDaoImpl implements UserDao {
             statement.close();         
         } catch (SQLException sqlException) { 
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.PASSWORD_NOT_UPDATED);
         }finally {
             DatabaseConnection.closeConnection();
         }
@@ -141,7 +147,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public User getUser(String id) {
+    public User getUser(String id)  throws CustomException {
         ResultSet resultSet;
         User user = null;
         StringBuilder query = new StringBuilder();
@@ -174,6 +180,7 @@ public class UserDaoImpl implements UserDao {
             statement.close();         
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.USER_NOT_OBTAINED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -184,7 +191,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public List<String> getExistingEmails() {
+    public List<String> getExistingEmails() throws CustomException {
         ResultSet resultSet;
         String query;
         List<String> existingEmail = new ArrayList<>();
@@ -200,7 +207,8 @@ public class UserDaoImpl implements UserDao {
             }
             statement.close();
         } catch (SQLException sqlException) {
-            logger.error("Error in connection");
+            logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.EMAILS_NOT_OBTAINED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -211,7 +219,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override    
-    public String getPassword(String email) {
+    public String getPassword(String email) throws CustomException  {
         ResultSet resultSet;
         String password = null;
         String query;
@@ -229,6 +237,7 @@ public class UserDaoImpl implements UserDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.PASSWORD_NOT_OBTAINED);            
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -239,7 +248,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public String getId(String email) {
+    public String getId(String email) throws CustomException {
         ResultSet resultSet;
         String id = null;
         String query;
@@ -257,6 +266,7 @@ public class UserDaoImpl implements UserDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.ID_NOT_OBTAINED);
         } finally {
             DatabaseConnection.closeConnection();
         }

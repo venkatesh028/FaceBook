@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Comment;
 import com.ideas2it.service.CommentService;
+import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
 /**
@@ -69,14 +70,18 @@ public class CommentController extends HttpServlet {
     private void addComment(HttpServletRequest request,
                             HttpServletResponse response) throws IOException,
                                                            ServletException {
-        Comment comment = new Comment();
-        HttpSession session = request.getSession();
-        comment.setCommentedUserId((String) session.getAttribute("userId"));
-        comment.setPostId(request.getParameter("postId"));
-        comment.setContent(request.getParameter("content"));
-        commentService.create(comment);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed"); 
-        requestDispatcher.forward(request, response);
+        try {
+            Comment comment = new Comment();
+            HttpSession session = request.getSession();
+            comment.setCommentedUserId((String) session.getAttribute("userId"));
+            comment.setPostId(request.getParameter("postId"));
+            comment.setContent(request.getParameter("content"));
+            commentService.create(comment);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed"); 
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+          
+        } 
     }    
     
     /**
@@ -97,7 +102,13 @@ public class CommentController extends HttpServlet {
      * @return boolean - true or false based on the response
      */
     private boolean deleteComment(Comment comment) {   
-        return commentService.delete(comment);
+        boolean isDeleted = false;
+         
+        try {
+           isDeleted = commentService.delete(comment);
+        } catch (CustomException customException) {
+        }
+        return isDeleted;
     }
     
     /**

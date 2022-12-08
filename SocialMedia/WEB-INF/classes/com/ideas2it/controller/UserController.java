@@ -1,5 +1,6 @@
 package com.ideas2it.controller;
 
+import java.time.format.DateTimeParseException;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -15,6 +16,8 @@ import com.ideas2it.model.User;
 import com.ideas2it.service.UserService;
 import com.ideas2it.constant.Constants;
 import com.ideas2it.constant.Messages;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * It perform the create, update, delete, view 
@@ -25,6 +28,7 @@ import com.ideas2it.constant.Messages;
  */
 public class UserController extends HttpServlet {
     UserService userService = new UserService();
+    CustomLogger logger = new CustomLogger(UserController.class);
 
     protected  void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
@@ -38,7 +42,6 @@ public class UserController extends HttpServlet {
         
         case "/setting":
             getUser(request, response);
-            break;
         }
     }
 
@@ -51,9 +54,9 @@ public class UserController extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
-                                                         ServletException {
+                                                        ServletException {
         String path = request.getServletPath();
-
+        
         switch (path) {
         case "/login":
             login(request, response);
@@ -61,8 +64,9 @@ public class UserController extends HttpServlet {
 
         case "/register":
             registerUser(request, response);
-            break;
+ 
         }
+    
     }
 
     /**
@@ -73,21 +77,30 @@ public class UserController extends HttpServlet {
      */
     protected void login(HttpServletRequest request,
                          HttpServletResponse response) throws IOException,
-                                                         ServletException {
-        String message;
+                                                        ServletException {
+        
+        try { 
+            String message;
 
-        if (isValidCredentials(request.getParameter("email"),
+            if (isValidCredentials(request.getParameter("email"),
                 request.getParameter("password"))) {
-            HttpSession session = request.getSession();
-            session.setAttribute("userId", 
-                                  getUserId(request.getParameter("email")));
-            response.sendRedirect("newsFeed");
-        } else {
-            message = "Sorry Email Id or Password is wrong";
-            request.setAttribute("Message", message);
-            RequestDispatcher requestDispatcher = request
+                HttpSession session = request.getSession();
+                session.setAttribute("userId", 
+                                      getUserId(request.getParameter("email")));
+                response.sendRedirect("newsFeed");
+            } else {
+                message = "Sorry Email Id or Password is wrong";
+                request.setAttribute("Message", message);
+                RequestDispatcher requestDispatcher = request
                                         .getRequestDispatcher("login.jsp");
-            requestDispatcher.forward(request, response);
+                requestDispatcher.forward(request, response);
+            }
+        } catch (CustomException customException) {
+              logger.info(customException.getMessage());
+              RequestDispatcher requestDispatcher = request
+                                     .getRequestDispatcher("errorPage.jsp");
+              request.setAttribute("Error",Messages.SOMETHING_WENT_WRONG);
+              requestDispatcher.forward(request, response);
         }
     }
     
@@ -114,6 +127,7 @@ public class UserController extends HttpServlet {
     private void registerUser(HttpServletRequest request,
                               HttpServletResponse response) throws IOException,
                                                              ServletException {
+        try {
         int age = calculateAge(LocalDate.parse(request.getParameter("DOB")));
 
         if (!isEmailExist(request.getParameter("email"))) {
@@ -130,6 +144,9 @@ public class UserController extends HttpServlet {
         } else {
             goBackToRegisterPage(request, response, Messages.EMAIL_ALREADY_EXIST);
         }
+        } catch (CustomException customException) {
+
+        }
     }
 
     /**
@@ -141,17 +158,32 @@ public class UserController extends HttpServlet {
     private void create(HttpServletRequest request,  
                         HttpServletResponse response) throws IOException,
                                                          ServletException {
-        LocalDate dateOfBirth = LocalDate.parse(request.getParameter("DOB"));
+        try {
+            LocalDate dateOfBirth = LocalDate.parse(request
+                                                    .getParameter("DOB"));
         
-        User user = new User(request.getParameter("email"), 
-                                     request.getParameter("password"), 
-                                     dateOfBirth, 
-                                     calculateAge(dateOfBirth));
-        Profile profile = new Profile(request.getParameter("userName"));
-        userService.create(user, profile);
-        RequestDispatcher requestDispatcher = request
-                                    .getRequestDispatcher("login.jsp");
-        requestDispatcher.forward(request, response);
+            User user = new User(request.getParameter("email"), 
+                                 request.getParameter("password"), 
+                                 dateOfBirth, 
+                                 calculateAge(dateOfBirth));
+            Profile profile = new Profile(request.getParameter("userName"));
+            userService.create(user, profile);
+            RequestDispatcher requestDispatcher = request
+                                       .getRequestDispatcher("login.jsp");
+            requestDispatcher.forward(request, response);
+        } catch (DateTimeParseException parseException) {
+            logger.error(parseException.getMessage());
+            RequestDispatcher requestDispatcher = request
+                                       .getRequestDispatcher("register.jsp");
+            request.setAttribute("info", Messages.WRONG_INPUT);
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+            logger.info(customException.getMessage());
+            RequestDispatcher requestDispatcher = request
+                                       .getRequestDispatcher("register.jsp");
+            request.setAttribute("info",Messages.ACCOUNT_NOT_CREATED);
+            requestDispatcher.forward(request, response);
+        }
     }
     
     /**
@@ -169,6 +201,26 @@ public class UserController extends HttpServlet {
                                     .getRequestDispatcher("register.jsp");
         requestDispatcher.forward(request, response);
     }
+   
+    private void getUser(HttpServletRequest request, 
+                         HttpServletResponse response)throws IOException,
+                                                       ServletException {
+        try {
+            HttpSession session = request.getSession();
+            User user = userService.getById((String) session
+                                                 .getAttribute("userId"));
+            request.setAttribute("user", user);
+            RequestDispatcher requestDispatcher = request
+                                    .getRequestDispatcher("setting.jsp");
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+            logger.info(customException.getMessage());
+            RequestDispatcher requestDispatcher = request
+                                  .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", Messages.SOMETHING_WENT_WRONG);
+            requestDispatcher.forward(request, response);
+        }
+    }
     
     /**
      * Checks the given credentials are valid 
@@ -176,7 +228,7 @@ public class UserController extends HttpServlet {
      * @param email - email id of the user 
      * @param password - password of the user 
      */
-    private boolean isValidCredentials(String email, String password) {
+    private boolean isValidCredentials(String email, String password) throws CustomException {
         return userService.isValidCredentials(email, password);
     }
 
@@ -186,7 +238,7 @@ public class UserController extends HttpServlet {
      * @param email - email of the user
      * @return userId - userId of the user
      */
-    private String getUserId(String email) {
+    private String getUserId(String email) throws CustomException {
         return userService.getUserId(email);
     }
 
@@ -196,7 +248,7 @@ public class UserController extends HttpServlet {
      * @param  email  email of the user
      * @return boolean true if the account is exist else false
      */
-    private boolean isEmailExist(String email) {
+    private boolean isEmailExist(String email) throws CustomException {
         return userService.isEmailExist(email);
     }
 
@@ -206,7 +258,7 @@ public class UserController extends HttpServlet {
      * @param  dateOfBirth dateOfBirth given by the user
      * @return age - age based on the dateOfBirth
      */
-    private int calculateAge(LocalDate dateOfBirth) {
+    private int calculateAge(LocalDate dateOfBirth) throws CustomException {
         return userService.calculateAge(dateOfBirth);
     }
     
@@ -216,19 +268,7 @@ public class UserController extends HttpServlet {
      * @param userName - userName given by the user 
      * @return boolean  - true or false based on the result
      */ 
-    private boolean isUserNameExist(String userName) {
+    private boolean isUserNameExist(String userName) throws CustomException {
         return userService.isUserNameExist(userName);
     }
-   
-    private void getUser(HttpServletRequest request, 
-                         HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = userService.getUser((String) session
-                                                 .getAttribute("userId"));
-        request.setAttribute("user", user);
-        RequestDispatcher requestDispatcher = request
-                                    .getRequestDispatcher("setting.jsp");
-        requestDispatcher.forward(request, response);
-    }    
 }

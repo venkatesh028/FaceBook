@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ideas2it.model.Post;
 import com.ideas2it.service.PostService;
+import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
@@ -80,13 +81,21 @@ public class PostController extends HttpServlet {
     private void addPost(HttpServletRequest request,
                          HttpServletResponse response) throws IOException, 
                                                         ServletException {
-        HttpSession session = request.getSession();
-        RequestDispatcher requestDispatcher = request
-                                    .getRequestDispatcher("newsFeed");
-        String userId = (String) session.getAttribute("userId");
-        String content = request.getParameter("content");
-        postService.create(userId, content);
-        requestDispatcher.forward(request, response);
+        try {
+            HttpSession session = request.getSession();
+            RequestDispatcher requestDispatcher = request
+                                        .getRequestDispatcher("addPost.jsp");
+            String userId = (String) session.getAttribute("userId");
+            String content = request.getParameter("content");
+            postService.create(userId, content);
+            request.setAttribute("successMessage", Messages.POST_ADDED);
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) { 
+            RequestDispatcher requestDispatcher = request
+                                     .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
+        }
     } 
     
     /**
@@ -99,11 +108,18 @@ public class PostController extends HttpServlet {
     private void update(HttpServletRequest request,
                         HttpServletResponse response) throws IOException, 
                                                        ServletException {
-        RequestDispatcher requestDispatcher = request
+        try {
+            RequestDispatcher requestDispatcher = request
                                     .getRequestDispatcher("viewProfile");
-        postService.update(request.getParameter("postId"), 
+            postService.update(request.getParameter("postId"), 
                                     request.getParameter("content"));
-        requestDispatcher.forward(request, response);
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request
+                                           .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);            
+        }
     }
 
     /**
@@ -114,16 +130,18 @@ public class PostController extends HttpServlet {
     private void getUserPosts(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, 
                                                              ServletException {
-        List<Post> listOfPosts = null;
-        RequestDispatcher requestDispatcher = request
-                                    .getRequestDispatcher("newsFeed.jsp");
-
         try {
+            List<Post> listOfPosts = null;
+            RequestDispatcher requestDispatcher = request
+                                    .getRequestDispatcher("newsFeed.jsp");
             listOfPosts = postService.getUserPosts();
             request.setAttribute("listOfPosts", listOfPosts);
             requestDispatcher.forward(request, response);
         } catch (CustomException customException) {
-            logger.error(customException.getMessage());
+            RequestDispatcher requestDispatcher = request
+                                     .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
         }        
     }
     
@@ -133,15 +151,8 @@ public class PostController extends HttpServlet {
      * @param  userId   - id of the user
      * @return userPosts - posts of the particular user
      */
-    public List<Post> getPostOfParticularUser(String userId) {
-        List<Post> listOfPosts = null;  
-
-        try {
-            listOfPosts = postService.getPostOfParticularUser(userId);
-        } catch (CustomException customException) {
-            logger.error(customException.getMessage());
-        }
-        return listOfPosts;
+    public List<Post> getPostOfParticularUser(String userId) throws CustomException {
+        return postService.getPostOfParticularUser(userId);
     } 
 
     /**
@@ -151,22 +162,37 @@ public class PostController extends HttpServlet {
      * @return bolean - true or false based 
      */
     private void delete(HttpServletRequest request,
-                        HttpServletResponse response)
-            throws ServletException, IOException {        
-        RequestDispatcher requestDispatcher = request
+                        HttpServletResponse response)throws IOException,
+                                                      ServletException {     
+        try {   
+            RequestDispatcher requestDispatcher = request
                                    .getRequestDispatcher("viewProfile");
-        postService.delete(request.getParameter("postId"));
-        requestDispatcher.forward(request, response);
+            postService.delete(request.getParameter("postId"));
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request
+                                    .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);            
+        }
     }
     
     private void getPost(HttpServletRequest request,
-                         HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setAttribute("post", postService
-                               .getPost(request.getParameter("postId")));
-        RequestDispatcher requestDispatcher = request
-                                    .getRequestDispatcher("addPost.jsp");
-        requestDispatcher.forward(request, response);
-    }       
+                         HttpServletResponse response) throws  IOException,
+                                                         ServletException {
+        try {
+            request.setAttribute("post", postService
+                                    .getPost(request.getParameter("postId")));
+            RequestDispatcher requestDispatcher = request
+                                           .getRequestDispatcher("addPost.jsp");
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request
+                                     .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());    
+            requestDispatcher.forward(request, response);        
+        }
+    }
+    
 }
  

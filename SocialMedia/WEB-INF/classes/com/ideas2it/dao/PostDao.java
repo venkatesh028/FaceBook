@@ -3,7 +3,7 @@ package com.ideas2it.dao;
 import java.util.List;
 
 import com.ideas2it.model.Post;
-
+import com.ideas2it.exception.CustomException;
 /** 
  * It is interface for the Post dao impl it contains the method for
  * create, update, delete, get operations for post
@@ -19,7 +19,7 @@ public interface PostDao {
      * @param  post    - entire details of the post
      * @return noOfRowsAffected - number of the rows based on the creation
      */
-    public int create(Post post);  
+    public int create(Post post) throws CustomException ;  
 
     /** 
      * Update the post this update include the like and comment
@@ -28,7 +28,7 @@ public interface PostDao {
      * @param  content - content of the post need to be updated
      * @return noOfRowsUpdated - number of the rows based on the updation
      */
-    public int update(String id, String content);      
+    public int update(String id, String content) throws CustomException ;      
 
     /**
      * Updates the like count
@@ -37,7 +37,7 @@ public interface PostDao {
      * @param likeCount - count of the post
      * @return noOfRowsUpdated - number of the rows based on the updation
      */
-    public int updateLikeCount(String id, int likeCount);
+    public int updateLikeCount(String id, int likeCount) throws CustomException ;
     
     /**
      * Updates the comment count
@@ -46,7 +46,7 @@ public interface PostDao {
      * @param commentCount - count of the comments
      * @return noOfRowsUpdated - number of the rows based on the updation
      */
-    public int updateCommentCount(String id, int commentCount);
+    public int updateCommentCount(String id, int commentCount) throws CustomException ;
 
     /** 
      * Delete the post based on the id 
@@ -54,14 +54,14 @@ public interface PostDao {
      * @param  id - id os the post need to be deleted
      * @return noOfRowsDeleted -  number of the rows based on the deletion
      */
-    public int delete(String id); 
+    public int delete(String id) throws CustomException ; 
 
     /**
      * Get all the post in the list
      * 
      * @return userPost list of post uploaded
      */
-    public List<Post> getUserPosts();      
+    public List<Post> getUserPosts() throws CustomException ;      
     
     /**
      * Gets the post of the particular user based on the id 
@@ -69,7 +69,7 @@ public interface PostDao {
      * @param  userId    - id of the user
      * @return postOfParticualrUser - posts of the particular user
      */
-    public List<Post> getPostOfParticularUser(String userId);  
+    public List<Post> getPostOfParticularUser(String userId) throws CustomException ;  
      
     /**
      * Gets the post based on the id 
@@ -77,6 +77,6 @@ public interface PostDao {
      * @param id - id of the post 
      * @return post - post based on the id
      */
-    public Post getPost(String id);
+    public Post getPost(String id) throws CustomException ;
     
 }

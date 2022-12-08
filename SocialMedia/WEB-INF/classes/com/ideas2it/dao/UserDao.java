@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
+import com.ideas2it.exception.CustomException;
 
 /**
  * It is interface for the User dao impl it contains the method for
@@ -21,7 +22,7 @@ public interface UserDao {
      * @param  user     details of the user
      * @return boolean  true after adding the user in map
      */
-    public int create(User user);
+    public int create(User user) throws CustomException;
 
     /** 
      * Deletes the user
@@ -29,7 +30,7 @@ public interface UserDao {
      * @param  id   id of the user
      * @return noOfRowDeleted - number of rows deleted 
      */
-    public int delete(String id);
+    public int delete(String id)throws CustomException;
     
     /**
      * Updates the user 
@@ -37,7 +38,7 @@ public interface UserDao {
      * @param user - details of the user
      * @return noOfRowsUpdated - number of rows updated
      */
-    public int update(User user); 
+    public int update(User user) throws CustomException; 
     
     /**
      * Updates the password of the user
@@ -46,7 +47,7 @@ public interface UserDao {
      * @param password - password of the user
      * @return noOfRowsUpdated - number of rows updated
      */
-    public int updatePassword(String id, String password); 
+    public int updatePassword(String id, String password) throws CustomException; 
     
     /**
      * Gets the user based on the id
@@ -54,14 +55,14 @@ public interface UserDao {
      * @param id - id of the user 
      * @return user - user details
      */
-    public User getUser(String id);
+    public User getUser(String id) throws CustomException;
     
     /**
      * Gets the existing emails 
      *
      * @return existingEmail - list of existing emails
      */
-    public List<String> getExistingEmails();
+    public List<String> getExistingEmails() throws CustomException;
     
     /**
      * Gets the password for the eamil
@@ -69,7 +70,7 @@ public interface UserDao {
      * @param email - email of the user
      * @return password - password for the email 
      */
-    public String getPassword(String email);
+    public String getPassword(String email) throws CustomException;
     
     /** 
      * Gets the id of the user based on the email 
@@ -77,5 +78,5 @@ public interface UserDao {
      * @param email - email of the user
      * @return id - id of the user based on the email
      */
-    public String getId(String email); 
+    public String getId(String email) throws CustomException; 
 }
