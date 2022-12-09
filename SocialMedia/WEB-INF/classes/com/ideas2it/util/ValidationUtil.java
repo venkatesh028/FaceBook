@@ -73,11 +73,7 @@ public class ValidationUtil {
      * @param  userName  username given by the user
      * @return boolean   true if the given data matches the format else false
      */
-    public boolean isValidUserName(String userName) { 
+    public boolean isValidUserName(String userName) {
         return userName.matches(Constants.USERNAME_FORMAT);
-    }
-    
-    public String encryptThePassword(String password) {
-        return encryptedPassword;    
     }
 }

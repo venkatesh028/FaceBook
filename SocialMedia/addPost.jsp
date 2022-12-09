@@ -76,7 +76,7 @@ input[type=submit]{
 </div>
 <div class="postframe">
     <form action = "addPost" method = "post">
-        <textarea name="content" value = "Hii" placeholder="Write your toughts..."rows="5" cols="50" required></textarea><br><br>
+        <textarea name="content" value = "Hii" placeholder="Try to Express your toughts Within 50000 Characters"rows="5" cols="50"  maxlength="50000" required></textarea><br><br>
         <input type="submit" value="Post">
     </form>
 </div>

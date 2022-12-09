@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Like;
 import com.ideas2it.service.LikeService;
+import com.ideas2it.service.serviceimpl.LikeServiceImpl;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
@@ -27,7 +28,7 @@ public class LikeController extends HttpServlet {
     private CustomLogger logger;
 
     public LikeController() {
-        likeService = new LikeService();
+        likeService = new LikeServiceImpl();
         logger = new CustomLogger(LikeController.class);
     }
 

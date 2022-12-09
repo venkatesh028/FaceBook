@@ -13,7 +13,10 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Profile;
 import com.ideas2it.model.User;
+import com.ideas2it.service.ProfileService;
 import com.ideas2it.service.UserService;
+import com.ideas2it.service.serviceimpl.ProfileServiceImpl;
+import com.ideas2it.service.serviceimpl.UserServiceImpl;
 import com.ideas2it.constant.Constants;
 import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
@@ -27,7 +30,9 @@ import com.ideas2it.logger.CustomLogger;
  * @author Venkatesh TM
  */
 public class UserController extends HttpServlet {
-    UserService userService = new UserService();
+
+    UserService userService = new UserServiceImpl();
+    ProfileService profileService = new ProfileServiceImpl();
     CustomLogger logger = new CustomLogger(UserController.class);
 
     protected  void doGet(HttpServletRequest request,
@@ -269,6 +274,6 @@ public class UserController extends HttpServlet {
      * @return boolean  - true or false based on the result
      */ 
     private boolean isUserNameExist(String userName) throws CustomException {
-        return userService.isUserNameExist(userName);
+        return profileService.isUserNameExist(userName);
     }
 }

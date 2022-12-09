@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Profile;
 import com.ideas2it.service.ProfileService;
+import com.ideas2it.service.serviceimpl.PostServiceImpl;
+import com.ideas2it.service.serviceimpl.ProfileServiceImpl;
 import com.ideas2it.service.PostService;
 import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
@@ -26,11 +28,11 @@ import com.ideas2it.logger.CustomLogger;
 public class ProfileController extends HttpServlet {
     ProfileService profileService;
     private CustomLogger logger;
-    private PostController postController;
+    private PostService postService;
 
     public ProfileController() {
-        this.profileService = new ProfileService();
-        this.postController = new PostController();
+        this.profileService = new ProfileServiceImpl();
+        this.postService = new PostServiceImpl();
         this.logger = new CustomLogger(ProfileController.class);
     }
     
@@ -155,7 +157,7 @@ public class ProfileController extends HttpServlet {
             request.setAttribute("profile", getProfile((String) session
                                                     .getAttribute("userId")));
             request.setAttribute("listOfPosts", 
-                       postController.getPostOfParticularUser((String) session
+                       postService.getPostOfParticularUser((String) session
                                                     .getAttribute("userId")));
             requestDispatcher = request.getRequestDispatcher("profile.jsp");
             requestDispatcher.forward(request, response);

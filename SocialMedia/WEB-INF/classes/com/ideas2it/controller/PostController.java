@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ideas2it.model.Post;
 import com.ideas2it.service.PostService;
+import com.ideas2it.service.serviceimpl.PostServiceImpl;
 import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
@@ -27,7 +28,7 @@ public class PostController extends HttpServlet {
     private CustomLogger logger;
        
     public PostController() { 
-        this.postService = new PostService();
+        this.postService = new PostServiceImpl();
         this.logger = new CustomLogger(PostController.class);
     }
 

@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Comment;
 import com.ideas2it.service.CommentService;
+import com.ideas2it.service.serviceimpl.CommentServiceImpl;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
@@ -26,7 +27,7 @@ public class CommentController extends HttpServlet {
     private CustomLogger logger;
 
     public CommentController() {
-        commentService = new CommentService();
+        commentService = new CommentServiceImpl();
         this.logger = new CustomLogger(CommentController.class);
     }
     
@@ -38,7 +39,7 @@ public class CommentController extends HttpServlet {
         
         switch (path) {
         case "/viewComments":
-            getComment(request, response, path);
+            getComments(request, response);
             break;
 
         case "/edit-comment":
@@ -105,8 +106,9 @@ public class CommentController extends HttpServlet {
         boolean isDeleted = false;
          
         try {
-           isDeleted = commentService.delete(comment);
+            isDeleted = commentService.delete(comment);
         } catch (CustomException customException) {
+
         }
         return isDeleted;
     }
@@ -118,12 +120,12 @@ public class CommentController extends HttpServlet {
      * @return comment - entire details of the comment
      */
     private void getComment(HttpServletRequest request,
-                               HttpServletResponse response, 
-                               String path) throws IOException,
+                            HttpServletResponse response, 
+                            String path) throws IOException,
                                              ServletException {
         request.setAttribute("root", "newsFeed");
         request.setAttribute("listOfComments", commentService
-                             .getComment(request.getParameter("postId")));
+                             .getComments(request.getParameter("postId")));
         request.setAttribute("postId", request.getParameter("postId"));
         RequestDispatcher requestDispatcher = request
                              .getRequestDispatcher("viewComments.jsp"); 
@@ -136,7 +138,15 @@ public class CommentController extends HttpServlet {
      * @param  postId - id of the post
      * @return lisComments - list of comments
      */
-    private List<Comment> getComments(String postId) {
-        return commentService.getComments(postId);
+    private void getComments(HttpServletRequest request,
+                             HttpServletResponse response) throws IOException,
+                                                            ServletException {
+        request.setAttribute("root", "newsFeed");
+        request.setAttribute("listOfComments", commentService
+                                  .getComments(request.getParameter("postId")));
+        request.setAttribute("postId", request.getParameter("postId"));
+        RequestDispatcher requestDispatcher = request
+                             .getRequestDispatcher("viewComments.jsp"); 
+        requestDispatcher.forward(request, response);    
     }
 }

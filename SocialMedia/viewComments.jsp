@@ -117,18 +117,18 @@ h3{
     <input type="submit" value="comment">
     </form>
     <c:choose>
-    <c:when test="${listOfComments ne null}">
-        <c:forEach items="${listOfComments}" var = "comment">   
+    <c:when test="${not empty listOfComments}">
+        <c:forEach items="${listOfComments}" var = "comments">   
 
             <div class="comment">
-            <h3>${comment.commentedUserName}</h3><h3><b>:</b> ${comment.content}</h3>
-            <c:if test = "${sessionScope.userId == comment.commentedUserId}">
+            <h3>${comments.commentedUserName}</h3><h3><b>:</b> ${comments.content}</h3>
+            <c:if test = "${sessionScope.userId == comments.commentedUserId}">
                 <form action = "edit-comment" class = "edit">
-                    <input type = "hidden" name = "commentId" value = ${comment.id}>
+                    <input type = "hidden" name = "commentId" value = ${comments.id}>
                     <input type = "submit" value = "Edit">
                 </form>
                 <form action = "delete-comment" class = "delete"> 
-                    <input type = "hidden" name = "commentId" value = ${comment.id}>
+                    <input type = "hidden" name = "commentId" value = ${comments.id}>
                     <input type = "submit" value= "delete">
                 </form>
             </c:if>

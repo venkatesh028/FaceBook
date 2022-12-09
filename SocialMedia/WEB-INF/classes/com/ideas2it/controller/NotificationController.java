@@ -1,18 +1,17 @@
 package com.ideas2it.controller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
+import com.ideas2it.model.Notification;
+import com.ideas2it.service.NotificationService;
+import com.ideas2it.service.serviceimpl.NotificationServiceImpl;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-
-import com.ideas2it.model.Notification;
-import com.ideas2it.service.NotificationService;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Implements the create, update, get and delete operations for the Notification
@@ -24,7 +23,7 @@ public class NotificationController extends HttpServlet {
     private NotificationService notificationService;
     
     public NotificationController() {
-        this.notificationService = new NotificationService();
+        this.notificationService = new NotificationServiceImpl();
     }
 
     

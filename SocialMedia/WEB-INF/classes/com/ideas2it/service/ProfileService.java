@@ -1,31 +1,10 @@
 package com.ideas2it.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
 import com.ideas2it.model.Profile;
-import com.ideas2it.dao.ProfileDao;
-import com.ideas2it.dao.daoImpl.ProfileDaoImpl;
-import com.ideas2it.constant.Constants;
 import com.ideas2it.exception.CustomException;
 
-/** 
- * Implements the logic of Create, update, delete operation for the user profile
- * 
- * @version 1.0 22-SEP-2022
- * @author  Venkatesh TM
- */
-public class ProfileService {
-    private Profile profile;
-    private ProfileDao profileDao;    
+public interface ProfileService {
 
-    public ProfileService() {
-        this.profileDao = new ProfileDaoImpl();
-    }
-    
     /**
      * Creates the profileId for the profile and set that
      * and add profile to the database 
@@ -33,13 +12,7 @@ public class ProfileService {
      * @param  profile - profile contain the details of the profile 
      * @return isCreated -  true or false based on the result
      */
-    public boolean create(Profile profile) { 
-        boolean isCreated;    
-        String id = UUID.randomUUID().toString();
-        profile.setId(id);
-        isCreated = (profileDao.create(profile) > 0) ? true : false;
-        return isCreated;    
-    }
+    public boolean create(Profile profile);
 
     /**
      * Gets the profile of the user 
@@ -47,9 +20,7 @@ public class ProfileService {
      * @param  userId - id of the user
      * @return profile - profile details of the user
      */
-    public Profile getProfile(String userId) {
-        return profileDao.getProfile(userId);
-    }
+    public Profile getProfile(String userId);
     
     /**
      * Updates the userName and bio of the profile
@@ -57,25 +28,15 @@ public class ProfileService {
      * @param profile - details of the profile
      * @return boolean - true or false based on the result
      */
-    public boolean update(Profile profile) {
-        boolean isUpdated = (profileDao.update(profile) > 0 );
-        return isUpdated; 
-    }
-    
+    public boolean update(Profile profile);
+
     /** 
      * Increase the friend's count based on the user profile
      * 
      * @param userId - id of the user
      * @return isUpdated - true or false based on the result
      */
-    public boolean updateFriendCount(String userId, int friendsCount) {
-        boolean isUpdated;
-        int friendCount;
-        Profile profile = getProfile(userId);        
-        profile.setFriendsCount(friendsCount);
-        isUpdated = profileDao.update(profile) > 0;
-        return isUpdated;
-    }
+    public boolean updateFriendCount(String userId, int friendsCount);
 
     /**
      * Deletes the profile based on the profileId
@@ -83,27 +44,15 @@ public class ProfileService {
      * @param  userId - id of the user which need to be deleted 
      * @return profile   - profile which got deleted 
      */
-    public boolean delete(String userId) {
-        boolean isDeleted;
-        isDeleted = (0 < profileDao.delete(userId));
-        return isDeleted;
-    }  
-    
+    public boolean delete(String userId);
+
     /**
      * Gets the profile based on the username
      *  
      * @param  userName - username of the user
      * @return profile - details of the user
      */
-    public Profile getUserProfileByUserName(String userName) 
-                                            throws CustomException {
-        Profile profile = profileDao.getUserProfileByUserName(userName);
-
-        if (null == profile) {
-            throw new CustomException(Constants.ERROR_02);    
-        }
-        return profile;
-    }
+    public Profile getUserProfileByUserName(String userName) throws CustomException;
 
     /**
      * Check the userName is exist already
@@ -111,14 +60,15 @@ public class ProfileService {
      * @param  userName userName entered by the user
      * @return boolean  true or false based on the result
      */
-    public boolean isUserNameExist(String userName) {
-        List<String> existingUserNames = profileDao.getExistingUserNames();
-        return existingUserNames.contains(userName);
-    }
+    public boolean isUserNameExist(String userName);
 
-    public boolean updateVisibility(String userId, String visibility_status) {
-        Profile profile = getProfile(userId);
-        profile.setVisibility(visibility_status);
-        return update(profile);
-    }
+    /**
+     * Updates the visibility of the profile from public to private and vice versa
+     * 
+     * @param userId - id of the user 
+     * @param visibility_status - status choosed buy the user
+     * @return boolean true or false based on the response
+     */
+    public boolean updateVisibility(String userId, String visibility_status);    
+  
 }

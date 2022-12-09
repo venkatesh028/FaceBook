@@ -1,16 +1,16 @@
 package com.ideas2it.controller;
 
-import java.io.IOException; 
-
 import com.ideas2it.model.FriendRequest;
 import com.ideas2it.service.FriendRequestService;
+import com.ideas2it.service.serviceimpl.FriendRequestServiceImpl;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * It implements the logic of create, update, delete, 
@@ -23,7 +23,7 @@ public class FriendRequestController extends HttpServlet{
     FriendRequestService friendRequestService;
 
     public FriendRequestController() {
-        friendRequestService = new FriendRequestService();    
+        friendRequestService = new FriendRequestServiceImpl();
     }
     
     protected void doGet(HttpServletRequest request, 
