@@ -52,6 +52,9 @@ public class LikeController extends HttpServlet {
         }   
         requestDispatcher.forward(request, response);
         } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
         }
     }
   
@@ -70,8 +73,7 @@ public class LikeController extends HttpServlet {
         request.setAttribute("likedUsers", 
                              getLikedUserNames(request.getParameter("postId")));
         RequestDispatcher requestDispatcher = request
-                               .getRequestDispatcher("likedUsersPage.jsp");
-         
+                               .getRequestDispatcher("likedUsersPage.jsp");         
         requestDispatcher.forward(request, response);       
     }
     

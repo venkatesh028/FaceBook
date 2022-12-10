@@ -13,6 +13,7 @@ import com.ideas2it.service.serviceimpl.ProfileServiceImpl;
 import com.ideas2it.service.FriendRequestService;
 import com.ideas2it.dao.daoImpl.FriendRequestDaoImpl;
 import com.ideas2it.dao.FriendRequestDao;
+import com.ideas2it.exception.CustomException;
 
 /**
  * It Implements the logic of create, delete, update, 
@@ -46,7 +47,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         return isCreated;    
     }
     
-    public boolean update(String requestId, String requestStatus) {
+    public boolean update(String requestId, String requestStatus) throws CustomException {
         boolean isUpdated; 
         FriendRequest friendRequest = get(requestId);
         friendRequest.setStatus(requestStatus);

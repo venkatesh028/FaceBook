@@ -28,7 +28,7 @@ public interface CommentService {
      * @param content - updated content of the comment
      * @return isUpdted - true or false based on the response
      */
-    public boolean update(String id, String content);
+    public boolean update(String id, String content) throws CustomException;
 
     /**
      * Deletes the comment based on the id 
@@ -44,7 +44,7 @@ public interface CommentService {
      * @param  postId - id of the post
      * @return comments - list of comments 
      */
-    public List<Comment> getComments(String postId);
+    public List<Comment> getComments(String postId) throws CustomException;
 
     /**
      * Gets the particular comment
@@ -52,5 +52,5 @@ public interface CommentService {
      * @param id - id of the comment
      * @return comment - comment details
      */
-    public Comment getComment(String id);
+    public Comment getComment(String id) throws CustomException;
 }

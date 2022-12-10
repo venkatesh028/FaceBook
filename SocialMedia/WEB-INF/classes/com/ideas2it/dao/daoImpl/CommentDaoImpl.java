@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import com.ideas2it.model.Comment;
 import com.ideas2it.dao.CommentDao;
 import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.constant.Messages;
 import com.ideas2it.logger.CustomLogger;
+import com.ideas2it.exception.CustomException;
 
 /**
  * Performs a Create, Delete and read Operations for comment
@@ -31,7 +33,7 @@ public class CommentDaoImpl implements CommentDao {
      * {@inheritDoc}
      */
     @Override 
-    public int create(Comment comment) {
+    public int create(Comment comment) throws CustomException {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO comment")
@@ -49,6 +51,7 @@ public class CommentDaoImpl implements CommentDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.COMMENT_NOT_UPLOADED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -60,7 +63,7 @@ public class CommentDaoImpl implements CommentDao {
      * {@inheritDoc}
      */
     @Override 
-    public int update(String id, String content) {
+    public int update(String id, String content) throws CustomException {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE comment SET")
@@ -76,6 +79,7 @@ public class CommentDaoImpl implements CommentDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.COMMENT_NOT_UPDATED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -86,7 +90,7 @@ public class CommentDaoImpl implements CommentDao {
      * {@inheritDoc}
      */
     @Override 
-    public int delete(String id) {
+    public int delete(String id) throws CustomException {
         int noOfRowsDeleted = 0;
         String query;
         query = "DELETE FROM comment WHERE id = ?;";
@@ -98,7 +102,8 @@ public class CommentDaoImpl implements CommentDao {
             noOfRowsDeleted = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
-            logger.error(sqlException.getMessage());    
+            logger.error(sqlException.getMessage());   
+            throw new CustomException(Messages.COMMENT_NOT_DELETED); 
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -109,7 +114,7 @@ public class CommentDaoImpl implements CommentDao {
      * {@inheritDoc}
      */
     @Override 
-    public int getCommentsCount(String postId) {
+    public int getCommentsCount(String postId) throws CustomException {
         int commentsCount = 0;
         ResultSet resultSet;
         StringBuilder query = new StringBuilder();
@@ -128,6 +133,7 @@ public class CommentDaoImpl implements CommentDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -138,7 +144,7 @@ public class CommentDaoImpl implements CommentDao {
      * {@inheritDoc}
      */
     @Override  
-    public List<Comment> getComments(String postId) {
+    public List<Comment> getComments(String postId) throws CustomException {
         ResultSet resultSet;
         List<Comment> comments = null;
         StringBuilder query = new StringBuilder();
@@ -167,6 +173,7 @@ public class CommentDaoImpl implements CommentDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -177,7 +184,7 @@ public class CommentDaoImpl implements CommentDao {
      * {@inheritDoc}
      */
     @Override 
-    public Comment getComment(String id) {
+    public Comment getComment(String id) throws CustomException {
         ResultSet resultSet;
         Comment comment = null;  
         String query;
@@ -197,6 +204,7 @@ public class CommentDaoImpl implements CommentDao {
             statement.close();
         }  catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }

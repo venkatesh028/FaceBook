@@ -29,7 +29,7 @@ public interface FriendRequestService {
      * @param requestStatus - status for the friendRequest 
      * @return isUpdated - true or false based on the response
      */
-    public boolean update(String requestId, String requestStatus);
+    public boolean update(String requestId, String requestStatus)  throws CustomException;
 
     /**
      * Deletes the friendRequest

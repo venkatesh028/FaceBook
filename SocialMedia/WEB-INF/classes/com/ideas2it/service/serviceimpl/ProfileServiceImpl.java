@@ -14,7 +14,8 @@ import com.ideas2it.constant.Constants;
 import com.ideas2it.exception.CustomException;
 
 /** 
- * Implements the logic of Create, update, delete operation for the user profile
+ * Implements the logic of Create, update, delete operation
+ * for the user profile
  * 
  * @version 1.0 22-SEP-2022
  * @author  Venkatesh TM
@@ -34,7 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
      * @param  profile - profile contain the details of the profile 
      * @return isCreated -  true or false based on the result
      */
-    public boolean create(Profile profile) { 
+    public boolean create(Profile profile) throws CustomException { 
         boolean isCreated;    
         String id = UUID.randomUUID().toString();
         profile.setId(id);
@@ -48,7 +49,7 @@ public class ProfileServiceImpl implements ProfileService {
      * @param  userId - id of the user
      * @return profile - profile details of the user
      */
-    public Profile getProfile(String userId) {
+    public Profile getProfile(String userId) throws CustomException {
         return profileDao.getProfile(userId);
     }
     
@@ -58,7 +59,7 @@ public class ProfileServiceImpl implements ProfileService {
      * @param profile - details of the profile
      * @return boolean - true or false based on the result
      */
-    public boolean update(Profile profile) {
+    public boolean update(Profile profile) throws CustomException {
         boolean isUpdated = (profileDao.update(profile) > 0 );
         return isUpdated; 
     }
@@ -69,7 +70,8 @@ public class ProfileServiceImpl implements ProfileService {
      * @param userId - id of the user
      * @return isUpdated - true or false based on the result
      */
-    public boolean updateFriendCount(String userId, int friendsCount) {
+    public boolean updateFriendCount(String userId,
+                                     int friendsCount) throws CustomException {
         boolean isUpdated;
         int friendCount;
         Profile profile = getProfile(userId);        
@@ -84,7 +86,7 @@ public class ProfileServiceImpl implements ProfileService {
      * @param  userId - id of the user which need to be deleted 
      * @return profile   - profile which got deleted 
      */
-    public boolean delete(String userId) {
+    public boolean delete(String userId) throws CustomException {
         boolean isDeleted;
         isDeleted = (0 < profileDao.delete(userId));
         return isDeleted;
@@ -112,12 +114,14 @@ public class ProfileServiceImpl implements ProfileService {
      * @param  userName userName entered by the user
      * @return boolean  true or false based on the result
      */
-    public boolean isUserNameExist(String userName) {
+    public boolean isUserNameExist(String userName) throws CustomException {
         List<String> existingUserNames = profileDao.getExistingUserNames();
         return existingUserNames.contains(userName);
     }
-
-    public boolean updateVisibility(String userId, String visibility_status) {
+    
+    
+    public boolean updateVisibility(String userId,
+                                    String visibility_status) throws CustomException {
         Profile profile = getProfile(userId);
         profile.setVisibility(visibility_status);
         return update(profile);

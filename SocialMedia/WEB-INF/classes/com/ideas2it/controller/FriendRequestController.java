@@ -1,9 +1,5 @@
 package com.ideas2it.controller;
 
-import com.ideas2it.model.FriendRequest;
-import com.ideas2it.service.FriendRequestService;
-import com.ideas2it.service.serviceimpl.FriendRequestServiceImpl;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import com.ideas2it.model.FriendRequest;
+import com.ideas2it.service.FriendRequestService;
+import com.ideas2it.service.serviceimpl.FriendRequestServiceImpl;
+import com.ideas2it.exception.CustomException;
 /**
  * It implements the logic of create, update, delete, 
  * get operations for the friend request
@@ -57,8 +57,14 @@ public class FriendRequestController extends HttpServlet{
     private void updateTheRequest(HttpServletRequest request,
                                   HttpServletResponse response) 
                                       throws IOException, ServletException {
-        friendRequestService.update(request.getParameter("requestId"),
+        try {
+            friendRequestService.update(request.getParameter("requestId"),
                                     request.getParameter("requestStatus"));
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
+        }
     }
     
     /**

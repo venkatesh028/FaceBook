@@ -81,9 +81,35 @@ public class CommentController extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("newsFeed"); 
             requestDispatcher.forward(request, response);
         } catch (CustomException customException) {
-          
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);          
         } 
-    }    
+    }
+ 
+    /**
+     * Gets the list of comment
+     * 
+     * @param  postId - id of the post
+     * @return lisComments - list of comments
+     */
+    private void getComments(HttpServletRequest request,
+                             HttpServletResponse response) throws IOException,
+                                                            ServletException {
+        try {
+            request.setAttribute("root", "newsFeed");
+            request.setAttribute("listOfComments", commentService
+                                  .getComments(request.getParameter("postId")));
+            request.setAttribute("postId", request.getParameter("postId"));
+            RequestDispatcher requestDispatcher = request
+                                    .getRequestDispatcher("viewComments.jsp"); 
+            requestDispatcher.forward(request, response);
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
+        }    
+    }   
     
     /**
      * Updates the comment
@@ -92,8 +118,20 @@ public class CommentController extends HttpServlet {
      * @param  content - comment enetered by the user
      * @return boolean - true or false based on the response
      */
-    private boolean update(String id, String content) {
-        return commentService.update(id, content);
+    private boolean update(HttpServletRequest request,
+                           HttpServletResponse response) throws IOException,
+                                                            ServletException {
+        boolean isUpdated = false;
+        
+        try {
+            isUpdated = commentService.update(request.getParameter("id"),
+                                              request.getParameter("content"));
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
+        }
+        return isUpdated;
     }
     
     /**
@@ -102,13 +140,17 @@ public class CommentController extends HttpServlet {
      * @param  comment - Entire comment details
      * @return boolean - true or false based on the response
      */
-    private boolean deleteComment(Comment comment) {   
+    private boolean deleteComment(HttpServletRequest request,
+                                  HttpServletResponse response) throws IOException,
+                                                                 ServletException {  
         boolean isDeleted = false;
-         
+        Comment comment = new Comment();         
         try {
             isDeleted = commentService.delete(comment);
         } catch (CustomException customException) {
-
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
         }
         return isDeleted;
     }
@@ -122,31 +164,19 @@ public class CommentController extends HttpServlet {
     private void getComment(HttpServletRequest request,
                             HttpServletResponse response, 
                             String path) throws IOException,
-                                             ServletException {
-        request.setAttribute("root", "newsFeed");
-        request.setAttribute("listOfComments", commentService
-                             .getComments(request.getParameter("postId")));
-        request.setAttribute("postId", request.getParameter("postId"));
-        RequestDispatcher requestDispatcher = request
+                                          ServletException {
+        try {
+            request.setAttribute("root", "newsFeed");
+            request.setAttribute("comment", commentService
+                             .getComment(request.getParameter("commentId")));
+            request.setAttribute("postId", request.getParameter("postId"));
+            RequestDispatcher requestDispatcher = request
                              .getRequestDispatcher("viewComments.jsp"); 
-        requestDispatcher.forward(request, response);          
-    }
-    
-    /**
-     * Gets the list of comment
-     * 
-     * @param  postId - id of the post
-     * @return lisComments - list of comments
-     */
-    private void getComments(HttpServletRequest request,
-                             HttpServletResponse response) throws IOException,
-                                                            ServletException {
-        request.setAttribute("root", "newsFeed");
-        request.setAttribute("listOfComments", commentService
-                                  .getComments(request.getParameter("postId")));
-        request.setAttribute("postId", request.getParameter("postId"));
-        RequestDispatcher requestDispatcher = request
-                             .getRequestDispatcher("viewComments.jsp"); 
-        requestDispatcher.forward(request, response);    
+            requestDispatcher.forward(request, response);       
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
+        }   
     }
 }

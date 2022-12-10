@@ -12,7 +12,7 @@ public interface ProfileService {
      * @param  profile - profile contain the details of the profile 
      * @return isCreated -  true or false based on the result
      */
-    public boolean create(Profile profile);
+    public boolean create(Profile profile) throws CustomException;
 
     /**
      * Gets the profile of the user 
@@ -20,7 +20,7 @@ public interface ProfileService {
      * @param  userId - id of the user
      * @return profile - profile details of the user
      */
-    public Profile getProfile(String userId);
+    public Profile getProfile(String userId) throws CustomException;
     
     /**
      * Updates the userName and bio of the profile
@@ -28,7 +28,7 @@ public interface ProfileService {
      * @param profile - details of the profile
      * @return boolean - true or false based on the result
      */
-    public boolean update(Profile profile);
+    public boolean update(Profile profile) throws CustomException;
 
     /** 
      * Increase the friend's count based on the user profile
@@ -36,7 +36,7 @@ public interface ProfileService {
      * @param userId - id of the user
      * @return isUpdated - true or false based on the result
      */
-    public boolean updateFriendCount(String userId, int friendsCount);
+    public boolean updateFriendCount(String userId, int friendsCount) throws CustomException;
 
     /**
      * Deletes the profile based on the profileId
@@ -44,7 +44,7 @@ public interface ProfileService {
      * @param  userId - id of the user which need to be deleted 
      * @return profile   - profile which got deleted 
      */
-    public boolean delete(String userId);
+    public boolean delete(String userId) throws CustomException;
 
     /**
      * Gets the profile based on the username
@@ -60,7 +60,7 @@ public interface ProfileService {
      * @param  userName userName entered by the user
      * @return boolean  true or false based on the result
      */
-    public boolean isUserNameExist(String userName);
+    public boolean isUserNameExist(String userName) throws CustomException;
 
     /**
      * Updates the visibility of the profile from public to private and vice versa
@@ -69,6 +69,6 @@ public interface ProfileService {
      * @param visibility_status - status choosed buy the user
      * @return boolean true or false based on the response
      */
-    public boolean updateVisibility(String userId, String visibility_status);    
+    public boolean updateVisibility(String userId, String visibility_status) throws CustomException;    
   
 }

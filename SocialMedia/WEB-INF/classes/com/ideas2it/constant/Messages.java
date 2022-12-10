@@ -23,4 +23,11 @@ public class Messages {
     public static final String PASSWORD_NOT_UPDATED = "Something wrong in the updatePassword";
     
     public static final String POST_ADDED = "Post Added Successfully";
+    public static final String COMMENT_NOT_UPLOADED = "Comment Not added Try again after some time";
+    public static final String COMMENT_NOT_UPDATED = "Comment Not updated Try again after some time";
+    public static final String COMMENT_NOT_DELETED = "Comment Not deleted Try Again After Some time";
+    
+    public static final String PROFILE_NOT_CREATED = "Something went wrong profile is not created try again later";
+    public static final String PROFILE_NOT_UPDATED = "Something went wrong profile is not updated try again later";
+    public static final String PROFILE_NOT_DELETED = "Something went wrong profile is not deleted try again later";
 }

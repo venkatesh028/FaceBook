@@ -8,6 +8,7 @@ import com.ideas2it.service.CommentService;
 import com.ideas2it.service.PostService;
 import com.ideas2it.service.serviceimpl.PostServiceImpl;
 import com.ideas2it.dao.CommentDao;
+import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.dao.daoImpl.CommentDaoImpl;
 
@@ -54,7 +55,7 @@ public class CommentServiceImpl implements CommentService {
      * @param content - updated content of the comment
      * @return isUpdted - true or false based on the response
      */
-    public boolean update(String id, String content) {
+    public boolean update(String id, String content) throws CustomException {
         boolean isUpdated;
         isUpdated = commentDao.update(id, content) > 0;
         return isUpdated;
@@ -80,7 +81,7 @@ public class CommentServiceImpl implements CommentService {
      * @param  postId - id of the post
      * @return comments - list of comments 
      */
-    public List<Comment> getComments(String postId) {
+    public List<Comment> getComments(String postId) throws CustomException {
         List<Comment> listOfComments = commentDao.getComments(postId);
 
         if (listOfComments.isEmpty()) { 
@@ -95,7 +96,7 @@ public class CommentServiceImpl implements CommentService {
      * @param id - id of the comment
      * @return comment - comment details
      */
-    public Comment getComment(String id) {
+    public Comment getComment(String id) throws CustomException {
         return commentDao.getComment(id);
     }
 }

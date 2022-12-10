@@ -10,6 +10,8 @@ import java.util.List;
 import com.ideas2it.model.Profile;
 import com.ideas2it.dao.ProfileDao;
 import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.constant.Messages;
+import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
 /**
@@ -32,7 +34,7 @@ public class ProfileDaoImpl implements ProfileDao {
      * {@inheritDoc}
      */
     @Override    
-    public int create(Profile profile) {
+    public int create(Profile profile) throws CustomException {
         int noOfRowsAffected = 0;
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO profile")
@@ -49,6 +51,7 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.close();  
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.PROFILE_NOT_CREATED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -59,7 +62,7 @@ public class ProfileDaoImpl implements ProfileDao {
      * {@inheritDoc}
      */
     @Override
-    public Profile getProfile(String userId) {
+    public Profile getProfile(String userId) throws CustomException {
         ResultSet resultSet;
         Profile profile = null;
         String query;
@@ -83,6 +86,7 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.close();
         }  catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -93,7 +97,7 @@ public class ProfileDaoImpl implements ProfileDao {
      * {@inheritDoc}
      */
     @Override
-    public int update(Profile profile) {
+    public int update(Profile profile) throws CustomException {
         int noOfRowsUpdated = 0;
         StringBuilder query = new StringBuilder();
         query.append("UPDATE profile SET")
@@ -114,6 +118,7 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.PROFILE_NOT_UPDATED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -124,7 +129,7 @@ public class ProfileDaoImpl implements ProfileDao {
      * {@inheritDoc}
      */
     @Override
-    public int delete(String userId) {
+    public int delete(String userId) throws CustomException {
         int noOfRowsDeleted = 0;
         String query;
         query = "DELETE FROM profile WHERE user_id = ?;";
@@ -137,6 +142,7 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.PROFILE_NOT_DELETED);
         } finally {
             DatabaseConnection.closeConnection();
         }
@@ -147,7 +153,7 @@ public class ProfileDaoImpl implements ProfileDao {
      * {@inheritDoc}
      */
     @Override
-    public Profile getUserProfileByUserName(String userName) {
+    public Profile getUserProfileByUserName(String userName) throws CustomException {
         ResultSet resultSet;
         Profile profile = null;
         String query;
@@ -170,6 +176,7 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         }  finally {
             DatabaseConnection.closeConnection();
         }
@@ -180,7 +187,7 @@ public class ProfileDaoImpl implements ProfileDao {
      * {@inheritDoc}
      */
     @Override
-    public List<String> getExistingUserNames() {
+    public List<String> getExistingUserNames() throws CustomException {
         List<String> userNames = new ArrayList();
         ResultSet resultSet;
         String query;
@@ -197,6 +204,7 @@ public class ProfileDaoImpl implements ProfileDao {
             statement.close();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
+            throw new CustomException(Messages.SOMETHING_WENT_WRONG);
         }  finally {
             DatabaseConnection.closeConnection();
         }

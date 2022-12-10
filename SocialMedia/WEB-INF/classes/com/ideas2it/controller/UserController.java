@@ -35,6 +35,13 @@ public class UserController extends HttpServlet {
     ProfileService profileService = new ProfileServiceImpl();
     CustomLogger logger = new CustomLogger(UserController.class);
 
+    /** 
+     * Gets the request and response form the browser and performs the 
+     * task based on the request
+     * 
+     * @param request 
+     * @param response
+     */
     protected  void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
                                                          ServletException {
@@ -50,12 +57,12 @@ public class UserController extends HttpServlet {
         }
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
+    /** 
+     * Gets the request and response form the browser and performs the 
+     * task based on the request
+     * 
+     * @param request 
+     * @param response
      */
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
@@ -124,7 +131,7 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Registers the user information 
+     * Registers the user information after performing the validation 
      * 
      * @param request
      * @parma response
@@ -133,24 +140,26 @@ public class UserController extends HttpServlet {
                               HttpServletResponse response) throws IOException,
                                                              ServletException {
         try {
-        int age = calculateAge(LocalDate.parse(request.getParameter("DOB")));
+            int age = calculateAge(LocalDate.parse(request.getParameter("DOB")));
 
-        if (!isEmailExist(request.getParameter("email"))) {
-            if (age > Constants.AGE) {
-                if (!isUserNameExist(request.getParameter("userName"))) {
-                    create(request, response);
-                } else {
-                    goBackToRegisterPage(request, response, 
+            if (!isEmailExist(request.getParameter("email"))) {
+                if (age > Constants.AGE) {
+                    if (!isUserNameExist(request.getParameter("userName"))) {
+                        create(request, response);
+                    } else {
+                        goBackToRegisterPage(request, response, 
                                              Messages.USERNAME_ALREADY_EXIST);
+                    }
+                } else {
+                    goBackToRegisterPage(request, response, Messages.INVALID_AGE);
                 }
             } else {
-                goBackToRegisterPage(request, response, Messages.INVALID_AGE);
+                goBackToRegisterPage(request, response, Messages.EMAIL_ALREADY_EXIST);
             }
-        } else {
-            goBackToRegisterPage(request, response, Messages.EMAIL_ALREADY_EXIST);
-        }
         } catch (CustomException customException) {
-
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error" , Messages.SOMETHING_WENT_WRONG);
+            requestDispatcher.forward(request, response);    
         }
     }
 
@@ -248,7 +257,7 @@ public class UserController extends HttpServlet {
     }
 
     /**
-     * Check is that email is exist
+     * Checks that email is exist or not 
      *
      * @param  email  email of the user
      * @return boolean true if the account is exist else false
@@ -258,7 +267,7 @@ public class UserController extends HttpServlet {
     }
 
     /**
-     * Calculate the age based on the dateOfBirth given by the user
+     * Calculates the age based on the dateOfBirth given by the user
      *
      * @param  dateOfBirth dateOfBirth given by the user
      * @return age - age based on the dateOfBirth
