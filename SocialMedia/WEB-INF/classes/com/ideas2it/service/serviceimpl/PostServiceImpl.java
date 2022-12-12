@@ -27,12 +27,9 @@ public class PostServiceImpl implements PostService {
     }
     
     /**
-     * Creates the post 
-     * 
-     * @param  postedUserId - id of the user who posted the post
-     * @parma  content   - post of the user 
-     * @return boolean  - true or false based on the reponse
+     * {@inheritDoc}
      */
+    @Override
     public boolean create(String postedUserId, String content) throws CustomException { 
         boolean isCreated;
         String id = UUID.randomUUID().toString();
@@ -42,59 +39,45 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * Updates the content posted by the user
-     * Based on the id 
-     *
-     * @param id - id of the post
-     * @param content - content uploaded by the user
-     * @return isUpdated - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean update(String id, String content)throws CustomException {
         boolean isUpdated = (postDao.update(id, content) > 0); 
         return isUpdated;        
     } 
     
     /**
-     * Updates the like count of post based on the post id
-     * 
-     * @param postId - id of the post 
-     * @param likeCount - count of the likes
-     * @return isUpdated - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean updateLikeCount(String postId, int likeCount) throws CustomException {
         boolean isUpdated = (postDao.updateLikeCount(postId,likeCount) > 0);
         return isUpdated;    
     } 
      
     /**
-     * Updates the comment count of post based on the post id
-     * 
-     * @param postId - id of the post 
-     * @param commentCount - count of the comment
-     * @return isUpdated - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean updateCommentCount(String postId, int commentCount) throws CustomException {
         boolean isUpdated = (postDao.updateCommentCount(postId, commentCount) > 0);
         return isUpdated;
     }
 
     /**
-     * Deletes the particular post of the user
-     * Based on the postId
-     * 
-     * @param  id - Id of the post
-     * @return isDeleted - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean delete(String id) throws CustomException { 
         boolean isDeleted = (postDao.delete(id) > 0) ? true : false;
         return isDeleted;
     }
 
     /**
-     * Gets the post uploaded by the user
-     *
-     * @return allPosts - all the post 
+     * {@inheritDoc}
      */
+    @Override
     public List<Post> getUserPosts() throws CustomException {
         List<Post> allPosts;
         allPosts = postDao.getUserPosts();
@@ -106,22 +89,18 @@ public class PostServiceImpl implements PostService {
     }
     
     /**
-     * Gets the post based on there userId 
-     * 
-     * @param  userId   - id of the user
-     * @return userPosts - posts of the particular user
+     * {@inheritDoc}
      */
+    @Override
     public List<Post> getPostOfParticularUser(String userId) throws CustomException {
         List<Post> userPosts = postDao.getPostOfParticularUser(userId);            
         return userPosts;
     }
  
     /**
-     * Gets the post based on the id 
-     * 
-     * @param id - id of the post 
-     * @return post - post based on the id
+     * {@inheritDoc}
      */
+    @Override
     public Post getPost(String id) throws CustomException {
         return postDao.getPost(id);
     }

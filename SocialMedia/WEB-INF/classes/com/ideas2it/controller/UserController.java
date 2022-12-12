@@ -76,9 +76,20 @@ public class UserController extends HttpServlet {
 
         case "/register":
             registerUser(request, response);
- 
-        }
-    
+            break;
+        
+        case "/update-info":
+            update(request, response);
+            break;
+        
+        case "/update-password":
+            updatePassword(request, response); 
+            break;
+
+        case "/setting":
+            getUser(request, response);
+            break;
+        }    
     }
 
     /**
@@ -91,9 +102,7 @@ public class UserController extends HttpServlet {
                          HttpServletResponse response) throws IOException,
                                                         ServletException {
         
-        try { 
-            String message;
-
+        try {
             if (isValidCredentials(request.getParameter("email"),
                 request.getParameter("password"))) {
                 HttpSession session = request.getSession();
@@ -101,8 +110,7 @@ public class UserController extends HttpServlet {
                                       getUserId(request.getParameter("email")));
                 response.sendRedirect("newsFeed");
             } else {
-                message = "Sorry Email Id or Password is wrong";
-                request.setAttribute("Message", message);
+                request.setAttribute("Message", Messages.WRONG_CREDENTIALS);
                 RequestDispatcher requestDispatcher = request
                                         .getRequestDispatcher("login.jsp");
                 requestDispatcher.forward(request, response);
@@ -111,7 +119,7 @@ public class UserController extends HttpServlet {
               logger.info(customException.getMessage());
               RequestDispatcher requestDispatcher = request
                                      .getRequestDispatcher("errorPage.jsp");
-              request.setAttribute("Error",Messages.SOMETHING_WENT_WRONG);
+              request.setAttribute("Error",customException.getMessage());
               requestDispatcher.forward(request, response);
         }
     }
@@ -123,8 +131,8 @@ public class UserController extends HttpServlet {
      * @param response
      */
     private void logout(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException,
-                                                         ServletException {
+                        HttpServletResponse response) throws IOException,
+                                                       ServletException {
         HttpSession session = request.getSession();
         session.removeAttribute("userId");
         response.sendRedirect("login.jsp");
@@ -171,7 +179,7 @@ public class UserController extends HttpServlet {
      */
     private void create(HttpServletRequest request,  
                         HttpServletResponse response) throws IOException,
-                                                         ServletException {
+                                                       ServletException {
         try {
             LocalDate dateOfBirth = LocalDate.parse(request
                                                     .getParameter("DOB"));
@@ -215,7 +223,13 @@ public class UserController extends HttpServlet {
                                     .getRequestDispatcher("register.jsp");
         requestDispatcher.forward(request, response);
     }
-   
+    
+    /**
+     * Gets the user for the setting page 
+     *
+     * @param request
+     * @param response
+     */
     private void getUser(HttpServletRequest request, 
                          HttpServletResponse response)throws IOException,
                                                        ServletException {
@@ -237,12 +251,98 @@ public class UserController extends HttpServlet {
     }
     
     /**
+     * Updates the details of the user 
+     *
+     * @param request 
+     * @param response
+     */
+    private void update(HttpServletRequest request,
+                        HttpServletResponse response)throws IOException,
+                                                      ServletException {
+        try {
+            HttpSession session = request.getSession();
+            User user = userService.getById((String) session
+                                                 .getAttribute("userId"));           
+            int age = calculateAge(LocalDate.parse(
+                                            request.getParameter("DOB")));
+         
+            if (!isEmailExist(request.getParameter("email")) ||
+                 request.getParameter("email").equals(user.getEmail())) {
+                if (age > Constants.AGE) {
+                    user.setEmail(request.getParameter("email"));
+                    user.setDateOfBirth(LocalDate.parse(request.getParameter("DOB")));
+                    user.setAge(age);
+                    user.setPhoneNumber(Long.parseLong(request.getParameter("phoneNumber")));
+                    userService.update(user);   
+                    RequestDispatcher requestDispatcher = request
+                                                 .getRequestDispatcher("setting");
+                    request.setAttribute("message", Messages.USER_UPDATED);
+                    requestDispatcher.forward(request, response);  
+                } else {
+                    RequestDispatcher requestDispatcher = request
+                                                 .getRequestDispatcher("setting");
+                    request.setAttribute("message", Messages.INVALID_DOB);
+                    requestDispatcher.forward(request, response);                    
+                }   
+            } else {
+                RequestDispatcher requestDispatcher = request
+                                                 .getRequestDispatcher("setting");
+                request.setAttribute("message", Messages.EMAIL_ALREADY_EXIST);
+                requestDispatcher.forward(request, response);   
+            }      
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request
+                                     .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error",customException.getMessage());
+            requestDispatcher.forward(request, response);
+        } catch (Exception exception) {  
+            logger.info(exception.getMessage());
+        }
+    }
+    
+    /**
+     * Updates the password of the user 
+     * 
+     * @param request 
+     * @param response
+     */
+    private void updatePassword(HttpServletRequest request,
+                               HttpServletResponse response)throws IOException,
+                                                             ServletException {
+        try {
+            HttpSession session = request.getSession();
+            User user = userService.getById((String) session
+                                                 .getAttribute("userId")); 
+            if (userService.isPasswordMatches(user.getEmail(),
+                                   request.getParameter("oldPassword"))) {
+                user.setPassword(request.getParameter("newPassword"));
+                userService.updatePassword(user);  
+                RequestDispatcher requestDispatcher = request
+                                                 .getRequestDispatcher("setting");
+                request.setAttribute("message", Messages.PASSWORD_UPDATED);
+                requestDispatcher.forward(request, response);
+            } else {
+                RequestDispatcher requestDispatcher = request
+                                                 .getRequestDispatcher("setting");
+                request.setAttribute("message", Messages.PASSWORD_IS_NOT_UPDATED);
+                requestDispatcher.forward(request, response);
+            }  
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request
+                                     .getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error",customException.getMessage());
+            requestDispatcher.forward(request, response);       
+        }
+    }
+
+    /**
      * Checks the given credentials are valid 
      * 
      * @param email - email id of the user 
      * @param password - password of the user 
      */
-    private boolean isValidCredentials(String email, String password) throws CustomException {
+    private boolean isValidCredentials(String email,
+                                       String password) throws CustomException {
         return userService.isValidCredentials(email, password);
     }
 

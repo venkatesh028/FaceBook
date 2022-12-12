@@ -6,6 +6,8 @@ import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 import com.ideas2it.exception.CustomException;
 
+
+
 public interface UserService {
 
     /**
@@ -23,6 +25,14 @@ public interface UserService {
      * @return booelan - true or false based on the result
      */
     public boolean update(User user) throws CustomException;
+    
+    /**
+     * Updates the password of the user 
+     *
+     * @param user - detail of the user with new password 
+     * @return boolean - true or false based on the result
+     */
+    public boolean updatePassword(User user) throws CustomException;
 
     /**
      * Delete the account of the user based on the user request

@@ -28,11 +28,9 @@ public class CommentServiceImpl implements CommentService {
     }
     
     /**
-     * Creates the comment 
-     *
-     * @param  comment - details of the comment
-     * @return isCreated - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean create(Comment comment) throws CustomException {
         String id;
         boolean isCreated;
@@ -49,12 +47,9 @@ public class CommentServiceImpl implements CommentService {
     }
     
     /**
-     * Updates the comment based on the comment id 
-     * 
-     * @param id - id of the comment 
-     * @param content - updated content of the comment
-     * @return isUpdted - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean update(String id, String content) throws CustomException {
         boolean isUpdated;
         isUpdated = commentDao.update(id, content) > 0;
@@ -62,11 +57,9 @@ public class CommentServiceImpl implements CommentService {
     }
     
     /**
-     * Deletes the comment based on the id 
-     * 
-     * @param id - id of the comment
-     * @return isDeleted - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean delete(Comment comment) throws CustomException  {
         boolean isDeleted;
         isDeleted = commentDao.delete(comment.getId()) > 0;
@@ -76,11 +69,9 @@ public class CommentServiceImpl implements CommentService {
     }  
     
     /**
-     * Gets the comments for the particular post
-     * 
-     * @param  postId - id of the post
-     * @return comments - list of comments 
+     * {@inheritDoc}
      */
+    @Override
     public List<Comment> getComments(String postId) throws CustomException {
         List<Comment> listOfComments = commentDao.getComments(postId);
 
@@ -91,11 +82,9 @@ public class CommentServiceImpl implements CommentService {
     }
     
     /**
-     * Gets the particular comment
-     * 
-     * @param id - id of the comment
-     * @return comment - comment details
+     * {@inheritDoc}
      */
+    @Override
     public Comment getComment(String id) throws CustomException {
         return commentDao.getComment(id);
     }

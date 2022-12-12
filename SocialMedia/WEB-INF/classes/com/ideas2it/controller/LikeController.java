@@ -36,21 +36,20 @@ public class LikeController extends HttpServlet {
                           HttpServletResponse response) throws IOException,
                                                          ServletException {
         try {
-        String path = request.getServletPath();
-        HttpSession session = request.getSession();
-        Like like = new Like();
-        like.setLikdeUserId((String) session.getAttribute("userId"));
-        like.setPostId(request.getParameter("postId"));
-        likeService.addLike(like);
+            String path = request.getServletPath();
+            HttpSession session = request.getSession();
+            Like like = new Like();
+            like.setLikdeUserId((String) session.getAttribute("userId"));
+            like.setPostId(request.getParameter("postId"));
+            likeService.addLike(like);
+            RequestDispatcher requestDispatcher = null;
 
-        RequestDispatcher requestDispatcher = null;
-
-        if (path == "/profileAddLike") {
-            requestDispatcher = request.getRequestDispatcher("viewProfile");          
-        } else { 
-            requestDispatcher = request.getRequestDispatcher("newsFeed");
-        }   
-        requestDispatcher.forward(request, response);
+            if (path == "/profileAddLike") {
+                requestDispatcher = request.getRequestDispatcher("viewProfile");          
+            } else { 
+                requestDispatcher = request.getRequestDispatcher("newsFeed");
+            }   
+            requestDispatcher.forward(request, response);
         } catch (CustomException customException) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
             request.setAttribute("error", customException.getMessage());

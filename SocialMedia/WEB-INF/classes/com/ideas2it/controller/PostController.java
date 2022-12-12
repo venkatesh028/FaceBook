@@ -177,7 +177,13 @@ public class PostController extends HttpServlet {
             requestDispatcher.forward(request, response);            
         }
     }
-    
+      
+    /** 
+     * Gets the post based on the id 
+     *
+     * @param request 
+     * @param response
+     */
     private void getPost(HttpServletRequest request,
                          HttpServletResponse response) throws  IOException,
                                                          ServletException {

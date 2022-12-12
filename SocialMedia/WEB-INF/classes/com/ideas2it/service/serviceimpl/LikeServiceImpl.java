@@ -25,12 +25,10 @@ public class LikeServiceImpl implements LikeService {
         postService = new PostServiceImpl();
     }
     
-    /** 
-     * Creates the like by setting id 
-     * 
-     * @param  like - details of the like 
-     * @return isCreated - true or false based on the response 
+    /**
+     * {@inheritDoc}
      */
+    @Override
     public boolean create(Like like) {
         String id = UUID.randomUUID().toString();
         like.setId(id);
@@ -39,12 +37,9 @@ public class LikeServiceImpl implements LikeService {
     }
     
     /**
-     * Deletes the like for the particular post
-     *
-     * @param  postId - id of the post
-     * @param  userId - id of the user
-     * @return isDeleted - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean delete(String postId, String userId) {
         boolean isDeleted;
         isDeleted = (likeDao.delete(postId, userId) > 0);
@@ -52,21 +47,17 @@ public class LikeServiceImpl implements LikeService {
     }
     
     /**
-     * Gets the like count of the post based on the postId
-     *
-     * @param  postId - id of the post
-     * @return likeCount - count of the like 
+     * {@inheritDoc}
      */
+    @Override
     public int getLikeCountOfPost(String postId) {
            return likeDao.getLikeCountOfPost(postId);
     }
     
     /**
-     * Gets the list of the liked usernames
-     * 
-     * @param postId - id of the post
-     * @return lisOfLikedUser - list odf liked usernames for that post
+     * {@inheritDoc}
      */
+    @Override
     public List<String> getLikedUserNames(String postId) {
         List<String> listOfLikedUsers = likeDao
                              .getLikedUserNamesOfPost(postId);
@@ -78,11 +69,9 @@ public class LikeServiceImpl implements LikeService {
     }
     
     /**
-     * Add like to the post
-     * 
-     * @param like - details of the like 
-     * @return isAdded - true or false based on the response
+     * {@inheritDoc}
      */
+    @Override
     public boolean addLike(Like like) throws CustomException {
         List<String> likedUsers;
         boolean isAdded = false;

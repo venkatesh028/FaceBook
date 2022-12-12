@@ -23,12 +23,10 @@ public class NotificationServiceImpl implements NotificationService{
         this.notificationDao = new NotificationDaoImpl();
     }
     
-    /** 
-     * creates the notification 
-     *
-     * @param  notification - details of the notification
-     * @return isCreated  - true or false based on result;
-     */     
+    /**
+     * {@inheritDoc}
+     */
+    @Override    
     public boolean create(Notification notification) {
         String id;
         boolean isCreated;
@@ -39,32 +37,26 @@ public class NotificationServiceImpl implements NotificationService{
     }
     
     /**
-     * Gets the notifications of the particular user
-     * 
-     * @param  userId - id of the user
-     * @return listOfNotifications all the notifications based on the user
+     * {@inheritDoc}
      */
+    @Override
     public List<Notification> getNotifications(String userId) {
         return notificationDao.getNotifications(userId);
     }
     
     /**
-     * Updates the notification 
-     * 
-     * @param id - id of the notification
-     * @return isUpdated - true or false based on the result
-     */     
+     * {@inheritDoc}
+     */
+    @Override     
     public boolean update(String id) {
         boolean isUpdated = notificationDao.update(id) > 0;
         return isUpdated;
     }
     
     /**
-     * Clears the notification based on the id
-     * 
-     * @param id - id of the notification
-     * @param isDeleted - true or false based on the result
+     * {@inheritDoc}
      */
+    @Override
     public boolean clearNotification(String id) {
         boolean isDeleted;
         isDeleted = notificationDao.delete(id) > 0;

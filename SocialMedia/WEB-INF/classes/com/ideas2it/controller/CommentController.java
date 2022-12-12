@@ -63,7 +63,7 @@ public class CommentController extends HttpServlet {
     }    
     
     /**
-     * Adds comment 
+     * Adds comment to the particular post 
      * 
      * @param  comment - Entire comment details
      * @return boolean - true or false based on the response

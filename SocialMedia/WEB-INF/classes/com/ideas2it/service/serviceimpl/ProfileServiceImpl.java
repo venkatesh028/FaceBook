@@ -29,12 +29,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
     
     /**
-     * Creates the profileId for the profile and set that
-     * and add profile to the database 
-     * 
-     * @param  profile - profile contain the details of the profile 
-     * @return isCreated -  true or false based on the result
+     * {@inheritDoc}
      */
+    @Override
     public boolean create(Profile profile) throws CustomException { 
         boolean isCreated;    
         String id = UUID.randomUUID().toString();
@@ -44,32 +41,26 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     /**
-     * Gets the profile of the user 
-     *
-     * @param  userId - id of the user
-     * @return profile - profile details of the user
+     * {@inheritDoc}
      */
+    @Override
     public Profile getProfile(String userId) throws CustomException {
         return profileDao.getProfile(userId);
     }
     
     /**
-     * Updates the userName and bio of the profile
-     * 
-     * @param profile - details of the profile
-     * @return boolean - true or false based on the result
+     * {@inheritDoc}
      */
+    @Override
     public boolean update(Profile profile) throws CustomException {
         boolean isUpdated = (profileDao.update(profile) > 0 );
         return isUpdated; 
     }
     
-    /** 
-     * Increase the friend's count based on the user profile
-     * 
-     * @param userId - id of the user
-     * @return isUpdated - true or false based on the result
+    /**
+     * {@inheritDoc}
      */
+    @Override
     public boolean updateFriendCount(String userId,
                                      int friendsCount) throws CustomException {
         boolean isUpdated;
@@ -81,11 +72,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     /**
-     * Deletes the profile based on the profileId
-     *
-     * @param  userId - id of the user which need to be deleted 
-     * @return profile   - profile which got deleted 
+     * {@inheritDoc}
      */
+    @Override
     public boolean delete(String userId) throws CustomException {
         boolean isDeleted;
         isDeleted = (0 < profileDao.delete(userId));
@@ -93,11 +82,9 @@ public class ProfileServiceImpl implements ProfileService {
     }  
     
     /**
-     * Gets the profile based on the username
-     *  
-     * @param  userName - username of the user
-     * @return profile - details of the user
+     * {@inheritDoc}
      */
+    @Override
     public Profile getUserProfileByUserName(String userName) 
                                             throws CustomException {
         Profile profile = profileDao.getUserProfileByUserName(userName);
@@ -109,17 +96,18 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     /**
-     * Check the userName is exist already
-     * 
-     * @param  userName userName entered by the user
-     * @return boolean  true or false based on the result
+     * {@inheritDoc}
      */
+    @Override
     public boolean isUserNameExist(String userName) throws CustomException {
         List<String> existingUserNames = profileDao.getExistingUserNames();
         return existingUserNames.contains(userName);
     }
     
-    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean updateVisibility(String userId,
                                     String visibility_status) throws CustomException {
         Profile profile = getProfile(userId);

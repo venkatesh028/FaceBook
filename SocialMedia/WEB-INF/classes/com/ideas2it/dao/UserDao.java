@@ -43,11 +43,10 @@ public interface UserDao {
     /**
      * Updates the password of the user
      * 
-     * @param id - id of the user
-     * @param password - password of the user
+     * @param user - user details with new password
      * @return noOfRowsUpdated - number of rows updated
      */
-    public int updatePassword(String id, String password) throws CustomException; 
+    public int updatePassword(User user) throws CustomException; 
     
     /**
      * Gets the user based on the id

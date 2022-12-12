@@ -28,11 +28,16 @@ import com.ideas2it.exception.CustomException;
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
     private ProfileService profileService;
+
     public UserServiceImpl() {
         userDao = new UserDaoImpl();
         profileService = new ProfileServiceImpl();
-    }    
-
+    } 
+   
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean create(User user, Profile profile) throws CustomException {
         String id;
         boolean isCreated;
@@ -44,44 +49,85 @@ public class UserServiceImpl implements UserService {
         return isCreated;
     }
    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean update(User user) throws CustomException {
         return ( 0 < userDao.update(user));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override    
+    public boolean updatePassword(User user) throws CustomException {
+        return (0 < userDao.updatePassword(user));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean delete(String userId) throws CustomException {        
         return ( 0 < userDao.delete(userId)); 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public User getById(String userId) throws CustomException {
         return userDao.getUser(userId);
     }    
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getUserId(String email) throws CustomException {
         return userDao.getId(email);
     }
- 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override 
     public boolean isEmailExist(String email) throws CustomException {
         List<String> existingEmail = userDao.getExistingEmails();
         return existingEmail.contains(email);
     }
     
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isValidCredentials(String email, String password) throws CustomException { 
+        boolean isValid = false;
         String validPassword = userDao.getPassword(email);
-        return  validPassword.equals(password);       
+        
+        if (validPassword != null) { 
+            isValid = validPassword.equals(password);
+        }
+        return isValid;        
     }
             
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isPasswordMatches(String email, String oldPassword) throws CustomException {   
         String validPassword = userDao.getPassword(email);   
         return validPassword.equals(oldPassword);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int calculateAge(LocalDate dateOfBirth) {        
         LocalDate currentDate = LocalDate.now();
         Period age = Period.between(dateOfBirth, currentDate);
         return age.getYears();    
-    }
-   
+    }    
 }
