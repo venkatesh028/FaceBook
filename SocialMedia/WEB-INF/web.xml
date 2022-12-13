@@ -20,7 +20,6 @@
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
 
-
   <servlet>
     <servlet-name>register</servlet-name>
     <servlet-class>com.ideas2it.controller.UserController</servlet-class>
@@ -29,6 +28,33 @@
     <servlet-name>register</servlet-name>
     <url-pattern>/register</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+      <servlet-name>updateUser</servlet-name>
+      <servlet-class>com.ideas2it.controller.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+     <servlet-name>updateUser</servlet-name>
+     <url-pattern>/update-info</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>updateUserPassword</servlet-name>
+      <servlet-class>com.ideas2it.controller.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+     <servlet-name>updateUserPassword</servlet-name>
+     <url-pattern>/update-password</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet>
+      <servlet-name>deleteAccount</servlet-name>
+      <servlet-class>com.ideas2it.controller.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>deleteAccount</servlet-name>
+       <url-pattern>/delete-account</url-pattern>
+  </servlet-mapping>  
 
   <servlet>
     <servlet-name>view-Profile</servlet-name>

@@ -45,7 +45,7 @@ public class UserController extends HttpServlet {
     protected  void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
                                                          ServletException {
-        String path = request.getServletPath();
+        String path = request.getServletPath(); 
 
         switch (path) {
         case "/logout":
@@ -85,6 +85,10 @@ public class UserController extends HttpServlet {
         case "/update-password":
             updatePassword(request, response); 
             break;
+        
+        case "/delete-account":
+            deleteUser(request, response);
+            break;
 
         case "/setting":
             getUser(request, response);
@@ -102,7 +106,9 @@ public class UserController extends HttpServlet {
                          HttpServletResponse response) throws IOException,
                                                         ServletException {
         
-        try {
+        try { 
+            String message;
+
             if (isValidCredentials(request.getParameter("email"),
                 request.getParameter("password"))) {
                 HttpSession session = request.getSession();
@@ -110,7 +116,8 @@ public class UserController extends HttpServlet {
                                       getUserId(request.getParameter("email")));
                 response.sendRedirect("newsFeed");
             } else {
-                request.setAttribute("Message", Messages.WRONG_CREDENTIALS);
+                message = "Sorry Email Id or Password is wrong";
+                request.setAttribute("Message", message);
                 RequestDispatcher requestDispatcher = request
                                         .getRequestDispatcher("login.jsp");
                 requestDispatcher.forward(request, response);
@@ -231,8 +238,8 @@ public class UserController extends HttpServlet {
      * @param response
      */
     private void getUser(HttpServletRequest request, 
-                         HttpServletResponse response)throws IOException,
-                                                       ServletException {
+                         HttpServletResponse response) throws IOException,
+                                                        ServletException {
         try {
             HttpSession session = request.getSession();
             User user = userService.getById((String) session
@@ -257,8 +264,8 @@ public class UserController extends HttpServlet {
      * @param response
      */
     private void update(HttpServletRequest request,
-                        HttpServletResponse response)throws IOException,
-                                                      ServletException {
+                        HttpServletResponse response) throws IOException,
+                                                       ServletException {
         try {
             HttpSession session = request.getSession();
             User user = userService.getById((String) session
@@ -307,8 +314,8 @@ public class UserController extends HttpServlet {
      * @param response
      */
     private void updatePassword(HttpServletRequest request,
-                               HttpServletResponse response)throws IOException,
-                                                             ServletException {
+                                HttpServletResponse response) throws IOException,
+                                                               ServletException {
         try {
             HttpSession session = request.getSession();
             User user = userService.getById((String) session
@@ -332,6 +339,41 @@ public class UserController extends HttpServlet {
                                      .getRequestDispatcher("errorPage.jsp");
             request.setAttribute("error",customException.getMessage());
             requestDispatcher.forward(request, response);       
+        }
+    }
+    
+    /**
+     * Deletes the User account based on if the password is correct 
+     * 
+     * @param request 
+     * @param response 
+     */
+    private void deleteUser(HttpServletRequest request,
+                            HttpServletResponse response) throws IOException,
+                                                           ServletException { 
+        try {
+            HttpSession session = request.getSession();
+            User user = userService.getById((String) session
+                                                 .getAttribute("userId"));
+            
+            if (userService.isValidCredentials(user.getEmail(),
+                                          request.getParameter("password"))) {
+                userService.delete(user);      
+                RequestDispatcher requestDispatcher = request
+                                                 .getRequestDispatcher("login.jsp");
+                request.setAttribute("message", Messages.ACCOUNT_DELETED);
+                requestDispatcher.forward(request, response);     
+            } else {
+                RequestDispatcher requestDispatcher = request
+                                                 .getRequestDispatcher("setting");
+                request.setAttribute("message", Messages.PASSWORD_IS_WRONG);
+                requestDispatcher.forward(request, response);
+            }
+        } catch (CustomException customException) {
+            RequestDispatcher requestDispatcher = request
+                                               .getRequestDispatcher("setting");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
         }
     }
 

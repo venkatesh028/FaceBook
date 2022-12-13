@@ -36,6 +36,9 @@ public class Messages {
     public static final String PASSWORD_UPDATED = "Password Updated Successfully";
     public static final String PASSWORD_IS_NOT_UPDATED = "Your current password was wrong so Password is not updated";
     public static final String INVALID_DOB = "Given dateofBirth is under 18 so not accepted";
-
+    public static final String ACCOUNT_DELETED = "Account is Deleted SuccessFully";
+    public static final String PASSWORD_IS_WRONG = "Password is wrong so the account is deleted";
+    
     public static final String WRONG_CREDENTIALS = "Email or password is wrong";
+   
 }

@@ -8,7 +8,7 @@ package com.ideas2it.constant;
  */
 public class Constants {
     public final static String EMAIL_FORMAT = "^[a-zA-Z0-9][a-zA-Z0-9.]{3,30}@[a-zA-Z0-9]+\\.[a-zA-Z0-9.]{3,}$";
-    public final static String PASSWORD_FORMAT = "^[a-zA-Z0-9]{4,9}[@$&*]{1,}[0-9]{1,3}";
+    public final static String PASSWORD_FORMAT = "^[a-zA-Z0-9]{4,9}[@$&*#]{1,2}[a-zA-Z0-9]{1,6}";
     public final static String PHONE_NUMBER_FORMAT = "(\\+91-)?[6-9][0-9]{9}";
     public final static String NAME_FORMAT = "[a-zA-Z\\s]{3,20}";   
     public final static String USERNAME_FORMAT = "[a-zA-Z0-9@&$_]{3,10}";

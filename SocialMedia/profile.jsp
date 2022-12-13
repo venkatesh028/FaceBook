@@ -185,7 +185,7 @@ body{
   <il><a href="addPost.jsp">AddPost</a></il>
   <il><a href="viewProfile">Profile</a></il>
   <il><a href="#contact">Notification</a></il>
-  <il><a href="#about">Setting</a></il>
+  <il><a href="setting">Setting</a></il>
   <il class="logout"><a href="logout">Logout</a></il>
   </ul>
 </nav>  

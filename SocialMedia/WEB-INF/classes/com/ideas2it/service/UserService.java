@@ -37,10 +37,10 @@ public interface UserService {
     /**
      * Delete the account of the user based on the user request
      * 
-     * @param  userId  userId of the user
+     * @param  user    details of the user
      * @return boolean true after deleting the account
      */
-    public boolean delete(String userId) throws CustomException;
+    public boolean delete(User user) throws CustomException;
 
     /** 
      * Get the user Based on th id

@@ -27,10 +27,10 @@ public interface UserDao {
     /** 
      * Deletes the user
      * 
-     * @param  id   id of the user
+     * @param  user - details of the user
      * @return noOfRowDeleted - number of rows deleted 
      */
-    public int delete(String id)throws CustomException;
+    public int delete(User user)throws CustomException;
     
     /**
      * Updates the user 
@@ -67,9 +67,10 @@ public interface UserDao {
      * Gets the password for the eamil
      *
      * @param email - email of the user
-     * @return password - password for the email 
+     * @param password - password of the user
+     * @return id - id for the email and password 
      */
-    public String getPassword(String email) throws CustomException;
+    public String getIdByEmailAndPassword(String email, String password) throws CustomException;
     
     /** 
      * Gets the id of the user based on the email 

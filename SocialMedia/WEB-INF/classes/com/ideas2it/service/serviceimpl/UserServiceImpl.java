@@ -69,8 +69,8 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public boolean delete(String userId) throws CustomException {        
-        return ( 0 < userDao.delete(userId)); 
+    public boolean delete(User user) throws CustomException {        
+        return ( 0 < userDao.delete(user)); 
     }
 
     /**
@@ -104,10 +104,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isValidCredentials(String email, String password) throws CustomException { 
         boolean isValid = false;
-        String validPassword = userDao.getPassword(email);
+        String id = userDao.getIdByEmailAndPassword(email, password);  
         
-        if (validPassword != null) { 
-            isValid = validPassword.equals(password);
+        if (null != id) {
+            isValid = true;
         }
         return isValid;        
     }
@@ -117,8 +117,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean isPasswordMatches(String email, String oldPassword) throws CustomException {   
-        String validPassword = userDao.getPassword(email);   
-        return validPassword.equals(oldPassword);
+        return isValidCredentials(email, oldPassword); 
     }
 
     /**

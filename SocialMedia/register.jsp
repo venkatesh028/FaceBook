@@ -94,11 +94,12 @@ a{
     </div>
     <div class="formContainer"> 
 
-    <form action="register" method="post" class = "form">
+    <form action="register" method="post" class = "form" autocomplete="off">
       <label>Email </label>
       <input type="email" placeholder="Email Id" name="email" required/>
-      <label>New Password </label>
-      <input type="password" placeholder="Password" name="password" required/>
+      <label>Password </label>
+      <input type="password" placeholder="Password@12" name="password" pattern = "^[a-zA-Z0-9]{4,9}[@$&*#]{1,2}[a-zA-Z0-9]{1,6}"
+       title = " Mini:8 Max: 16 Start with Mixture of Captial and small letter and number mini:4 max:9 and one from {@$&*#} ends with Captial and small letter or number" required/>
       <label>Date Of Birth </label>
       <input type="date" name="DOB">
       <label>Username </label>

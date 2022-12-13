@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO user(id, email, password, date_of_birth,")
              .append(" age, created_date_time)")
-             .append(" VALUES(?, ?, ?, ?, ?, now());");
+             .append(" VALUES(?, ?, MD5(?), ?, ?, now());");
         
         try {
             connection = DatabaseConnection.getConnection();
@@ -99,7 +99,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public int delete(String id) throws CustomException {
+    public int delete(User user) throws CustomException {
         int noOfRowDeleted = 0;
         String query;
         query = "DELETE FROM user WHERE id = ?;";
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(query);
-            statement.setString(1, id);
+            statement.setString(1, user.getId());
             noOfRowDeleted = statement.executeUpdate();
             statement.close();
         } catch (SQLException sqlException) {
@@ -129,7 +129,7 @@ public class UserDaoImpl implements UserDao {
 
         try {
             connection = DatabaseConnection.getConnection();
-            query = "UPDATE user SET password = ? WHERE id = ?;";
+            query = "UPDATE user SET password = MD5(?) WHERE id = ?;";
             statement = connection.prepareStatement(query);
             statement.setString(1, user.getPassword());
             statement.setString(2, user.getId());
@@ -219,20 +219,21 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override    
-    public String getPassword(String email) throws CustomException  {
+    public String getIdByEmailAndPassword(String email, String password) throws CustomException  {
         ResultSet resultSet;
-        String password = null;
+        String id = null;
         String query;
-        query = "SELECT password FROM user WHERE email = ?;";
+        query = "SELECT id FROM user WHERE email = ? AND password = MD5(?);";
 
         try {
             connection = DatabaseConnection.getConnection();            
             statement = connection.prepareStatement(query);
-            statement.setString(1, email);
+            statement.setString(1, email); 
+            statement.setString(2, password);
             resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
-                password = resultSet.getString("password");
+                id = resultSet.getString("id");
             } 
             statement.close();
         } catch (SQLException sqlException) {
@@ -241,7 +242,7 @@ public class UserDaoImpl implements UserDao {
         } finally {
             DatabaseConnection.closeConnection();
         }
-        return password;
+        return id;
     }
     
     /**
