@@ -233,7 +233,25 @@
       <servlet-name>Settings</servlet-name>
       <url-pattern>/setting</url-pattern>
   </servlet-mapping>
-   
+
+  <servlet>
+      <servlet-name>Notifications</servlet-name>
+      <servlet-class>com.ideas2it.controller.NotificationController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>Notifications</servlet-name>
+      <url-pattern>/notification</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+      <servlet-name>friendRequest</servlet-name>
+      <servlet-class>com.ideas2it.controller.FriendRequestController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>friendRequest</servlet-name>
+      <url-pattern>/get-request</url-pattern>
+  </servlet-mapping>  
+
   <welcome-file-list>  
    <welcome-file>login.jsp</welcome-file>  
   </welcome-file-list>  

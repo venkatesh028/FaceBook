@@ -82,4 +82,9 @@ public class Constants {
     public final static String ERRORR_04 = "There is No Friend";
    
     public final static int AGE = 17;
+    
+    public final static String DRIVER_LINK = "com.mysql.cj.jdbc.Driver";
+    public final static String LINK = "jdbc:mysql://localhost:3306/facebook";
+    public final static String USERNAME = "root";
+    public final static String PASSWORD = "Venkatesh@09";
 }

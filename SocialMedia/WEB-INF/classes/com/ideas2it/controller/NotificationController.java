@@ -1,9 +1,5 @@
 package com.ideas2it.controller;
 
-import com.ideas2it.model.Notification;
-import com.ideas2it.service.NotificationService;
-import com.ideas2it.service.serviceimpl.NotificationServiceImpl;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +9,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+import com.ideas2it.model.Notification;
+import com.ideas2it.service.NotificationService;
+import com.ideas2it.service.serviceimpl.NotificationServiceImpl;
+import com.ideas2it.logger.CustomLogger;
+
 /**
  * Implements the create, update, get and delete operations for the Notification
  * 
@@ -21,16 +22,25 @@ import java.util.List;
  */
 public class NotificationController extends HttpServlet {    
     private NotificationService notificationService;
-    
+    private CustomLogger logger;
+        
     public NotificationController() {
         this.notificationService = new NotificationServiceImpl();
+        this.logger = new CustomLogger(NotificationController.class);
     }
 
     
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws IOException,
                                                         ServletException {
-        getNotifications(request, response);     
+        String path = request.getServletPath();
+        
+        switch (path) {
+        case "/notification":
+            getNotifications(request, response); 
+            break;
+        }
+            
     }
     
     /** 
@@ -76,9 +86,11 @@ public class NotificationController extends HttpServlet {
                                     .getRequestDispatcher("notification.jsp");
         HttpSession session = request.getSession();
         List<Notification> listOfNotifications = null;
+        
         listOfNotifications = notificationService
                    .getNotifications((String) session.getAttribute("userId"));
         request.setAttribute("listOfNotifications",listOfNotifications);
+        logger.info(listOfNotifications.toString());
         requestDispatcher.forward(request, response);        
     }      
 }

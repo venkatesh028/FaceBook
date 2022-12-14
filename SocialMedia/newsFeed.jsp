@@ -106,7 +106,7 @@ input[type=submit]{
   <il><a href="newsFeed" method="post">NewsFeed</a></il>
   <il><a href="addPost.jsp">AddPost</a></il>
   <il><a href="viewProfile">Profile</a></il>
-  <il><a href="">Notification</a></il> 
+  <il><a href="notification">Notification</a></il> 
   <il><a href="search.jsp">Search</a></il>
   <il class="logout"><a href="logout">Logout</a></il>
   </ul>

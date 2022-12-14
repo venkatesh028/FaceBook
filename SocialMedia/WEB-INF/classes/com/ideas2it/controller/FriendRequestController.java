@@ -34,7 +34,10 @@ public class FriendRequestController extends HttpServlet{
         switch (path) {
         case "/getfriends":
             getFriends(request, response);
-            break;       
+            break;
+    
+        case "/get-request":
+            getRequest(request, response); 
         }        
     }
     
@@ -70,13 +73,24 @@ public class FriendRequestController extends HttpServlet{
     /**
      * Gets the friend request based on the id
      * 
-     * @param requestId - id of the friendrequest
-     * @return friendRequest - details of the friendRequest
+     * @param request
+     * @param response
      */
-    private FriendRequest get(String requestId) {
-        return friendRequestService.get(requestId);
+    private void getRequest(HttpServletRequest request,
+                            HttpServletResponse response) throws IOException,
+                                                           ServletException {
+          FriendRequest friendRequest = friendRequestService.get(request.getParameter("requestId"));
+          RequestDispatcher requestDispatcher = request.getRequestDispatcher("friendRequest.jsp");
+          request.setAttribute("friendRequest", friendRequest);
+          requestDispatcher.forward(request, response);          
     }
     
+    /**
+     * Gets Friends of the paritcular user based on the id 
+     * 
+     * @param request
+     * @param response
+     */
     private void getFriends(HttpServletRequest request,
                             HttpServletResponse response) throws IOException,
                                                            ServletException {

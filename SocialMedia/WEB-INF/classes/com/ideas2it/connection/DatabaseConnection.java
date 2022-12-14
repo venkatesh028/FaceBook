@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.ideas2it.constant.Constants;
 import com.ideas2it.logger.CustomLogger;
 
 /**
@@ -17,20 +18,16 @@ public class DatabaseConnection {
     private static CustomLogger logger = new CustomLogger(DatabaseConnection.class);
 
     private DatabaseConnection() {
-        String link = "jdbc:mysql://localhost:3306/facebook";
-        String userName = "root";
-        String password = "Venkatesh@09";
-
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(link, userName, password);
+            Class.forName(Constants.DRIVER_LINK);
+            connection = DriverManager.getConnection(Constants.LINK, Constants.USERNAME, Constants.PASSWORD);
         } catch (Exception sqlException) {
             logger.error(sqlException.getMessage());
         }
     }
 
     /**
-     * Gets the connection for the for mysql database
+     * Gets the connection for mysql database
      */
     public static Connection getConnection() {
         try {
