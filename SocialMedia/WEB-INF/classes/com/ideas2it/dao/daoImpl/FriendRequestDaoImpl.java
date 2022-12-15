@@ -88,7 +88,7 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
         ResultSet resultSet;
         FriendRequest friendRequest = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT id, requested_user_id, request_status")
+        query.append("SELECT id, user_id, requested_user_id, request_status")
              .append(" FROM friend_request WHERE id = ?;");
         
         try {
@@ -99,7 +99,8 @@ public class FriendRequestDaoImpl implements FriendRequestDao {
             
             if (resultSet.next()) {
                 friendRequest = new FriendRequest();
-                friendRequest.setId(resultSet.getString("id"));
+                friendRequest.setId(resultSet.getString("id")); 
+                friendRequest.setUserId(resultSet.getString("user_id"));
                 friendRequest.setRequestedUserId(resultSet
                                      .getString("requested_user_id"));
                 friendRequest.setStatus(resultSet

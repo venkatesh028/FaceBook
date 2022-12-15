@@ -3,6 +3,7 @@ package com.ideas2it.service;
 import java.util.List;
 
 import com.ideas2it.model.FriendRequest;
+import com.ideas2it.model.Profile;
 import com.ideas2it.exception.CustomException;
 
 /**
@@ -48,10 +49,26 @@ public interface FriendRequestService {
     public FriendRequest get(String requestId);
     
     /**
-     * Get All the friends of the user based on the userId 
+     * Gets All the friends of the user based on the userId 
      * 
      * @param userId - id of the user 
      * @return friends - list of friends 
      */
     public List<String> getFriends(String userId);
+    
+    /**
+     * Gets the profile of the requested user 
+     * 
+     * @reqeustId - id of the friendRequest 
+     * @profile - profile of the requested user 
+     */
+    public Profile getRequestedProfile(String requestId) throws CustomException;
+    
+    /** 
+     * Checks the given username is exist in the user friend list
+     *
+     * @param userName - userName of the searched profile 
+     * @return boolean - true or false based on the result
+     */ 
+    public boolean checkIsFriend(String userName, String userId);
 }

@@ -43,9 +43,11 @@ public class CommentController extends HttpServlet {
             break;
 
         case "/edit-comment":
+            getComment(request, response);
             break;
-        
-        case "/delete-commet":
+
+        case "/delete-comment":
+            deleteComment(request, response);
             break;
         }      
     }
@@ -59,6 +61,11 @@ public class CommentController extends HttpServlet {
         case "/addComment":
             addComment(request, response);
             break;
+        
+        case "/update-comment":
+            update(request, response);
+            break;
+
         }
     }    
     
@@ -118,20 +125,19 @@ public class CommentController extends HttpServlet {
      * @param  content - comment enetered by the user
      * @return boolean - true or false based on the response
      */
-    private boolean update(HttpServletRequest request,
-                           HttpServletResponse response) throws IOException,
-                                                            ServletException {
-        boolean isUpdated = false;
+    private void update(HttpServletRequest request,
+                        HttpServletResponse response) throws IOException,
+                                                       ServletException {
         
         try {
-            isUpdated = commentService.update(request.getParameter("id"),
+             commentService.update(request.getParameter("id"),
                                               request.getParameter("content"));
+             response.sendRedirect("newsFeed");
         } catch (CustomException customException) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
             request.setAttribute("error", customException.getMessage());
             requestDispatcher.forward(request, response);
         }
-        return isUpdated;
     }
     
     /**
@@ -140,19 +146,22 @@ public class CommentController extends HttpServlet {
      * @param  comment - Entire comment details
      * @return boolean - true or false based on the response
      */
-    private boolean deleteComment(HttpServletRequest request,
-                                  HttpServletResponse response) throws IOException,
-                                                                 ServletException {  
-        boolean isDeleted = false;
-        Comment comment = new Comment();         
+    private void deleteComment(HttpServletRequest request,
+                               HttpServletResponse response) throws IOException,
+                                                              ServletException {         
         try {
-            isDeleted = commentService.delete(comment);
+            Comment comment = new Comment();
+            comment.setId(request.getParameter("commentId"));   
+            comment.setPostId(request.getParameter("postId"));
+            commentService.delete(comment);
+            response.sendRedirect("newsFeed");
         } catch (CustomException customException) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
             request.setAttribute("error", customException.getMessage());
             requestDispatcher.forward(request, response);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
         }
-        return isDeleted;
     }
     
     /**
@@ -162,17 +171,13 @@ public class CommentController extends HttpServlet {
      * @return comment - entire details of the comment
      */
     private void getComment(HttpServletRequest request,
-                            HttpServletResponse response, 
-                            String path) throws IOException,
-                                          ServletException {
+                            HttpServletResponse response) throws IOException,
+                                                           ServletException {
         try {
-            request.setAttribute("root", "newsFeed");
-            request.setAttribute("comment", commentService
-                             .getComment(request.getParameter("commentId")));
-            request.setAttribute("postId", request.getParameter("postId"));
-            RequestDispatcher requestDispatcher = request
-                             .getRequestDispatcher("viewComments.jsp"); 
-            requestDispatcher.forward(request, response);       
+            Comment comment = commentService.getComment(request.getParameter("commentId"));
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewComments.jsp"); 
+            request.setAttribute("comment", comment);
+            requestDispatcher.forward(request, response);
         } catch (CustomException customException) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
             request.setAttribute("error", customException.getMessage());

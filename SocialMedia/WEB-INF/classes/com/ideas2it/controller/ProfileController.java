@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 
 import com.ideas2it.model.Profile;
 import com.ideas2it.service.ProfileService;
+import com.ideas2it.service.FriendRequestService;
+import com.ideas2it.service.serviceimpl.FriendRequestServiceImpl;
 import com.ideas2it.service.serviceimpl.PostServiceImpl;
 import com.ideas2it.service.serviceimpl.ProfileServiceImpl;
 import com.ideas2it.service.PostService;
@@ -29,10 +31,12 @@ public class ProfileController extends HttpServlet {
     ProfileService profileService;
     private CustomLogger logger;
     private PostService postService;
+    private FriendRequestService friendRequestService;
 
     public ProfileController() {
         this.profileService = new ProfileServiceImpl();
         this.postService = new PostServiceImpl();
+        this.friendRequestService = new FriendRequestServiceImpl();
         this.logger = new CustomLogger(ProfileController.class);
     }
     
@@ -127,8 +131,8 @@ public class ProfileController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             RequestDispatcher requestDispatcher;
-            request.setAttribute("profile", profileService
-                                                 .getProfile((String) session.getAttribute("userId")));
+            Profile profile = profileService.getProfile((String) session.getAttribute("userId"));
+            request.setAttribute("profile", profile);
             requestDispatcher = request.getRequestDispatcher("update-profile.jsp");
             requestDispatcher.forward(request, response);
         } catch (CustomException customException) {
@@ -149,9 +153,14 @@ public class ProfileController extends HttpServlet {
                                                               ServletException {
         try {
             RequestDispatcher requestDispatcher;
-            request.setAttribute("profile", profileService
-                                               .getUserProfileByUserName(
-                                                request.getParameter("userName")));
+            HttpSession session = request.getSession();
+            Profile profile = profileService.getUserProfileByUserName(request.getParameter("userName"));
+            request.setAttribute("profile", profile);
+            
+            if (null != profile) {
+                request.setAttribute("isFriend", friendRequestService.checkIsFriend(profile.getUserName(),
+                                                               (String) session.getAttribute("userId") ));
+            }
             requestDispatcher = request.getRequestDispatcher("search.jsp");
             requestDispatcher.forward(request, response);
         } catch (CustomException customException) {

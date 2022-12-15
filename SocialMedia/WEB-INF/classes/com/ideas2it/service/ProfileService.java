@@ -49,11 +49,11 @@ public interface ProfileService {
     /**
      * Gets the profile based on the username
      *  
-     * @param  userName - username of the user
+     * @param  userName - userName of the searched profile 
      * @return profile - details of the user
      */
     public Profile getUserProfileByUserName(String userName) throws CustomException;
-
+    
     /**
      * Check the userName is exist already
      * 

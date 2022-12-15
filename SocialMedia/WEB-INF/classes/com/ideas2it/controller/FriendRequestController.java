@@ -9,9 +9,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import com.ideas2it.model.FriendRequest;
+import com.ideas2it.model.Profile;
 import com.ideas2it.service.FriendRequestService;
 import com.ideas2it.service.serviceimpl.FriendRequestServiceImpl;
 import com.ideas2it.exception.CustomException;
+import com.ideas2it.logger.CustomLogger;
+
 /**
  * It implements the logic of create, update, delete, 
  * get operations for the friend request
@@ -21,9 +24,11 @@ import com.ideas2it.exception.CustomException;
  */
 public class FriendRequestController extends HttpServlet{
     FriendRequestService friendRequestService;
+    CustomLogger logger;
 
     public FriendRequestController() {
         friendRequestService = new FriendRequestServiceImpl();
+        logger = new CustomLogger(UserController.class);
     }
     
     protected void doGet(HttpServletRequest request, 
@@ -35,9 +40,17 @@ public class FriendRequestController extends HttpServlet{
         case "/getfriends":
             getFriends(request, response);
             break;
-    
+
+        case "/add-friend":
+            create(request, response);
+            break;
+
         case "/get-request":
-            getRequest(request, response); 
+            getRequest(request, response);
+            break;
+        
+        case "/update-request":
+            updateTheRequest(request, response);
         }        
     }
     
@@ -47,8 +60,15 @@ public class FriendRequestController extends HttpServlet{
      * @param friendRequest - details of the friendRequest 
      * @return boolean  - true or false based on the response
      */
-    private boolean create(FriendRequest friendRequest) {
-        return friendRequestService.create(friendRequest);
+    private void create(HttpServletRequest request,
+                        HttpServletResponse response)throws IOException,
+                                                      ServletException {
+        HttpSession session = request.getSession();
+        String requestedUserId = (String) session.getAttribute("userId");
+        FriendRequest friendRequest = new FriendRequest(request.getParameter("searchedProfileId"),
+                                                        requestedUserId); 
+        friendRequestService.create(friendRequest);
+        response.sendRedirect("newsFeed");
     }
     
     /**
@@ -62,7 +82,8 @@ public class FriendRequestController extends HttpServlet{
                                       throws IOException, ServletException {
         try {
             friendRequestService.update(request.getParameter("requestId"),
-                                    request.getParameter("requestStatus"));
+                                        request.getParameter("requestStatus"));
+            response.sendRedirect("notification");
         } catch (CustomException customException) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
             request.setAttribute("error", customException.getMessage());
@@ -79,10 +100,19 @@ public class FriendRequestController extends HttpServlet{
     private void getRequest(HttpServletRequest request,
                             HttpServletResponse response) throws IOException,
                                                            ServletException {
-          FriendRequest friendRequest = friendRequestService.get(request.getParameter("requestId"));
-          RequestDispatcher requestDispatcher = request.getRequestDispatcher("friendRequest.jsp");
-          request.setAttribute("friendRequest", friendRequest);
-          requestDispatcher.forward(request, response);          
+        
+        try {
+            Profile requestedProfile = friendRequestService.getRequestedProfile(request.getParameter("requestId"));    
+            FriendRequest friendRequest = friendRequestService.get(request.getParameter("requestId"));   
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("friendRequest.jsp");        
+            request.setAttribute("friendRequest", friendRequest);
+            request.setAttribute("profile", requestedProfile);
+            requestDispatcher.forward(request, response); 
+        } catch (CustomException customException) { 
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
+            request.setAttribute("error", customException.getMessage());
+            requestDispatcher.forward(request, response);
+        }              
     }
     
     /**

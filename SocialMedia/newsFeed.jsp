@@ -14,7 +14,8 @@ background-color: #efefef;
     background: #1877f2;
     width: 100%;
     overflow: hidden;
-
+    position: fixed;
+    top: 0;
 } 
 
 *{
@@ -51,6 +52,7 @@ background-color: #efefef;
   width: 50%;
   border: 3px;
   padding: 10px;
+  padding-top: 4%;
 }
 
 .post{

@@ -39,7 +39,7 @@ body{
     padding-right: 50px;
 }
 
-.searchPage{
+.commentPage{
   margin: auto;
   margin-top: 20px;
   width: 50%;
@@ -110,10 +110,22 @@ h3{
     </c:otherwise>
 </c:choose>
 
-<div class="searchPage">
+<c:choose>
+<c:when test = "${comment ne null}">
+<div class="commentPage">
+    <form action="update-comment" method="Post">
+    <input type= "hidden" name="id" value="${comment.id}">
+    <input type= "text"   name = "content" value="${comment.content}">
+    <input type= "submit" value="Update">
+    </form>
+</div>
+</c:when>
+
+<c:otherwise>
+<div class="commentPage">
     <form action="addComment" method="Post">
-    <input type="hidden" name="postId" value=${postId}>
-    <input type="text" name="content">
+    <input type= "hidden" name="postId" value=${postId}>
+    <input type= "text" name="content">
     <input type="submit" value="comment">
     </form>
     <c:choose>
@@ -127,7 +139,8 @@ h3{
                     <input type = "hidden" name = "commentId" value = ${comments.id}>
                     <input type = "submit" value = "Edit">
                 </form>
-                <form action = "delete-comment" class = "delete"> 
+                <form action = "delete-comment" class = "delete" method = "Get"> 
+                     <input type="hidden" name="postId" value=${postId}>
                     <input type = "hidden" name = "commentId" value = ${comments.id}>
                     <input type = "submit" value= "delete">
                 </form>
@@ -142,6 +155,8 @@ h3{
     </c:otherwise>
     </c:choose> 
 </div>
+</c:otherwise>
+</c:choose>
 
 </body>
 

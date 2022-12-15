@@ -12,6 +12,7 @@ import com.ideas2it.dao.ProfileDao;
 import com.ideas2it.dao.daoImpl.ProfileDaoImpl;
 import com.ideas2it.constant.Constants;
 import com.ideas2it.exception.CustomException;
+import com.ideas2it.logger.CustomLogger;
 
 /** 
  * Implements the logic of Create, update, delete operation
@@ -22,10 +23,12 @@ import com.ideas2it.exception.CustomException;
  */
 public class ProfileServiceImpl implements ProfileService {
     private Profile profile;
-    private ProfileDao profileDao;    
+    private ProfileDao profileDao; 
+    private CustomLogger logger; 
 
     public ProfileServiceImpl() {
-        this.profileDao = new ProfileDaoImpl();
+        this.profileDao = new ProfileDaoImpl();        
+        this.logger = new CustomLogger(ProfileServiceImpl.class);
     }
     
     /**
@@ -64,8 +67,7 @@ public class ProfileServiceImpl implements ProfileService {
     public boolean updateFriendCount(String userId,
                                      int friendsCount) throws CustomException {
         boolean isUpdated;
-        int friendCount;
-        Profile profile = getProfile(userId);        
+        Profile profile = getProfile(userId);      
         profile.setFriendsCount(friendsCount);
         isUpdated = profileDao.update(profile) > 0;
         return isUpdated;
@@ -88,10 +90,6 @@ public class ProfileServiceImpl implements ProfileService {
     public Profile getUserProfileByUserName(String userName) 
                                             throws CustomException {
         Profile profile = profileDao.getUserProfileByUserName(userName);
-
-        if (null == profile) {
-            throw new CustomException(Constants.ERROR_02);    
-        }
         return profile;
     }
 

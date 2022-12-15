@@ -98,8 +98,16 @@ body{
                 <td class="info">
                 <h1>${profile.getUserName()}</h1>
                 <h1>${profile.getBio()}</h1>
-                <h1>Friends :${profile.getFriendsCount()}</h1>
+                <h1>Friends :${profile.getFriendsCount()}</h1> 
+                ${isFriend}
+                <c:if test = "${isFriend == 'false'}">
+                <form action = "add-friend">
+                <input type = hidden value = ${profile.userId} name = "searchedProfileId"/> 
+                <input type = "submit" value = "Add friend">
+                </form>
+                </c:if>
                 </td>
+ 
             </tr>  
             </table>
     </c:when>    
