@@ -73,11 +73,10 @@ public class PostController extends HttpServlet {
     }
 
     /**
-     * Add the post 
+     * create the post of the user
      * 
-     * @param  userId  - id of the user who posted the post
-     * @parma  content  - post of the user 
-     * @return boolean -  true after adding the post
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void addPost(HttpServletRequest request,
                          HttpServletResponse response) throws IOException, 
@@ -100,11 +99,10 @@ public class PostController extends HttpServlet {
     } 
     
     /**
-     * Updates the post 
+     * Updates the post of the user
      * 
-     * @param postId - id of the post
-     * @param content - content updated by the user
-     * @return boolean - true or false based on the response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void update(HttpServletRequest request,
                         HttpServletResponse response) throws IOException, 
@@ -124,9 +122,10 @@ public class PostController extends HttpServlet {
     }
 
     /**
-     * Gets the post uploaded by the user
+     * Gets All the post uploaded by the users
      *
-     * @return allPosts - all the post 
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void getUserPosts(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, 
@@ -145,22 +144,12 @@ public class PostController extends HttpServlet {
             requestDispatcher.forward(request, response);
         }        
     }
-    
-    /**
-     * Gets the post based on there userName 
-     * 
-     * @param  userId   - id of the user
-     * @return userPosts - posts of the particular user
-     */
-    public List<Post> getPostOfParticularUser(String userId) throws CustomException {
-        return postService.getPostOfParticularUser(userId);
-    } 
 
     /**
-     * Delete the post based on the postId 
+     * Deletes the post based on the postId 
      * 
-     * @param  postId - id of the post
-     * @return bolean - true or false based 
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void delete(HttpServletRequest request,
                         HttpServletResponse response)throws IOException,
@@ -177,12 +166,12 @@ public class PostController extends HttpServlet {
             requestDispatcher.forward(request, response);            
         }
     }
-      
+
     /** 
-     * Gets the post based on the id 
+     * Gets the particular post based on the id 
      *
-     * @param request 
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void getPost(HttpServletRequest request,
                          HttpServletResponse response) throws  IOException,
@@ -199,7 +188,6 @@ public class PostController extends HttpServlet {
             request.setAttribute("error", customException.getMessage());    
             requestDispatcher.forward(request, response);        
         }
-    }
-    
+    }    
 }
  

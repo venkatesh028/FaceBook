@@ -17,30 +17,29 @@ public class DatabaseConnection {
     private static Connection connection = null;
     private static CustomLogger logger = new CustomLogger(DatabaseConnection.class);
 
-    private DatabaseConnection() {
-        try {
-            Class.forName(Constants.DRIVER_LINK);
-            connection = DriverManager.getConnection(Constants.LINK, Constants.USERNAME, Constants.PASSWORD);
-        } catch (Exception sqlException) {
-            logger.error(sqlException.getMessage());
-        }
-    }
+    private DatabaseConnection() {}
 
     /**
      * Gets the connection for mysql database
+     * 
+     * @return connection - connection for the databse 
      */
     public static Connection getConnection() {
         try {
             if (null == connection || connection.isClosed()) {
-                DatabaseConnection databaseConnection = new DatabaseConnection();
+                Class.forName(Constants.DRIVER_LINK);
+                connection = DriverManager.getConnection(Constants.LINK, Constants.USERNAME, Constants.PASSWORD);
             }
-        } catch (SQLException sqlException) {
-            logger.error(sqlException.getMessage());
+        } catch (ClassNotFoundException | SQLException exception) {
+            logger.error(exception.getMessage());
         }
 
         return connection;
     }
     
+    /**
+     * Closes the connection object 
+     */
     public static void closeConnection() {
         try {
             connection.close();

@@ -1,7 +1,7 @@
 package com.ideas2it.constant;
 
 /**
- * Contains the Warning Messages to display
+ * Contains the Warning and Success Messages to display
  *
  * @version 1.0
  * @author  Venkatesh

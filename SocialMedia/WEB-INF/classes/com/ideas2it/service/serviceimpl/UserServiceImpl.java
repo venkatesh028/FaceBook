@@ -22,7 +22,7 @@ import com.ideas2it.exception.CustomException;
  * It implements the logic of Update, delete, create, 
  * read and validation operation for the user
  *
- * @version 1.0 22-SEP-2022
+ * @version 1.0 09-DEC-2022
  * @author Venkatesh TM
  */
 public class UserServiceImpl implements UserService {

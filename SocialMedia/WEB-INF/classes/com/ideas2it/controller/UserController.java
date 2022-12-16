@@ -23,7 +23,7 @@ import com.ideas2it.exception.CustomException;
 import com.ideas2it.logger.CustomLogger;
 
 /**
- * It perform the create, update, delete, view 
+ * Performs the create, update, delete, view 
  * and validation operation of the user
  *
  * @version 2.0 14-NOV-2022
@@ -31,16 +31,22 @@ import com.ideas2it.logger.CustomLogger;
  */
 public class UserController extends HttpServlet {
 
-    UserService userService = new UserServiceImpl();
-    ProfileService profileService = new ProfileServiceImpl();
-    CustomLogger logger = new CustomLogger(UserController.class);
+    private UserService userService;
+    private ProfileService profileService;
+    private CustomLogger logger;
+    
+    public UserController() {
+        userService = new UserServiceImpl();
+        profileService = new ProfileServiceImpl();
+        logger = new CustomLogger(UserController.class);
+    }
 
     /** 
      * Gets the request and response form the browser and performs the 
      * task based on the request
      * 
-     * @param request 
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     protected  void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
@@ -54,6 +60,7 @@ public class UserController extends HttpServlet {
         
         case "/setting":
             getUser(request, response);
+            break;
         }
     }
 
@@ -61,12 +68,12 @@ public class UserController extends HttpServlet {
      * Gets the request and response form the browser and performs the 
      * task based on the request
      * 
-     * @param request 
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws IOException,
-                                                        ServletException {
+                                                         ServletException {
         String path = request.getServletPath();
         
         switch (path) {
@@ -99,8 +106,8 @@ public class UserController extends HttpServlet {
     /**
      * Allows the user to login when the email and password is Valid
      *
-     * @param request
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     protected void login(HttpServletRequest request,
                          HttpServletResponse response) throws IOException,
@@ -132,10 +139,10 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Logouts the user and remove the session value
+     * Logouts the user and remove the id stored in the session
      * 
-     * @param request
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void logout(HttpServletRequest request,
                         HttpServletResponse response) throws IOException,
@@ -146,10 +153,12 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Registers the user information after performing the validation 
+     * Performs the email exist and age validation then pass the request and response
+     * To the create method for creating the user only when satisfy the condition
+     * If condition is not satisfied it call the goBackToRegisterPage with message
      * 
-     * @param request
-     * @parma response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void registerUser(HttpServletRequest request,
                               HttpServletResponse response) throws IOException,
@@ -179,10 +188,10 @@ public class UserController extends HttpServlet {
     }
 
     /**
-     * Create new account for the user
+     * Creates the user with the given details 
      *
-     * @param  request
-     * @param  response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void create(HttpServletRequest request,  
                         HttpServletResponse response) throws IOException,
@@ -216,10 +225,10 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Takes you to the register page with the message 
+     * Takes you to the register page with the warning message 
      * 
-     * @param request
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void goBackToRegisterPage(HttpServletRequest request,
                                       HttpServletResponse response,
@@ -232,10 +241,10 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Gets the user for the setting page 
+     * Gets the user details and takes to the setting page 
      *
-     * @param request
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void getUser(HttpServletRequest request, 
                          HttpServletResponse response) throws IOException,
@@ -258,10 +267,10 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Updates the details of the user 
+     * Updates the details of the user only when it satisfy the condition
      *
-     * @param request 
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void update(HttpServletRequest request,
                         HttpServletResponse response) throws IOException,
@@ -308,10 +317,10 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Updates the password of the user 
+     * Updates the password of the user after the password verfication 
      * 
-     * @param request 
-     * @param response
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void updatePassword(HttpServletRequest request,
                                 HttpServletResponse response) throws IOException,
@@ -343,10 +352,10 @@ public class UserController extends HttpServlet {
     }
     
     /**
-     * Deletes the User account based on if the password is correct 
+     * Deletes the User account based only if the password is correct 
      * 
-     * @param request 
-     * @param response 
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void deleteUser(HttpServletRequest request,
                             HttpServletResponse response) throws IOException,

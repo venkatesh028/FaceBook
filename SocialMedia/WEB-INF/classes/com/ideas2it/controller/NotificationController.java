@@ -1,13 +1,14 @@
 package com.ideas2it.controller;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 
 import com.ideas2it.model.Notification;
 import com.ideas2it.service.NotificationService;
@@ -76,8 +77,8 @@ public class NotificationController extends HttpServlet {
     /**
      * Gets the notifications of the particular user
      * 
-     * @param request
-     * @param response
+     * @param request The request object is used to get the request parameters.
+     * @param response This is the response object that is used to send data back to the client.
      */
     private void getNotifications(HttpServletRequest request,
                                   HttpServletResponse response)
@@ -85,10 +86,9 @@ public class NotificationController extends HttpServlet {
         RequestDispatcher requestDispatcher = request
                                     .getRequestDispatcher("notification.jsp");
         HttpSession session = request.getSession();
-        List<Notification> listOfNotifications = null;
-        
+        List<Notification> listOfNotifications = null;        
         listOfNotifications = notificationService
-                   .getNotifications((String) session.getAttribute("userId"));
+                          .getNotifications((String) session.getAttribute("userId"));
         request.setAttribute("listOfNotifications",listOfNotifications);
         logger.info(listOfNotifications.toString());
         requestDispatcher.forward(request, response);        

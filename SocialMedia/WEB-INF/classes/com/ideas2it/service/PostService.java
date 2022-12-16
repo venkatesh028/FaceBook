@@ -5,6 +5,12 @@ import com.ideas2it.model.Post;
 
 import java.util.List;
 
+/**
+ * Implements the create, get, update, delete operation for the post 
+ * 
+ * @version 1.0 09-DEC-2022
+ * @author Venkatesh TM
+ */
 public interface PostService {
 
     /**

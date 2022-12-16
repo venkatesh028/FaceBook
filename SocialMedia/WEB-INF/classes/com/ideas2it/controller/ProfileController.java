@@ -85,10 +85,10 @@ public class ProfileController extends HttpServlet {
     }
     
     /**
-     * Updates the profile details 
+     * Updates the profile details only one the new userName is unique
      *  
-     * @param request 
-     * @param response 
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void updateProfile(HttpServletRequest request,
                                HttpServletResponse response) throws IOException,
@@ -122,8 +122,8 @@ public class ProfileController extends HttpServlet {
     /**
      * Gets the profile of the user 
      * 
-     * @param request 
-     * @param response 
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void getProfile(HttpServletRequest request,
                             HttpServletResponse response) throws IOException,
@@ -145,8 +145,8 @@ public class ProfileController extends HttpServlet {
     /**
      * Search the profile based on the username 
      * 
-     * @param request 
-     * @param response 
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void searchProfile(HttpServletRequest request,
                                HttpServletResponse response) throws IOException,
@@ -173,8 +173,8 @@ public class ProfileController extends HttpServlet {
     /**
      * Shows the profile details of the user 
      *
-     * @param request 
-     * @parma response 
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void viewProfile(HttpServletRequest request,
                              HttpServletResponse response) throws IOException,

@@ -291,6 +291,12 @@
       <url-pattern>/remove-friend</url-pattern>
   </servlet-mapping> 
 
+<error-page>
+    <!-- Missing resource -->
+    <error-code>404</error-code>
+    <location>/errorPage404.jsp</location>
+</error-page>
+
 
 
   <welcome-file-list>  

@@ -3,6 +3,13 @@ package com.ideas2it.service;
 import com.ideas2it.model.Profile;
 import com.ideas2it.exception.CustomException;
 
+/** 
+ * Implements the logic of Create, update, delete operation
+ * for the user profile
+ * 
+ * @version 1.0 09-DEC-2022
+ * @author Venkatesh TM
+ */
 public interface ProfileService {
 
     /**
