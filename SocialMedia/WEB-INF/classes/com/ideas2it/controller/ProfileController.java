@@ -99,18 +99,19 @@ public class ProfileController extends HttpServlet {
             String userName = request.getParameter("userName");
             Profile profile = profileService.getProfile((String) session.getAttribute("userId"));
 
-            if (!userName.equals(profile.getUserName())) {
-                if (!profileService.isUserNameExist(userName)){
-                    update(request, response);
-                }else {
-                    request.setAttribute("Message", Messages.USERNAME_ALREADY_EXIST);
-                    request.setAttribute("profile", profile);
-                    requestDispatcher = request
-                          .getRequestDispatcher("update-profile.jsp");
-                    requestDispatcher.forward(request, response);
-                }
-            } else {
-                update(request, response);
+            if (!profileService.isUserNameExist(userName) ||
+                userName.equals(profile.getUserName())){
+                profile.setUserName(request.getParameter("userName"));
+                profile.setBio(request.getParameter("bio"));
+                profileService.update(profile);
+                requestDispatcher = request.getRequestDispatcher("viewProfile");
+                requestDispatcher.forward(request, response);
+            }else {
+                request.setAttribute("Message", Messages.USERNAME_ALREADY_EXIST);
+                request.setAttribute("profile", profile);
+                requestDispatcher = request
+                            .getRequestDispatcher("update-profile.jsp");
+                requestDispatcher.forward(request, response);
             }
         } catch (CustomException customException) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
@@ -195,38 +196,12 @@ public class ProfileController extends HttpServlet {
             requestDispatcher.forward(request, response);           
        }
     }
-    
-    /**
-     * Updates the profile
-     * 
-     * @param request
-     * @param response
-     */
-    private void update(HttpServletRequest request,
-                        HttpServletResponse response) throws IOException,
-                                                       ServletException {
-        try {
-            HttpSession session = request.getSession();
-            RequestDispatcher requestDispatcher;
-            Profile profile = profileService
-                                   .getProfile((String) session.getAttribute("userId"));
-            profile.setUserName(request.getParameter("userName"));
-            profile.setBio(request.getParameter("bio"));
-            profileService.update(profile);
-            requestDispatcher = request.getRequestDispatcher("viewProfile");
-            requestDispatcher.forward(request, response);
-        } catch (CustomException customException) { 
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
-            request.setAttribute("error", customException.getMessage());
-            requestDispatcher.forward(request, response);
-        }
-    }  
       
     /**
-     * Sets the profile as public 
-     * 
-     * @param  userId - id of the user
-     * @return boolean - true or false based on the response
+     * Updates the profile visibility status from private to public and viceversa
+     *
+     * @param request  - The request object is used to get the request parameters.
+     * @param response - This is the response object that is used to send data back to the client.
      */
     private void updateVisibility(HttpServletRequest request,
                                   HttpServletResponse response) 

@@ -194,7 +194,7 @@ public class UserDaoImpl implements UserDao {
     public List<String> getExistingEmails() throws CustomException {
         ResultSet resultSet;
         String query;
-        List<String> existingEmail = new ArrayList<>();
+        List<String> existingEmails = new ArrayList<>();
         query = "SELECT email FROM user;";
 
         try {
@@ -203,7 +203,7 @@ public class UserDaoImpl implements UserDao {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                existingEmail.add(resultSet.getString("email"));   
+                existingEmails.add(resultSet.getString("email"));   
             }
             statement.close();
         } catch (SQLException sqlException) {
@@ -212,7 +212,7 @@ public class UserDaoImpl implements UserDao {
         } finally {
             DatabaseConnection.closeConnection();
         }
-        return existingEmail;
+        return existingEmails;
     }
     
     /**

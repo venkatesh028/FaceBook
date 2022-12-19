@@ -82,7 +82,7 @@ public class UserController extends HttpServlet {
             break;
 
         case "/register":
-            registerUser(request, response);
+            createUser(request, response);
             break;
         
         case "/update-info":
@@ -151,61 +151,38 @@ public class UserController extends HttpServlet {
         session.removeAttribute("userId");
         response.sendRedirect("login.jsp");
     }
-    
-    /**
-     * Performs the email exist and age validation then pass the request and response
-     * To the create method for creating the user only when satisfy the condition
-     * If condition is not satisfied it call the goBackToRegisterPage with message
-     * 
-     * @param request  - The request object is used to get the request parameters.
-     * @param response - This is the response object that is used to send data back to the client.
-     */
-    private void registerUser(HttpServletRequest request,
-                              HttpServletResponse response) throws IOException,
-                                                             ServletException {
-        try {
-            int age = calculateAge(LocalDate.parse(request.getParameter("DOB")));
-
-            if (!isEmailExist(request.getParameter("email"))) {
-                if (age > Constants.AGE) {
-                    if (!isUserNameExist(request.getParameter("userName"))) {
-                        create(request, response);
-                    } else {
-                        goBackToRegisterPage(request, response, 
-                                             Messages.USERNAME_ALREADY_EXIST);
-                    }
-                } else {
-                    goBackToRegisterPage(request, response, Messages.INVALID_AGE);
-                }
-            } else {
-                goBackToRegisterPage(request, response, Messages.EMAIL_ALREADY_EXIST);
-            }
-        } catch (CustomException customException) {
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("errorPage.jsp");
-            request.setAttribute("error" , Messages.SOMETHING_WENT_WRONG);
-            requestDispatcher.forward(request, response);    
-        }
-    }
 
     /**
-     * Creates the user with the given details 
+     * Creates the user with the given details after performing the validation
      *
      * @param request  - The request object is used to get the request parameters.
      * @param response - This is the response object that is used to send data back to the client.
      */
-    private void create(HttpServletRequest request,  
+    private void createUser(HttpServletRequest request,
                         HttpServletResponse response) throws IOException,
                                                        ServletException {
         try {
-            LocalDate dateOfBirth = LocalDate.parse(request
-                                                    .getParameter("DOB"));
-        
-            User user = new User(request.getParameter("email"), 
-                                 request.getParameter("password"), 
-                                 dateOfBirth, 
-                                 calculateAge(dateOfBirth));
-            Profile profile = new Profile(request.getParameter("userName"));
-            userService.create(user, profile);
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            LocalDate dateOfBirth = LocalDate.parse(request.getParameter("DOB"));
+            int age = calculateAge(dateOfBirth);
+            String userName = request.getParameter("userName");
+
+            if (age > Constants.AGE){
+                if (!isEmailExist(email)) {
+                    if (!isUserNameExist(userName)) {
+                        User user = new User(email, password, dateOfBirth, age);
+                        Profile profile = new Profile(userName);
+                        userService.create(user, profile);
+                    } else {
+                        goBackToRegisterPage(request, response, Messages.USERNAME_ALREADY_EXIST);
+                    }
+                } else {
+                    goBackToRegisterPage(request, response, Messages.EMAIL_ALREADY_EXIST);
+                }
+            } else {
+                goBackToRegisterPage(request, response, Messages.INVALID_AGE);
+            }
             RequestDispatcher requestDispatcher = request
                                        .getRequestDispatcher("login.jsp");
             requestDispatcher.forward(request, response);
