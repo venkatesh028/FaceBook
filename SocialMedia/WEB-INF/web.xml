@@ -1,7 +1,19 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
   version="2.5">
- 
+
+
+  <filter>  
+  <filter-name>struts2</filter-name>  
+   <filter-class>  
+    org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter  
+   </filter-class>  
+  </filter>  
+  <filter-mapping>  
+   <filter-name>struts2</filter-name>  
+    <url-pattern>/Login</url-pattern>  
+  </filter-mapping>  
+
   <servlet>
     <servlet-name>login</servlet-name>
     <servlet-class>com.ideas2it.controller.UserController</servlet-class>
@@ -215,8 +227,6 @@
   <url-pattern>/update-comment</url-pattern>
   </servlet-mapping>
 
-
-
   <servlet>
     <servlet-name>deleteComment</servlet-name>
     <servlet-class>com.ideas2it.controller.CommentController</servlet-class>
@@ -291,11 +301,7 @@
       <url-pattern>/remove-friend</url-pattern>
   </servlet-mapping> 
 
-<error-page>
-    <!-- Missing resource -->
-    <error-code>404</error-code>
-    <location>/errorPage404.jsp</location>
-</error-page>
+
 
 
 

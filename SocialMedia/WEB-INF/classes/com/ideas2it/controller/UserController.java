@@ -34,7 +34,7 @@ public class UserController extends HttpServlet {
     private UserService userService;
     private ProfileService profileService;
     private CustomLogger logger;
-    
+         
     public UserController() {
         userService = new UserServiceImpl();
         profileService = new ProfileServiceImpl();
@@ -114,17 +114,14 @@ public class UserController extends HttpServlet {
                                                         ServletException {
         
         try { 
-            String message;
-
-            if (isValidCredentials(request.getParameter("email"),
+            if (userService.isValidCredentials(request.getParameter("email"),
                 request.getParameter("password"))) {
                 HttpSession session = request.getSession();
                 session.setAttribute("userId", 
                                       getUserId(request.getParameter("email")));
                 response.sendRedirect("newsFeed");
             } else {
-                message = "Sorry Email Id or Password is wrong";
-                request.setAttribute("Message", message);
+                request.setAttribute("Message", Messages.WRONG_CREDENTIALS);
                 RequestDispatcher requestDispatcher = request
                                         .getRequestDispatcher("login.jsp");
                 requestDispatcher.forward(request, response);
@@ -137,6 +134,8 @@ public class UserController extends HttpServlet {
               requestDispatcher.forward(request, response);
         }
     }
+
+
     
     /**
      * Logouts the user and remove the id stored in the session
@@ -159,8 +158,8 @@ public class UserController extends HttpServlet {
      * @param response - This is the response object that is used to send data back to the client.
      */
     private void createUser(HttpServletRequest request,
-                        HttpServletResponse response) throws IOException,
-                                                       ServletException {
+                            HttpServletResponse response) throws IOException,
+                                                           ServletException {
         try {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
@@ -361,17 +360,6 @@ public class UserController extends HttpServlet {
             request.setAttribute("error", customException.getMessage());
             requestDispatcher.forward(request, response);
         }
-    }
-
-    /**
-     * Checks the given credentials are valid 
-     * 
-     * @param email - email id of the user 
-     * @param password - password of the user 
-     */
-    private boolean isValidCredentials(String email,
-                                       String password) throws CustomException {
-        return userService.isValidCredentials(email, password);
     }
 
     /**

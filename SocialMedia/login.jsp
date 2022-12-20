@@ -1,3 +1,6 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "s" uri = "/struts-tags"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,7 +100,7 @@ a{
     </div>
     <div class="formContainer"> 
 
-    <form action="login" method="post" class = "form">
+    <form action="Login" method="post" class = "form">
       <label>Email </label>
       <input type="email" placeholder="Email Id" name="email" required/>
       <label>New Password </label>
@@ -107,10 +110,8 @@ a{
     <form class="create" >
     <a href="register.jsp"> Don't Have Account?</a>
     </form>
-
-    <h1>${Message}</h1>
-    </div> 
-     
+    <h1>${Message}</h1
+    </div>    
 
 </body>
 </html>
