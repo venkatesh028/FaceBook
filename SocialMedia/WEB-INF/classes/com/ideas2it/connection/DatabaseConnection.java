@@ -42,7 +42,9 @@ public class DatabaseConnection {
      */
     public static void closeConnection() {
         try {
-            connection.close();
+            if (null != connection) {
+                connection.close();
+            }
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage());
         }
