@@ -114,8 +114,6 @@ public class UserController extends HttpServlet {
                                                         ServletException {
         
         try { 
-            String message;
-
             if (isValidCredentials(request.getParameter("email"),
                 request.getParameter("password"))) {
                 HttpSession session = request.getSession();
@@ -123,8 +121,7 @@ public class UserController extends HttpServlet {
                                       getUserId(request.getParameter("email")));
                 response.sendRedirect("newsFeed");
             } else {
-                message = "Sorry Email Id or Password is wrong";
-                request.setAttribute("Message", message);
+                request.setAttribute("Message", Messages.WRONG_CREDENTIALS);
                 RequestDispatcher requestDispatcher = request
                                         .getRequestDispatcher("login.jsp");
                 requestDispatcher.forward(request, response);

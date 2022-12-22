@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>ideasBook</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 *{
     margin:0px;
@@ -160,7 +160,9 @@ body{
   z-index: 1;
 }
 
-.dropdown-content a:hover {background-color: #ddd}
+.dropdown-content a:hover {
+  background-color: #ddd
+}
 
 .dropdown:hover .dropdown-content {
   display: block;
@@ -208,21 +210,20 @@ body{
     <c:choose>
         <c:when test="${listOfPosts ne null}">
             <c:forEach items="${listOfPosts}" var = "post">
-                <div class="post">      
-                     <div class="dropdown">               
-                         <button class="btn" style="border-left:1px solid #0d8bf2">
-                         <i class="fa fa-caret-down"></i>
-                         </button>
-                      <div class="dropdown-content">
-                          <form action="edit-post" method="get">
-                              <input type="hidden" name="postId" value = ${post.id}>
-                              <input type="submit" value="Edit">
-                          </form>
-                          <form action="delete-post" method="get">
-                              <input type="hidden" name="postId" value = ${post.id}>
-                              <input type="submit" value="Delete">
-                          </form>
-                       </div>
+                <div class="post">
+                     <div class="dropdown">      
+                         <button><i class="fa fa-edit" style="font-size:26px"></i></button>
+
+                         <div class="dropdown-content">
+                              <form action="edit-post" method="get">
+                                  <input type="hidden" name="postId" value = ${post.id}>
+                                  <input type="submit" value="Edit">
+                              </form>
+                              <form action="delete-post" method="get">
+                                  <input type="hidden" name="postId" value = ${post.id}>
+                                  <input type="submit" value="Delete">
+                              </form>
+                         </div>
                      </div>
                 <div class="content">
                     <p><b>${post.content}</b></p>
@@ -256,7 +257,7 @@ body{
      <c:otherwise>
          <div class="noPostMessage">     
              <h1>No Post Uploaded</h1>
-         <div>
+         </div>
      </c:otherwise>
 </c:choose>
 

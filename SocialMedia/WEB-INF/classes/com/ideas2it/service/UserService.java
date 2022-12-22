@@ -56,7 +56,7 @@ public interface UserService {
     public User getById(String userId) throws CustomException;
 
     /**
-     * Get the userid of the user based on the email 
+     * Gets the userid of the user based on the email 
      *
      * @param  email  email entered by the user
      * @return userId Id of the user

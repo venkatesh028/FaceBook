@@ -101,7 +101,7 @@ a{
       <input type="password" placeholder="Password@12" name="password" pattern = "^[a-zA-Z0-9]{4,9}[@$&*#]{1,2}[a-zA-Z0-9]{1,6}"
        title = " Mini:8 Max: 16 Start with Mixture of Captial and small letter and number mini:4 max:9 and one from {@$&*#} ends with Captial and small letter or number" required/>
       <label>Date Of Birth </label>
-      <input type="date" name="DOB">
+      <input type="date" name="DOB" required/>
       <label>Username </label>
       <input type="text" placeholder="UserName" name="userName" required/>
       <button type="submit" class="registerbtn">Register</button>

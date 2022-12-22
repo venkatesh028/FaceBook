@@ -188,7 +188,7 @@ public class ProfileDaoImpl implements ProfileDao {
      */
     @Override
     public List<String> getExistingUserNames() throws CustomException {
-        List<String> userNames = new ArrayList();
+        List<String> userNames = new ArrayList<String>();
         ResultSet resultSet;
         String query;
         query = "SELECT username FROM profile;";
