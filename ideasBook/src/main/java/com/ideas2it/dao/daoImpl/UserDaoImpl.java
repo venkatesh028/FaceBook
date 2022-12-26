@@ -9,11 +9,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 import com.ideas2it.dao.UserDao;
 
 import com.ideas2it.connection.DatabaseConnection;
+import com.ideas2it.connection.DatabaseConfiguration;
 
 import com.ideas2it.constant.Messages;
 import com.ideas2it.exception.CustomException;
@@ -33,6 +37,29 @@ public class UserDaoImpl implements UserDao {
     
     public UserDaoImpl() {
         this.logger = new CustomLogger(UserDaoImpl.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String createUser(User user) throws CustomException {
+        String id = null;
+        Transaction transaction = null;
+        logger.info("From create User");
+
+        try {
+            Session session = DatabaseConfiguration.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            logger.info("user id : "+ user.getId());
+            id =(String) session.save(user);
+            transaction.commit();
+            session.close();
+        } catch (Exception hibernateException) {
+            logger.error("exception ocuur");
+            logger.error(hibernateException.getMessage());
+        }
+        return id;
     }
     
     /**

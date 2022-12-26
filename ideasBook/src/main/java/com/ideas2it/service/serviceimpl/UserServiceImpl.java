@@ -44,8 +44,10 @@ public class UserServiceImpl implements UserService {
         id = UUID.randomUUID().toString();
         user.setId(id);
         profile.setUserId(id);  
-        isCreated = (userDao.create(user) > 0); 
-        profileService.create(profile);
+        isCreated = (userDao.createUser(user) != null); 
+        if (isCreated) {
+            profileService.create(profile);
+        }
         return isCreated;
     }
    

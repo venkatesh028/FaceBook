@@ -16,6 +16,8 @@ import com.ideas2it.exception.CustomException;
  */
 public interface UserDao {
 
+    public String createUser(User user) throws CustomException; 
+
     /**
      * Creates the user
      *  
